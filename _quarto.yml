@@ -1,0 +1,45 @@
+project:
+  type: book
+  output-dir: docs
+  
+book:
+  title: "Tugas Akhir Gastro"
+  author: "Kadek Adit Wiryadana"
+  search: true
+  repo-url: https://github.com/wiryadana/TA_Gastro
+  downloads: pdf
+  sharing: [twitter, linkedin, facebook]
+  date: today
+  chapters:
+    - index.qmd
+    - pendahuluan.qmd
+    - Tinjauan_pustaka.qmd
+    - Kerangka.qmd
+    - Metode.qmd
+    - references.qmd
+    
+  page-navigation: true
+  sidebar: 
+    style: docked
+    background: dark
+bibliography: references.bib
+
+execute: 
+  echo: false
+
+format:
+  html:
+    theme: cosmo
+    number-depth: 3
+  pdf:
+    documentclass: scrreprt
+    include-in-header: 
+      text: |
+        \usepackage{makeidx}
+        \makeindex
+    include-after-body: 
+      text: |
+        \printindex
+
+editor: visual
+
