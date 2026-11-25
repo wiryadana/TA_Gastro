@@ -780,9 +780,10 @@ cat(paste0(
 ```
 
 ```{r}
-#| label: tbl-audit-mrecist
+#| label: audit-mrecist
 #| tbl-cap: "Pemetaan Nilai Mentah MRECIST_HASIL ke Kategori Luaran ITT."
 #| echo: false
+#| eval: !expr SHOW_AUDIT
 
 df %>%
   count(MRECIST_Raw = ifelse(mRECIST_Raw == "", "(Kosong)", mRECIST_Raw), Respon_Detail, Respon_Kat) %>%
@@ -1041,7 +1042,7 @@ names(tabel_5_1) <- c(
 kable(tabel_5_1, format = "markdown")
 ```
 
-Keterangan: SB = simpang baku; IQR = rentang interkuartil; ^\^a\^\ uji\ t\ tidak\ berpasangan;\ \^b\^\ uji\ Mann–Whitney;\ \^c\^\ uji\ Fisher\ exact;\ \^d\^^ uji Chi-square.
+Keterangan: SB = simpang baku; IQR = rentang interkuartil; ^a^ uji *t* tidak berpasangan; ^b^ uji Mann–Whitney; ^c^ uji *Fisher exact*; ^d^ uji *Chi-square*.
 
 ### Distribusi respon radiologis terapi lenvatinib 12–16 minggu
 
@@ -1347,7 +1348,7 @@ Berdasarkan hasil penelitian pada `r n_final` pasien KSH yang tidak dapat direse
 
 2.  Pencatatan terstandar untuk kriteria mRECIST, berat badan, penyesuaian dosis harian, serta indeks komorbiditas perlu dibakukan dalam *clinical pathway* tatalaksana KSH sistemik di RSUP Prof. dr. I.G.N.G. Ngoerah Denpasar.
 
-## Daftar Pustaka {.unnumbered}
+# DAFTAR PUSTAKA {.unnumbered}
 
 ::: {#refs}
 :::

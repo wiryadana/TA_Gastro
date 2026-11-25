@@ -363,12 +363,20 @@ Validasi Skor mCCI: Rentang terukur 5--10 (jumlah pasien dengan skor
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.4416}}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2597}}
   >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0390}}@{}}
-
-\caption{\label{tbl-audit-mrecist}Pemetaan Nilai Mentah MRECIST\_HASIL
-ke Kategori Luaran ITT.}
-
-\tabularnewline
-
+\caption{Pemetaan Nilai Mentah MRECIST\_HASIL ke Kategori Luaran
+ITT.}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+MRECIST\_Raw
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Respon\_Detail
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Respon\_Kat
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 MRECIST\_Raw
@@ -389,7 +397,6 @@ Progresif & 30 \\
 Stable Disease & Stable Disease (SD) & Penyakit Terkontrol & 18 \\
 Partial Response & Partial Response (PR) & Penyakit Terkontrol & 7 \\
 Complete Response & Complete Response (CR) & Penyakit Terkontrol & 2 \\
-
 \end{longtable}
 
 \begin{longtable}[]{@{}
@@ -577,8 +584,9 @@ RDI \textgreater{} 66,7\% & 59 (79,7) & 22 (81,5) & 37 (78,7) & \\
 \end{longtable}
 
 Keterangan: SB = simpang baku; IQR = rentang interkuartil;
-\textsuperscript{\textsuperscript{a}~uji~t~tidak~berpasangan;~\textsuperscript{b}~uji~Mann--Whitney;~\textsuperscript{c}~uji~Fisher~exact;~\textsuperscript{d}}
-uji Chi-square.
+\textsuperscript{a} uji \emph{t} tidak berpasangan; \textsuperscript{b}
+uji Mann--Whitney; \textsuperscript{c} uji \emph{Fisher exact};
+\textsuperscript{d} uji \emph{Chi-square}.
 
 \subsection{Distribusi respon radiologis terapi lenvatinib 12--16
 minggu}\label{distribusi-respon-radiologis-terapi-lenvatinib-1216-minggu}
@@ -1344,8 +1352,8 @@ Ngoerah Denpasar, dapat disimpulkan hal-hal sebagai berikut:
   I.G.N.G. Ngoerah Denpasar.
 \end{enumerate}
 
-\section*{Daftar Pustaka}\label{daftar-pustaka}
-\addcontentsline{toc}{section}{Daftar Pustaka}
+\chapter*{DAFTAR PUSTAKA}\label{daftar-pustaka}
+\addcontentsline{toc}{chapter}{DAFTAR PUSTAKA}
 
 \protect\phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
