@@ -6,7 +6,7 @@
 %
 \documentclass[
   indonesian,
-]{article}
+]{report}
 \usepackage{xcolor}
 \usepackage{amsmath,amssymb}
 \setcounter{secnumdepth}{5}
@@ -181,6 +181,7 @@
 \@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
 \floatname{codelisting}{Daftar}
 \newcommand*\listoflistings{\listof{codelisting}{Daftar Daftar}}
+\captionsetup{labelsep=none}
 \makeatother
 \makeatletter
 \makeatother
@@ -196,12 +197,9 @@
 \@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
 \makeatother
 \hypersetup{
-  pdftitle={Hubungan Skor Albumin-Bilirubin (ALBI) Pra-Terapi dengan Respon Radiologis Terapi Lenvatinib dalam Rentang 12--16 Minggu Pertama pada Karsinoma Sel Hati yang Tidak Dapat Direseksi},
+  pdftitle={HUBUNGAN SKOR ALBUMIN-BILIRUBIN (ALBI) PRA-TERAPI DENGAN RESPON RADIOLOGIS TERAPI LENVATINIB DALAM RENTANG 12--16 MINGGU PERTAMA PADA KARSINOMA SEL HATI YANG TIDAK DAPAT DIRESEKSI},
   pdfauthor={Kadek Adit Wiryadana; Gde Somayana; I Komang Agus Wira Nugraha},
   pdflang={id},
-  pdfkeywords={\xmpquote{karsinoma sel hati}, \xmpquote{skor
-ALBI}, \xmpquote{lenvatinib}, \xmpquote{mRECIST}, \xmpquote{respon
-radiologis}},
   colorlinks=true,
   linkcolor={blue},
   filecolor={Maroon},
@@ -210,91 +208,161 @@ radiologis}},
   pdfcreator={LaTeX via pandoc}}
 
 
-\title{Hubungan Skor Albumin-Bilirubin (ALBI) Pra-Terapi dengan Respon
-Radiologis Terapi Lenvatinib dalam Rentang 12--16 Minggu Pertama pada
-Karsinoma Sel Hati yang Tidak Dapat Direseksi}
+\title{HUBUNGAN SKOR ALBUMIN-BILIRUBIN (ALBI) PRA-TERAPI DENGAN RESPON
+RADIOLOGIS TERAPI LENVATINIB DALAM RENTANG 12--16 MINGGU PERTAMA PADA
+KARSINOMA SEL HATI YANG TIDAK DAPAT DIRESEKSI}
 \author{Kadek Adit Wiryadana \and Gde Somayana \and I Komang Agus Wira
 Nugraha}
 \date{25 November 2026}
 \begin{document}
 \maketitle
-\begin{abstract}
-\textbf{Latar Belakang:} Karsinoma sel hati (KSH) sebagian besar
-terdiagnosis pada stadium lanjut sehingga terapi sistemik lini pertama
-seperti lenvatinib menjadi pilihan utama. Respon klinis terhadap
-lenvatinib sangat bervariasi dan dipengaruhi cadangan fungsional hati.
-Skor Albumin-Bilirubin (ALBI) menawarkan penilaian fungsi hati yang
-objektif dibandingkan skor Child-Turcotte-Pugh (CTP).
-
-\textbf{Metode:} Studi kohort retrospektif pada pasien KSH tidak dapat
-direseksi (BCLC B non-kandidat kuratif/lokoregional dan BCLC C) yang
-menerima terapi lenvatinib di RSUP Prof.~dr. I.G.N.G. Ngoerah periode 1
-Januari 2023 hingga 31 Desember 2025. Penilaian luaran menggunakan
-pendekatan \emph{intention-to-treat} (ITT) berdasarkan kriteria mRECIST
-pada minggu ke-12 hingga ke-16 (Penyakit Terkontrol {[}CR/PR/SD{]} vs
-Penyakit Progresif {[}PD/meninggal sebelum evaluasi CT{]}). Analisis
-mencakup statistik deskriptif, bivariat (\emph{Chi-square}/\emph{Fisher
-exact} dan \emph{Relative Risk}), penentuan titik potong variabel
-numerik melalui kurva ROC/AUC, serta regresi logistik biner multivariat.
-
-\textbf{Hasil:} {[}Terisi otomatis setelah hasil render diverifikasi{]}
-
-\textbf{Simpulan:} {[}Terisi otomatis setelah hasil akhir
-diverifikasi{]}
-\end{abstract}
 
 
-\section{Audit Kelengkapan Data \& Validasi
-Formula}\label{audit-kelengkapan-data-validasi-formula}
+\chapter*{ABSTRAK}\label{abstrak}
+\addcontentsline{toc}{chapter}{ABSTRAK}
+
+Karsinoma sel hati (KSH) sebagian besar terdiagnosis pada stadium
+menengah hingga lanjut sehingga terapi sistemik lini pertama seperti
+lenvatinib menjadi pilihan utama. Respon klinis terhadap lenvatinib
+sangat bervariasi dan diduga dipengaruhi cadangan fungsional hati.
+Penelitian ini bertujuan mengevaluasi hubungan skor Albumin-Bilirubin
+(ALBI) pra-terapi terhadap respon radiologis terapi lenvatinib dalam
+rentang 12--16 minggu pertama pada pasien KSH yang tidak dapat direseksi
+di RSUP Prof.~dr. I.G.N.G. Ngoerah Denpasar.
+
+Penelitian kohort retrospektif dilakukan terhadap pasien KSH tidak dapat
+direseksi berusia \(\ge 18\) tahun yang memulai terapi lenvatinib
+periode 1 Januari 2023 hingga 31 Desember 2025. Penilaian respon
+radiologis mengikuti kriteria mRECIST pada minggu ke-12 hingga ke-16
+dengan pendekatan \emph{intention-to-treat} (ITT), yakni penyakit
+terkontrol (CR/PR/SD) dibandingkan penyakit progresif (PD atau meninggal
+sebelum evaluasi CT). Analisis dilakukan menggunakan uji
+\emph{Chi-square} atau \emph{Fisher exact} beserta \emph{Relative Risk}
+(RR), kurva ROC, dan regresi logistik biner multivariat.
+
+Dari 75 subjek yang memenuhi kriteria (18 ALBI Derajat 1 dan 57 ALBI
+Derajat 2--3), penyakit terkontrol tercapai pada 27 subjek (36,0\%).
+Proporsi penyakit terkontrol lebih tinggi pada kelompok ALBI Derajat 1
+dibandingkan ALBI Derajat 2--3 (8/18 (44,4\%) vs 19/57 (33,3\%); RR
+1,33; IK 95\% 0,71--2,51; \(p = 0,392\)). Setelah dikontrol terhadap
+beban tumor \emph{Up-to-Seven} dan kadar AFP, skor ALBI Derajat 1
+menunjukkan \emph{adjusted} OR 1,70 (IK 95\% 0,55--5,27; \(p = 0,360\)).
+
+Hubungan bermakna antara skor ALBI pra-terapi dengan respon radiologis
+dini terapi lenvatinib belum dapat dibuktikan secara statistik pada
+kohort ini, sedangkan beban tumor tampak lebih berperan terhadap kontrol
+penyakit dini. Evaluasi lanjutan dengan sampel lebih besar dan
+pemantauan kesintasan jangka panjang diperlukan.
+
+\textbf{Kata kunci:} keganasan hati, fungsi hati, \emph{tyrosine kinase
+inhibitor}, \emph{modified} RECIST, \emph{Up-to-Seven}
+
+\chapter*{ABSTRACT}\label{abstract}
+\addcontentsline{toc}{chapter}{ABSTRACT}
+
+Hepatocellular carcinoma (HCC) is predominantly diagnosed at
+intermediate-to-advanced stages, making first-line systemic therapy such
+as lenvatinib the mainstay of treatment. Clinical response to lenvatinib
+varies substantially and is influenced by residual hepatic reserve. This
+study aimed to evaluate the association between pretreatment
+Albumin-Bilirubin (ALBI) score and radiological response to lenvatinib
+within the first 12--16 weeks among patients with unresectable HCC at
+Prof.~dr. I.G.N.G. Ngoerah Hospital, Denpasar.
+
+A retrospective cohort study was conducted on unresectable HCC patients
+aged \(\ge 18\) years initiating lenvatinib between January 1, 2023 and
+December 31, 2025. Radiological response was evaluated using mRECIST
+criteria at 12--16 weeks under an intention-to-treat (ITT) approach,
+comparing disease control (CR/PR/SD) versus progressive disease (PD or
+death prior to CT evaluation). Data were analysed using Chi-square or
+Fisher's exact tests with Relative Risk (RR), ROC curves, and binary
+logistic regression.
+
+Among 75 eligible subjects (18 ALBI Grade 1 and 57 ALBI Grade 2--3),
+disease control was achieved in 27 patients (36.0\%). Disease control
+rate was numerically higher in ALBI Grade 1 than Grade 2--3 (8/18
+(44.4\%) vs 19/57 (33.3\%); RR 1.33; 95\% CI 0.71--2.51; \(p = 0.392\)).
+After adjusting for Up-to-Seven tumor burden and AFP level, ALBI Grade 1
+yielded an adjusted OR of 1.70 (95\% CI 0.55--5.27; \(p = 0.360\)).
+
+A statistically significant association between pretreatment ALBI score
+and early 12--16 week radiological response to lenvatinib could not be
+demonstrated in this cohort, whereas tumor burden appeared more
+influential. Larger prospective studies incorporating long-term survival
+outcomes are warranted.
+
+\textbf{Key words:} liver malignancy, hepatic reserve, tyrosine kinase
+inhibitor, modified RECIST, Up-to-Seven
+
+\chapter*{\texorpdfstring{AUDIT DATA \& REFERENSI (NONAKTIFKAN
+\texttt{SHOW\_AUDIT} SAAT
+FINAL)}{AUDIT DATA \& REFERENSI (NONAKTIFKAN SHOW\_AUDIT SAAT FINAL)}}\label{audit-data-referensi-nonaktifkan-show_audit-saat-final}
+\addcontentsline{toc}{chapter}{AUDIT DATA \& REFERENSI (NONAKTIFKAN
+\texttt{SHOW\_AUDIT} SAAT FINAL)}
 
 \begin{longtable}[]{@{}lrrl@{}}
-
-\caption{\label{tbl-audit-data}Audit Kelengkapan Data (Missingness) dan
-Verifikasi Kalkulasi pada Sampel Teranalisis.}
-
-\tabularnewline
-
+\caption{Audit Kelengkapan Data dan Verifikasi Kalkulasi pada Sampel
+Teranalisis}\tabularnewline
 \toprule\noalign{}
-Variabel & Terisi\_n & Missing\_n & Missing\_Pct \\
+Variabel & Terisi (n) & Missing (n) & Missing (\%) \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Variabel & Terisi (n) & Missing (n) & Missing (\%) \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Usia\_Num & 75 & 0 & 0.0\% \\
-Jenis\_Kelamin & 75 & 0 & 0.0\% \\
-BCLC\_Kat & 70 & 5 & 6.7\% \\
-Etiologi\_Kat & 75 & 0 & 0.0\% \\
-CTP\_Kat & 75 & 0 & 0.0\% \\
-ECOG\_Kat & 75 & 0 & 0.0\% \\
-Albumin\_gdL & 75 & 0 & 0.0\% \\
-Bilirubin\_mgdL & 75 & 0 & 0.0\% \\
-Skor\_ALBI & 75 & 0 & 0.0\% \\
-AFP\_ng\_Num & 75 & 0 & 0.0\% \\
-PIVKA\_Num & 5 & 70 & 93.3\% \\
-Skor\_PNI & 75 & 0 & 0.0\% \\
-UpToSeven\_Kat & 75 & 0 & 0.0\% \\
-mCCI\_Num & 75 & 0 & 0.0\% \\
-RDI\_12m & 74 & 1 & 1.3\% \\
-Respon\_Kat & 75 & 0 & 0.0\% \\
-
+Usia\_Num & 75 & 0 & 0,0\% \\
+Jenis\_Kelamin & 75 & 0 & 0,0\% \\
+BCLC\_Kat & 70 & 5 & 6,7\% \\
+Etiologi\_Kat & 75 & 0 & 0,0\% \\
+CTP\_Kat & 75 & 0 & 0,0\% \\
+ECOG\_Kat & 75 & 0 & 0,0\% \\
+Albumin\_gdL & 75 & 0 & 0,0\% \\
+Bilirubin\_mgdL & 75 & 0 & 0,0\% \\
+Skor\_ALBI & 75 & 0 & 0,0\% \\
+AFP\_ng\_Num & 75 & 0 & 0,0\% \\
+PIVKA\_Num & 5 & 70 & 93,3\% \\
+Skor\_PNI & 75 & 0 & 0,0\% \\
+UpToSeven\_Kat & 75 & 0 & 0,0\% \\
+mCCI\_Num & 75 & 0 & 0,0\% \\
+RDI\_12m & 74 & 1 & 1,3\% \\
+Respon\_Kat & 75 & 0 & 0,0\% \\
 \end{longtable}
 
-Status Keputusan Riwayat Terapi Sebelumnya: Jumlah sampel tanpa riwayat
-terapi sebelumnya (n = 75) memenuhi target minimal (n \textgreater= 68),
-sehingga 4 pasien dengan riwayat TACE/reseksi/ablasi dieksklusi.
+Status Keputusan Riwayat Terapi Sebelumnya: jumlah sampel tanpa riwayat
+terapi sebelumnya (n = 75) memenuhi target minimal (n ≥ 68), sehingga 4
+pasien dengan riwayat TACE/reseksi/ablasi dieksklusi
 
 Validasi Formula (R vs Sheet): Jumlah baris dengan selisih bermakna pada
 Skor ALBI (\(>0{,}05\)) = 1, PNI (\(>0{,}2\)) = 1, dan RDI (\(>1\%\)) =
 0.
 
-Validasi Skor mCCI: Rentang terukur 5-- 10 (jumlah pasien dengan skor
+Validasi Skor mCCI: Rentang terukur 5--10 (jumlah pasien dengan skor
 \(> 5\) = 64).
 
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Status keputusan riwayat terapi sebelumnya: jumlah sampel tanpa
+  riwayat terapi sebelumnya (n = 75) memenuhi target minimal (n ≥ 68),
+  sehingga 4 pasien dengan riwayat TACE/reseksi/ablasi dieksklusi.
+\item
+  Validasi formula R terhadap sheet: selisih bermakna ALBI
+  (\textgreater{} 0,05) = 1, PNI (\textgreater{} 0,2) = 1, RDI
+  (\textgreater{} 1\%) = 0.
+\item
+  Validasi skor mCCI: rentang terukur 5--10 (jumlah pasien dengan skor
+  \textgreater{} 5 = 64).
+\end{enumerate}
+
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2632}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.4342}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2632}}
-  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0395}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2597}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.4416}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2597}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0390}}@{}}
 
 \caption{\label{tbl-audit-mrecist}Pemetaan Nilai Mentah MRECIST\_HASIL
 ke Kategori Luaran ITT.}
@@ -315,90 +383,122 @@ n
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Progressive Disease & PD (CT Evaluasi) & Penyakit Progresif & 30 \\
-(Kosong) & Meninggal / Tanpa CT (ITT -\textgreater{} PD) & Penyakit
-Progresif & 18 \\
-Stable Disease & SD & Penyakit Terkontrol & 18 \\
-Partial Response & PR & Penyakit Terkontrol & 7 \\
-Complete Response & CR & Penyakit Terkontrol & 2 \\
+Progressive Disease & Progressive Disease (CT Evaluasi) & Penyakit
+Progresif & 30 \\
+(Kosong) & Meninggal / Tanpa CT (ITT) & Penyakit Progresif & 18 \\
+Stable Disease & Stable Disease (SD) & Penyakit Terkontrol & 18 \\
+Partial Response & Partial Response (PR) & Penyakit Terkontrol & 7 \\
+Complete Response & Complete Response (CR) & Penyakit Terkontrol & 2 \\
 
 \end{longtable}
 
-\section{Pendahuluan}\label{pendahuluan}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0273}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0818}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.6909}}@{}}
+\caption{Daftar Nomor RM dengan Data Kosong atau Selisih Formula untuk
+Verifikasi Rekam Medis}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+NO
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+RM
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+NAMA\_INISIAL
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Masalah
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+NO
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+RM
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+NAMA\_INISIAL
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Masalah
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+7 & 20018746 & I KOMANG WIDI ADNYANA & BCLC kosong/tidak baku (A) \\
+8 & 20034439 & MADE ALIT WIDYANTARA & BCLC kosong/tidak baku (A) \\
+21 & 24004142 & I NYOMAN SUWARTAWAN & BCLC kosong/tidak baku (0) \\
+30 & 24041584 & INK & BCLC kosong/tidak baku (A) \\
+52 & 01414430 & Ida Ayu AMANDA SARI & BCLC kosong/tidak baku (A) \\
+62 & 26077975 & SUTRISNO & RDI kosong \\
+63 & 26078758 & I KETUT MANYIT & Selisih ALBI (R=-1,34 vs Sheet=-1,94);
+Selisih PNI (R=30,86 vs Sheet=37,86) \\
+\end{longtable}
 
-Karsinoma sel hati (KSH) merupakan keganasan hati primer paling dominan
-(85\%--90\% kasus) yang sebagian besar terdiagnosis pada stadium
-menengah hingga lanjut sehingga membutuhkan terapi sistemik lini pertama
-seperti lenvatinib (Kudo dkk., 2018; Perhimpunan Peneliti Hati
-Indonesia, 2017). Cadangan fungsional hati residual berperan krusial
-dalam menentukan tolerabilitas dosis dan respon antitumor. Skor
-Albumin-Bilirubin (ALBI) menawarkan penilaian objektif berbasis albumin
-serum dan bilirubin total tanpa bias subjektif skor Child-Turcotte-Pugh
-(CTP) (Johnson dkk., 2015). Penelitian ini bertujuan menganalisis
-hubungan skor ALBI pra-terapi dengan respon radiologis mRECIST dalam
-rentang 12--16 minggu pertama terapi lenvatinib pada pasien KSH tidak
-dapat direseksi di RSUP Prof.~dr. I.G.N.G. Ngoerah Denpasar.
+\textbf{Ringkasan Kemutakhiran Pustaka (2016--2026)}
 
-\section{Metode}\label{metode}
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lrl@{}}
+\toprule\noalign{}
+Kategori Kemutakhiran & Jumlah (n) & Persentase (\%) \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\end{longtable}
+}
 
-Penelitian ini merupakan studi analitik kohort retrospektif berbasis
-rekam medis pada pasien KSH tidak dapat direseksi (BCLC B non-kandidat
-terapi kuratif/lokoregional dan BCLC C) usia \(\ge 18\) tahun yang
-memulai terapi lenvatinib di RSUP Prof.~dr. I.G.N.G. Ngoerah Denpasar
-periode 1 Januari 2023 hingga 31 Desember 2025 dengan target besar
-sampel minimal 68 pasien. Kriteria eksklusi mencakup riwayat
-transplantasi hati, kehamilan selama perawatan, serta penghentian terapi
-\(< 12\) minggu di luar kejadian kematian. Evaluasi luaran mengikuti
-prinsip intention-to-treat (ITT), yakni pasien yang meninggal sebelum
-menjalani CT evaluasi minggu ke-12--16 diklasifikasikan sebagai penyakit
-progresif. Dosis standar penyebut Relative Dose Intensity (RDI) 12
-minggu ditetapkan berdasarkan berat badan
-(\(\ge 60\text{ kg}: 12\text{ mg/hari}\);
-\(< 60\text{ kg}: 8\text{ mg/hari}\)). Seluruh pengolahan data dilakukan
-menggunakan RStudio dan Quarto dengan uji normalitas Shapiro--Wilk,
-kurva ROC/AUC untuk penentuan cut-off variabel numerik, uji
-Chi-square/Fisher exact beserta Relative Risk (RR), serta regresi
-logistik biner multivariat beserta uji Variance Inflation Factor (VIF)
-untuk mendeteksi multikolinearitas antar skor fungsi hati/nutrisi (ALBI,
-CTP, dan PNI).
+\chapter{HASIL PENELITIAN DAN
+PEMBAHASAN}\label{hasil-penelitian-dan-pembahasan}
 
-\section{Hasil}\label{hasil}
+\section{Hasil Penelitian}\label{hasil-penelitian}
 
-\subsection{Alur Seleksi Sampel dan Karakteristik
-Subjek}\label{alur-seleksi-sampel-dan-karakteristik-subjek}
+\subsection{Alur seleksi sampel dan karakteristik subjek
+penelitian}\label{alur-seleksi-sampel-dan-karakteristik-subjek-penelitian}
 
-Dari total r n\_terjangkau data pasien pada tab MAIN\_60, didapatkan 75
-subjek yang memenuhi kriteria analisis akhir (Jumlah sampel tanpa
-riwayat terapi sebelumnya (n = 75) memenuhi target minimal (n
-\textgreater= 68), sehingga 4 pasien dengan riwayat TACE/reseksi/ablasi
-dieksklusi.), terdiri atas 18 pasien pada kelompok ALBI Derajat 1 dan 57
-pasien pada kelompok ALBI Derajat 2--3 (Gambar~\ref{fig-alur}). Sebanyak
-18 pasien tidak menjalani evaluasi CT 12--16 minggu
-(meninggal/perburukan klinis) dan dikategorikan sebagai penyakit
-progresif sesuai pendekatan ITT. Karakteristik dasar subjek disajikan
-pada Tabel~\ref{tbl-karakteristik}.
+Penelitian ini mengevaluasi data rekam medis elektronik pasien karsinoma
+sel hati (KSH) yang menerima terapi sistemik lenvatinib di RSUP
+Prof.~dr. I.G.N.G. Ngoerah Denpasar periode 1 Januari 2023 sampai dengan
+31 Desember 2025. Dari 80 pasien dalam populasi terjangkau, sebanyak 75
+subjek memenuhi kriteria eligibilitas dan diikutsertakan dalam analisis
+akhir (jumlah sampel tanpa riwayat terapi sebelumnya (n = 75) memenuhi
+target minimal (n ≥ 68), sehingga 4 pasien dengan riwayat
+TACE/reseksi/ablasi dieksklusi), terdiri atas 18 pasien pada kelompok
+ALBI Derajat 1 dan 57 pasien pada kelompok ALBI Derajat 2--3
+(Gambar~\ref{fig-alur}).
 
 \begin{figure}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/figure-pdf/fig-alur-1.pdf}}
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio]{Figures_Thesis_Editable/Gambar5_1_Alur_Penelitian.png}
 
 }
 
 \caption{\label{fig-alur}Diagram alur seleksi sampel penelitian
 berdasarkan skor ALBI pra-terapi dan luaran respon radiologis mRECIST
-12--16 minggu (ITT).}
+12--16 minggu (pendekatan ITT)}
 
 \end{figure}%
 
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4375}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.1000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4625}}@{}}
+Uji normalitas Shapiro--Wilk menunjukkan bahwa variabel usia
+(\(p = 0,057\)) dan PNI (\(p = 0,108\)) berdistribusi normal sehingga
+disajikan dalam bentuk rerata \(\pm\) simpang baku (SB), sedangkan
+albumin, bilirubin total, skor ALBI (\(p = 0,003\)), AFP, PIVKA-II,
+mCCI, dan RDI tidak berdistribusi normal sehingga disajikan dalam bentuk
+median (rentang interkuartil/IQR). Karakteristik dasar subjek penelitian
+secara keseluruhan maupun berdasarkan kelompok luaran disajikan pada
+Tabel~\ref{tbl-karakteristik}.
 
-\caption{\label{tbl-karakteristik}Karakteristik Demografi, Klinis,
-Laboratorium, dan Respon Terapi Subjek Penelitian.}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.3714}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1643}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2071}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0571}}@{}}
+
+\caption{\label{tbl-karakteristik}Karakteristik Subjek Penelitian
+Berdasarkan Respon Terapi Lenvatinib 12--16 Minggu}
 
 \tabularnewline
 
@@ -406,91 +506,127 @@ Laboratorium, dan Respon Terapi Subjek Penelitian.}
 \begin{minipage}[b]{\linewidth}\raggedright
 Karakteristik
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-n Valid
+Total (n = 75)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Nilai / n (\%)
+Penyakit Terkontrol (n = 27)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Penyakit Progresif (n = 48)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Nilai p
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Usia saat diagnosis (tahun) & 75 & 55.53 ± 11.35 (Rerata ± SD) \\
-\textbf{Jenis Kelamin} & 75 & \\
---- Perempuan & & 17 (22.7\%) \\
---- Laki-laki & & 58 (77.3\%) \\
-\textbf{Stadium BCLC} & 70 & \\
---- BCLC C & & 53 (75.7\%) \\
---- BCLC B & & 17 (24.3\%) \\
-\textbf{Etiologi KSH} & 75 & \\
---- Non-viral & & 25 (33.3\%) \\
---- Viral & & 50 (66.7\%) \\
-\textbf{Skor Child-Pugh (CTP)} & 75 & \\
---- CTP B-C & & 29 (38.7\%) \\
---- CTP A & & 46 (61.3\%) \\
-\textbf{Status Performa ECOG} & 75 & \\
---- ECOG \textgreater= 2 & & 11 (14.7\%) \\
---- ECOG 0-1 & & 64 (85.3\%) \\
-Albumin serum (g/dL) & 75 & 3.60 (2.90--4.00) (Median {[}IQR{]}) \\
-Bilirubin total (mg/dL) & 75 & 1.20 (0.70--1.66) (Median {[}IQR{]}) \\
-Skor ALBI pra-terapi & 75 & -2.22 (-2.51---1.66) (Median {[}IQR{]}) \\
-\textbf{Derajat ALBI (1 / 2 / 3)} & 75 & \\
---- Derajat 1 & & 18 (24.0\%) \\
---- Derajat 2 & & 41 (54.7\%) \\
---- Derajat 3 & & 16 (21.3\%) \\
-\textbf{Kategori Skor ALBI (Utama)} & 75 & \\
---- ALBI Derajat 2-3 & & 57 (76.0\%) \\
---- ALBI Derajat 1 & & 18 (24.0\%) \\
-Kadar AFP pra-terapi (ng/mL) & 75 & 107.93 (6.61--2000.00) (Median
-{[}IQR{]}) \\
-\textbf{Kategori AFP} & 75 & \\
---- AFP \textgreater=200 ng/mL & & 36 (48.0\%) \\
---- AFP \textless200 ng/mL & & 39 (52.0\%) \\
-Kadar PIVKA-II pra-terapi (mAU/mL) & 5 & 28.00 (10.00--42.25) (Median
-{[}IQR{]}) \\
-\textbf{Kategori PIVKA-II} & 5 & \\
---- PIVKA-II \textgreater=40 mAU/mL & & 2 (40.0\%) \\
---- PIVKA-II \textless40 mAU/mL & & 3 (60.0\%) \\
-Prognostic Nutritional Index (PNI) & 75 & 42.63 ± 9.99 (Rerata ± SD) \\
-\textbf{Kategori PNI} & 75 & \\
---- PNI Buruk (\textless49.75) & & 56 (74.7\%) \\
---- PNI Baik (\textgreater=49.75) & & 19 (25.3\%) \\
-\textbf{Kriteria Up-to-Seven} & 75 & \\
---- Tidak Sesuai (\textgreater7) & & 65 (86.7\%) \\
---- Sesuai (\textless=7) & & 10 (13.3\%) \\
-Skor mCCI & 75 & 6.00 (6.00--8.00) (Median {[}IQR{]}) \\
-\textbf{Kategori Komorbiditas (mCCI)} & 75 & \\
---- mCCI Tinggi (\textgreater=2) & & 75 (100.0\%) \\
---- mCCI Rendah (0-1) & & 0 ( 0.0\%) \\
-RDI 12 minggu (\%) & 74 & 100.00 (71.43--100.00) (Median {[}IQR{]}) \\
-\textbf{Kategori RDI 12 minggu} & 74 & \\
---- RDI \textless=66.7\% & & 15 (20.3\%) \\
---- RDI \textgreater66.7\% & & 59 (79.7\%) \\
-\textbf{Riwayat Terapi Sebelumnya} & 75 & \\
---- Ada Riwayat TACE/Reseksi/Ablasi & & 0 ( 0.0\%) \\
---- Naif Terapi & & 75 (100.0\%) \\
-\textbf{Status Evaluasi 12--16 Minggu} & 75 & \\
---- CT Evaluasi 12-16 Minggu & & 57 (76.0\%) \\
---- Tanpa CT / Meninggal (ITT -\textgreater{} PD) & & 18 (24.0\%) \\
-\textbf{Detail Respon mRECIST} & 75 & \\
---- CR & & 2 ( 2.7\%) \\
---- Meninggal / Tanpa CT (ITT -\textgreater{} PD) & & 18 (24.0\%) \\
---- PD (CT Evaluasi) & & 30 (40.0\%) \\
---- PR & & 7 ( 9.3\%) \\
---- SD & & 18 (24.0\%) \\
-\textbf{Luaran Respon Terapi (Utama)} & 75 & \\
---- Penyakit Progresif & & 48 (64.0\%) \\
---- Penyakit Terkontrol & & 27 (36.0\%) \\
+Usia saat diagnosis (tahun), rerata ± SB & 55,53 ± 11,35 & 53,63 ± 11,24
+& 56,60 ± 11,39 & 0,278a \\
+\textbf{Jenis kelamin, n (\%)} & & & & \\
+Perempuan & 17 (22,7) & 7 (25,9) & 10 (20,8) & 0,613d \\
+Laki-laki & 58 (77,3) & 20 (74,1) & 38 (79,2) & \\
+\textbf{Stadium BCLC, n (\%)} & & & & \\
+BCLC C & 53 (75,7) & 18 (81,8) & 35 (72,9) & 0,420d \\
+BCLC B & 17 (24,3) & 4 (18,2) & 13 (27,1) & \\
+\textbf{Etiologi KSH, n (\%)} & & & & \\
+Non-viral & 25 (33,3) & 10 (37,0) & 15 (31,2) & 0,610d \\
+Viral & 50 (66,7) & 17 (63,0) & 33 (68,8) & \\
+\textbf{Skor Child-Pugh (CTP), n (\%)} & & & & \\
+CTP B--C & 29 (38,7) & 8 (29,6) & 21 (43,8) & 0,228d \\
+CTP A & 46 (61,3) & 19 (70,4) & 27 (56,2) & \\
+\textbf{Status performa ECOG, n (\%)} & & & & \\
+ECOG ≥ 2 & 11 (14,7) & 5 (18,5) & 6 (12,5) & 0,511c \\
+ECOG 0--1 & 64 (85,3) & 22 (81,5) & 42 (87,5) & \\
+Albumin serum (g/dL), median (IQR) & 3,60 (2,90--4,00) & 3,60
+(3,00--4,15) & 3,60 (2,90--3,92) & 0,631b \\
+Bilirubin total (mg/dL), median (IQR) & 1,20 (0,70--1,66) & 1,30
+(0,70--1,55) & 1,15 (0,67--1,83) & 0,807b \\
+Skor ALBI pra-terapi, median (IQR) & -2,22 (-2,51---1,66) & -2,22
+(-2,86---1,65) & -2,21 (-2,46---1,67) & 0,728b \\
+\textbf{Derajat ALBI (1 / 2 / 3), n (\%)} & & & & \\
+Derajat 1 & 18 (24,0) & 8 (29,6) & 10 (20,8) & 0,679d \\
+Derajat 2 & 41 (54,7) & 14 (51,9) & 27 (56,2) & \\
+Derajat 3 & 16 (21,3) & 5 (18,5) & 11 (22,9) & \\
+\textbf{Kategori skor ALBI, n (\%)} & & & & \\
+ALBI Derajat 2--3 & 57 (76,0) & 19 (70,4) & 38 (79,2) & 0,392d \\
+ALBI Derajat 1 & 18 (24,0) & 8 (29,6) & 10 (20,8) & \\
+Kadar AFP pra-terapi (ng/mL), median (IQR) & 107,93 (6,61--2.000,00) &
+10,25 (4,28--591,16) & 560,78 (17,02--4.186,73) & 0,017b \\
+\textbf{Kategori AFP, n (\%)} & & & & \\
+AFP ≥ 200 ng/mL & 36 (48,0) & 9 (33,3) & 27 (56,2) & 0,057d \\
+AFP \textless{} 200 ng/mL & 39 (52,0) & 18 (66,7) & 21 (43,8) & \\
+Kadar PIVKA-II pra-terapi (mAU/mL), median (IQR) & 28,00 (10,00--42,25)
+& 42,25 (35,12--123,98) & 5,45 (3,17--7,72) & 0,200b \\
+Prognostic Nutritional Index (PNI), rerata ± SB & 42,63 ± 9,99 & 43,61 ±
+10,90 & 42,08 ± 9,51 & 0,547a \\
+\textbf{Kategori PNI, n (\%)} & & & & \\
+PNI Buruk (\textless{} 49,75) & 56 (74,7) & 18 (66,7) & 38 (79,2) &
+0,232d \\
+PNI Baik (≥ 49,75) & 19 (25,3) & 9 (33,3) & 10 (20,8) & \\
+\textbf{Kriteria Up-to-Seven, n (\%)} & & & & \\
+Tidak Sesuai (\textgreater{} 7) & 65 (86,7) & 20 (74,1) & 45 (93,8) &
+0,030c \\
+Sesuai (≤ 7) & 10 (13,3) & 7 (25,9) & 3 (6,2) & \\
+Skor komorbiditas (mCCI), median (IQR) & 6,00 (6,00--8,00) & 6,00
+(6,00--7,00) & 6,50 (6,00--8,00) & 0,317b \\
+Relative Dose Intensity 12 minggu (\%), median (IQR) & 100,00
+(71,43--100,00) & 100,00 (71,43--100,00) & 100,00 (71,43--100,00) &
+0,384b \\
+\textbf{Kategori RDI 12 minggu, n (\%)} & & & & \\
+RDI ≤ 66,7\% & 15 (20,3) & 5 (18,5) & 10 (21,3) & 0,776d \\
+RDI \textgreater{} 66,7\% & 59 (79,7) & 22 (81,5) & 37 (78,7) & \\
 
 \end{longtable}
 
-\subsection{Penentuan Titik Potong Variabel Numerik (Kurva
-ROC/AUC)}\label{penentuan-titik-potong-variabel-numerik-kurva-rocauc}
+Keterangan: SB = simpang baku; IQR = rentang interkuartil;
+\textsuperscript{\textsuperscript{a}~uji~t~tidak~berpasangan;~\textsuperscript{b}~uji~Mann--Whitney;~\textsuperscript{c}~uji~Fisher~exact;~\textsuperscript{d}}
+uji Chi-square.
 
-Kurva ROC variabel usia menghasilkan AUC sebesar 0.568 (95\% CI:
-0.432--0.704) dengan titik potong optimal 43 tahun (sensitivitas 22.2\%,
-spesifisitas 91.7\%). Skor ALBI kontinu menunjukkan AUC sebesar 0.525
-(95\% CI: 0.381--0.669) dengan titik potong empiris -2.80
-(Gambar~\ref{fig-roc}).
+\subsection{Distribusi respon radiologis terapi lenvatinib 12--16
+minggu}\label{distribusi-respon-radiologis-terapi-lenvatinib-1216-minggu}
+
+Distribusi respon terapi berdasarkan kriteria mRECIST dengan pendekatan
+\emph{intention-to-treat} (ITT) disajikan pada Tabel~\ref{tbl-respon}.
+Penyakit terkontrol dicapai oleh 27 subjek (36,0\%), sedangkan 48 subjek
+(64,0\%) mengalami penyakit progresif, termasuk 18 subjek yang meninggal
+atau mengalami perburukan klinis sebelum sempat menjalani evaluasi CT
+scan.
+
+\begin{longtable}[]{@{}lrl@{}}
+
+\caption{\label{tbl-respon}Distribusi Respon Radiologis Terapi
+Lenvatinib 12--16 Minggu Berdasarkan Kriteria mRECIST (Pendekatan ITT)}
+
+\tabularnewline
+
+\toprule\noalign{}
+Kategori Respon Terapi & n & \% \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Penyakit Terkontrol} & 27 & 36,0 \\
+Complete Response (CR) & 2 & 2,7 \\
+Partial Response (PR) & 7 & 9,3 \\
+Stable Disease (SD) & 18 & 24,0 \\
+\textbf{Penyakit Progresif} & 48 & 64,0 \\
+Progressive Disease (CT Evaluasi) & 30 & 40,0 \\
+Meninggal / Tanpa CT (ITT) & 18 & 24,0 \\
+\textbf{Total} & 75 & 100,0 \\
+
+\end{longtable}
+
+\subsection{Analisis kurva ROC variabel
+numerik}\label{analisis-kurva-roc-variabel-numerik}
+
+Kemampuan diskriminasi variabel numerik usia saat diagnosis serta skor
+ALBI kontinu dalam memprediksi pencapaian penyakit terkontrol dievaluasi
+melalui kurva ROC (Gambar~\ref{fig-roc}; Tabel~\ref{tbl-roc}). Variabel
+usia menunjukkan nilai AUC sebesar 0,568 (IK 95\% 0,432--0,704;
+\(p = 0,335\)) dengan titik potong berbasis indeks Youden sebesar 43
+tahun (sensitivitas 22,2\%, spesifisitas 91,7\%). Skor ALBI kontinu
+menghasilkan AUC sebesar 0,525 (IK 95\% 0,381--0,669; \(p = 0,728\))
+dengan titik potong empiris -2,80. Mengingat interval kepercayaan 95\%
+AUC usia mencakup nilai 0,5, analisis bivariat turut melaporkan titik
+potong klinis baku 60 tahun sebagai pembanding.
 
 \begin{figure}
 
@@ -500,33 +636,73 @@ spesifisitas 91.7\%). Skor ALBI kontinu menunjukkan AUC sebesar 0.525
 
 }
 
-\caption{\label{fig-roc}Kurva ROC penentuan titik potong usia (kiri) dan
-evaluasi diskriminasi skor ALBI kontinu (kanan) dalam memprediksi
-penyakit terkontrol.}
+\caption{\label{fig-roc}Kurva ROC penentuan titik potong variabel usia
+(kiri) dan evaluasi diskriminasi skor ALBI kontinu (kanan) dalam
+memprediksi penyakit terkontrol}
 
 \end{figure}%
 
-\subsection{Analisis Bivariat}\label{analisis-bivariat}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.2925}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1887}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.0755}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1226}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1604}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1604}}@{}}
 
-Secara keseluruhan, penyakit terkontrol tercapai pada 36.0\% (27/75
-pasien). Pada kelompok ALBI Derajat 1, penyakit terkontrol tercapai pada
-8/18 (44.4\%), dibandingkan 19/57 (33.3\%) pada ALBI Derajat 2--3,
-dengan Relative Risk (RR) sebesar 1.33 (95\% CI: 0.71--2.51; \(p =\)
-0.392) (Tabel~\ref{tbl-bivariat}; Gambar~\ref{fig-proporsi-albi}).
+\caption{\label{tbl-roc}Hasil Analisis Kurva ROC Variabel Usia dan Skor
+ALBI Kontinu terhadap Penyakit Terkontrol}
+
+\tabularnewline
+
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Variabel
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+AUC (IK 95\%)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Nilai p
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Titik Potong
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Sensitivitas (\%)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Spesifisitas (\%)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Usia saat diagnosis (tahun) & 0,568 (0,432--0,704) & 0,335 & \textless{}
+43 tahun & 22,2 & 91,7 \\
+Skor ALBI pra-terapi (kontinu) & 0,525 (0,381--0,669) & 0,728 & ≤ -2,80
+& 29,6 & 87,5 \\
+
+\end{longtable}
+
+\subsection{Analisis bivariat hubungan skor ALBI dan variabel perancu
+terhadap respon
+terapi}\label{analisis-bivariat-hubungan-skor-albi-dan-variabel-perancu-terhadap-respon-terapi}
+
+Pada kelompok ALBI Derajat 1, penyakit terkontrol tercapai pada 8/18
+(44,4\%), sedangkan pada kelompok ALBI Derajat 2--3 tercapai pada 19/57
+(33,3\%) (Gambar~\ref{fig-proporsi-albi}). Uji \emph{Chi-square}
+menghasilkan \emph{Relative Risk} (RR) sebesar 1,33 (IK 95\% 0,71--2,51;
+\(p = 0,392\)). Rangkuman analisis bivariat seluruh variabel independen
+dan perancu disajikan pada Tabel~\ref{tbl-bivariat}.
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.2299}}
-  >{\raggedleft\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0172}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.2529}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1494}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1322}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0977}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0460}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0747}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.2326}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0174}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.2442}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1512}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1337}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0988}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0465}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0756}}@{}}
 
 \caption{\label{tbl-bivariat}Hasil Analisis Bivariat Hubungan Skor ALBI
-dan Variabel Perancu terhadap Penyakit Terkontrol (mRECIST 12--16
-Minggu).}
+dan Variabel Perancu terhadap Pencapaian Penyakit Terkontrol}
 
 \tabularnewline
 
@@ -542,7 +718,7 @@ Terkontrol (Kelompok Uji)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Terkontrol (Referensi)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-RR (95\% CI)
+RR (IK 95\%)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Nilai p
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
@@ -552,38 +728,43 @@ Metode Uji
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Skor ALBI Pra-Terapi & 75 & ALBI Derajat 1 vs ALBI Derajat 2-3 & 8/18
-(44.4\%) & 19/57 (33.3\%) & 1.33 (0.71--2.51) & 0.392 & Chi-square \\
-Usia (cut-off ROC 43 th) & 75 & \textless{} 43 tahun vs \textgreater= 43
-tahun & 6/10 (60.0\%) & 21/65 (32.3\%) & 1.86 (1.00--3.44) & 0.154 &
-Fisher Exact \\
-Jenis Kelamin & 75 & Laki-laki vs Perempuan & 20/58 (34.5\%) & 7/17
-(41.2\%) & 0.84 (0.43--1.64) & 0.613 & Chi-square \\
-Stadium BCLC & 70 & BCLC B vs BCLC C & 4/17 (23.5\%) & 18/53 (34.0\%) &
-0.69 (0.27--1.77) & 0.420 & Chi-square \\
-Etiologi KSH & 75 & Viral vs Non-viral & 17/50 (34.0\%) & 10/25 (40.0\%)
-& 0.85 (0.46--1.57) & 0.610 & Chi-square \\
-Skor Child-Pugh (CTP) & 75 & CTP A vs CTP B-C & 19/46 (41.3\%) & 8/29
-(27.6\%) & 1.50 (0.76--2.96) & 0.228 & Chi-square \\
-Status Performa ECOG & 75 & ECOG 0-1 vs ECOG \textgreater= 2 & 22/64
-(34.4\%) & 5/11 (45.5\%) & 0.76 (0.36--1.57) & 0.511 & Fisher Exact \\
-Kadar AFP Pra-Terapi & 75 & AFP \textless200 ng/mL vs AFP
-\textgreater=200 ng/mL & 18/39 (46.2\%) & 9/36 (25.0\%) & 1.85
-(0.95--3.57) & 0.057 & Chi-square \\
-Kadar PIVKA-II Pra-Terapi & 5 & PIVKA-II \textless40 mAU/mL vs PIVKA-II
-\textgreater=40 mAU/mL & 1/3 (33.3\%) & 2/2 (100.0\%) & 0.45
-(0.12--1.76) & 0.400 & Fisher Exact \\
-Prognostic Nutritional Index (PNI) & 75 & PNI Baik (\textgreater=49.75)
-vs PNI Buruk (\textless49.75) & 9/19 (47.4\%) & 18/56 (32.1\%) & 1.47
-(0.80--2.71) & 0.232 & Chi-square \\
-Beban Tumor (Up-to-Seven) & 75 & Sesuai (\textless=7) vs Tidak Sesuai
-(\textgreater7) & 7/10 (70.0\%) & 20/65 (30.8\%) & 2.28 (1.32--3.93) &
-0.030 & Fisher Exact \\
-Relative Dose Intensity (RDI 12 Minggu) & 74 & RDI \textgreater66.7\% vs
-RDI \textless=66.7\% & 22/59 (37.3\%) & 5/15 (33.3\%) & 1.12
-(0.51--2.46) & 0.776 & Chi-square \\
+Skor ALBI Pra-Terapi & 75 & ALBI Derajat 1 vs ALBI Derajat 2--3 & 8/18
+(44,4\%) & 19/57 (33,3\%) & 1,33 (0,71--2,51) & 0,392 & Chi-square \\
+Usia (titik potong ROC 43 th) & 75 & \textless{} 43 tahun vs ≥ 43 tahun
+& 6/10 (60,0\%) & 21/65 (32,3\%) & 1,86 (1,00--3,44) & 0,154 & Fisher
+Exact \\
+Usia (titik potong klinis 60 th) & 75 & \textless{} 60 tahun vs ≥ 60
+tahun & 19/47 (40,4\%) & 8/28 (28,6\%) & 1,41 (0,72--2,79) & 0,301 &
+Chi-square \\
+Jenis Kelamin & 75 & Laki-laki vs Perempuan & 20/58 (34,5\%) & 7/17
+(41,2\%) & 0,84 (0,43--1,64) & 0,613 & Chi-square \\
+Stadium BCLC & 70 & BCLC B vs BCLC C & 4/17 (23,5\%) & 18/53 (34,0\%) &
+0,69 (0,27--1,77) & 0,420 & Chi-square \\
+Etiologi KSH & 75 & Viral vs Non-viral & 17/50 (34,0\%) & 10/25 (40,0\%)
+& 0,85 (0,46--1,57) & 0,610 & Chi-square \\
+Skor Child-Pugh (CTP) & 75 & CTP A vs CTP B--C & 19/46 (41,3\%) & 8/29
+(27,6\%) & 1,50 (0,76--2,96) & 0,228 & Chi-square \\
+Status Performa ECOG & 75 & ECOG 0--1 vs ECOG ≥ 2 & 22/64 (34,4\%) &
+5/11 (45,5\%) & 0,76 (0,36--1,57) & 0,511 & Fisher Exact \\
+Kadar AFP Pra-Terapi & 75 & AFP \textless{} 200 ng/mL vs AFP ≥ 200 ng/mL
+& 18/39 (46,2\%) & 9/36 (25,0\%) & 1,85 (0,95--3,57) & 0,057 &
+Chi-square \\
+Prognostic Nutritional Index (PNI) & 75 & PNI Baik (≥ 49,75) vs PNI
+Buruk (\textless{} 49,75) & 9/19 (47,4\%) & 18/56 (32,1\%) & 1,47
+(0,80--2,71) & 0,232 & Chi-square \\
+Beban Tumor (Up-to-Seven) & 75 & Sesuai (≤ 7) vs Tidak Sesuai
+(\textgreater{} 7) & 7/10 (70,0\%) & 20/65 (30,8\%) & 2,28 (1,32--3,93)
+& 0,030 & Fisher Exact \\
+Relative Dose Intensity (RDI 12 Minggu) & 74 & RDI \textgreater{} 66,7\%
+vs RDI ≤ 66,7\% & 22/59 (37,3\%) & 5/15 (33,3\%) & 1,12 (0,51--2,46) &
+0,776 & Chi-square \\
 
 \end{longtable}
+
+Keterangan: RR = relative risk untuk mencapai penyakit terkontrol
+(CR/PR/SD); PIVKA-II tidak dimasukkan ke uji inferensial karena
+kelengkapan data \textless{} 10\%; mCCI tidak menghasilkan tabel 2×2
+apabila seluruh subjek berada pada satu kategori.
 
 \begin{figure}
 
@@ -593,33 +774,36 @@ RDI \textless=66.7\% & 22/59 (37.3\%) & 5/15 (33.3\%) & 1.12
 
 }
 
-\caption{\label{fig-proporsi-albi}Proporsi penyakit terkontrol
-(CR/PR/SD) dan penyakit progresif (PD/ITT) berdasarkan kategori skor
-ALBI pra-terapi.}
+\caption{\label{fig-proporsi-albi}Perbandingan proporsi penyakit
+terkontrol dan penyakit progresif berdasarkan kategori skor ALBI
+pra-terapi}
 
 \end{figure}%
 
-\subsection{Analisis Multivariat (Regresi Logistik Biner) dan Uji
-Multikolinearitas}\label{analisis-multivariat-regresi-logistik-biner-dan-uji-multikolinearitas}
+\subsection{Analisis multivariat regresi logistik biner dan evaluasi
+multikolinearitas}\label{analisis-multivariat-regresi-logistik-biner-dan-evaluasi-multikolinearitas}
 
-Sebanyak 75 subjek dengan data lengkap pada seluruh variabel kandidat
-(\(p < 0.25\) pada bivariat dengan missingness \(\le 20\%\)) dimasukkan
-ke dalam model regresi logistik biner. Setelah penyesuaian terhadap
-variabel perancu, ALBI Derajat 1 menunjukkan adjusted Odds Ratio (aOR)
-sebesar 0.86 (95\% CI: 0.13--5.54; \(p =\) 0.873) dengan diskriminasi
-model AUC = 0.741 dan nilai VIF maksimum = 2.68
+Untuk menjaga rasio \emph{events per variable} serta mencegah
+kolinearitas komponen biokimia antara skor ALBI, CTP, dan PNI, model
+multivariat utama disusun secara \emph{parsimonious} dengan memasukkan
+skor ALBI pra-terapi bersama beban tumor (\emph{Up-to-Seven}) dan kadar
+AFP (\(n = 75\)). Setelah penyesuaian, ALBI Derajat 1 menunjukkan
+\emph{adjusted Odds Ratio} (aOR) sebesar 1,70 (IK 95\% 0,55--5,27;
+\(p = 0,360\)) dengan nilai VIF maksimum 1,03
 (Tabel~\ref{tbl-multivariat}; Tabel~\ref{tbl-vif};
-Gambar~\ref{fig-forest-aor}).
+Gambar~\ref{fig-forest-aor}). Perbandingan kinerja model utama terhadap
+model berbasis CTP serta model penuh (seluruh kandidat \(p < 0{,}25\))
+disajikan pada Tabel~\ref{tbl-perbandingan-model}.
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.3467}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1867}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0800}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2800}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1067}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.3971}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0882}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0882}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.3088}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1176}}@{}}
 
-\caption{\label{tbl-multivariat}Hasil Analisis Multivariat Regresi
-Logistik Biner Prediktor Penyakit Terkontrol.}
+\caption{\label{tbl-multivariat}Hasil Analisis Regresi Logistik Biner
+Multivariat Prediktor Penyakit Terkontrol (Model Parsimonious)}
 
 \tabularnewline
 
@@ -627,11 +811,11 @@ Logistik Biner Prediktor Penyakit Terkontrol.}
 \begin{minipage}[b]{\linewidth}\raggedright
 Variabel Prediktor
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Koefisien (B)
+B
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 SE
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Adjusted OR (95\% CI)
+Adjusted OR (IK 95\%)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Nilai p
 \end{minipage} \\
@@ -639,23 +823,25 @@ Nilai p
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-ALBI\_KatALBI Derajat 1 & -0.152 & 0.951 & 0.86 (0.13-- 5.54) & 0.873 \\
-Usia\_Kat\textless{} 43 tahun & 1.318 & 0.801 & 3.73 (0.78--17.96) &
-0.100 \\
-CTP\_KatCTP A & 0.702 & 0.636 & 2.02 (0.58-- 7.01) & 0.270 \\
-AFP\_KatAFP \textless200 ng/mL & 0.917 & 0.553 & 2.50 (0.85-- 7.40) &
-0.097 \\
-PNI\_KatPNI Baik (\textgreater=49.75) & 0.249 & 0.917 & 1.28 (0.21--
-7.74) & 0.786 \\
-UpToSeven\_KatSesuai (\textless=7) & 1.471 & 0.794 & 4.35 (0.92--20.65)
-& 0.064 \\
+ALBI Derajat 1 (vs 2--3) & 0,529 & 0,578 & 1,70 (0,55--5,27) & 0,360 \\
+Up-to-Seven ≤ 7 (vs \textgreater{} 7) & 1,496 & 0,760 & 4,47
+(1,01--19,81) & 0,049 \\
+AFP \textless{} 200 ng/mL (vs ≥ 200) & 0,744 & 0,524 & 2,10 (0,75--5,88)
+& 0,156 \\
 
 \end{longtable}
 
-\begin{longtable}[]{@{}lrl@{}}
+Keterangan: B = koefisien regresi; SE = standard error; OR = odds ratio;
+IK = interval kepercayaan. Uji Omnibus p = 0,036; Nagelkerke \(R^2\) =
+0,148; uji Hosmer--Lemeshow p = 0,104; ketepatan klasifikasi 69,3\%; AUC
+model = 0,685. Variabel dependen dikodekan 0 = penyakit progresif dan 1
+= penyakit terkontrol; kategori referensi adalah ALBI Derajat 2--3,
+Up-to-Seven \textgreater{} 7, dan AFP ≥ 200 ng/mL.
+
+\begin{longtable}[]{@{}lll@{}}
 
 \caption{\label{tbl-vif}Evaluasi Multikolinearitas Model Multivariat
-Berdasarkan Variance Inflation Factor (VIF).}
+Utama Berdasarkan Variance Inflation Factor (VIF)}
 
 \tabularnewline
 
@@ -665,12 +851,55 @@ Variabel & VIF & Status \\
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-ALBI\_Kat & 2.68 & Aman (\textless5) \\
-Usia\_Kat & 1.18 & Aman (\textless5) \\
-CTP\_Kat & 1.28 & Aman (\textless5) \\
-AFP\_Kat & 1.08 & Aman (\textless5) \\
-PNI\_Kat & 2.50 & Aman (\textless5) \\
-UpToSeven\_Kat & 1.03 & Aman (\textless5) \\
+Skor ALBI Pra-Terapi & 1,01 & Aman (\textless{} 5) \\
+Beban Tumor (Up-to-Seven) & 1,03 & Aman (\textless{} 5) \\
+Kadar AFP Pra-Terapi & 1,02 & Aman (\textless{} 5) \\
+
+\end{longtable}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.4454}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0252}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0840}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.2101}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0672}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0420}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0504}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0756}}@{}}
+
+\caption{\label{tbl-perbandingan-model}Perbandingan Kinerja Model
+Multivariat Utama (ALBI), Model Pembanding (CTP), dan Model Penuh}
+
+\tabularnewline
+
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Model
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Prediktor
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+aOR Fungsi Hati (IK 95\%)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Nilai p
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+AIC
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+AUC
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+VIF Maks
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Model Utama (Parsimonious): ALBI + Up-to-Seven + AFP & 75 & 3 & 1,70
+(0,55--5,27) & 0,360 & 97,5 & 0,685 & 1,03 \\
+Model Pembanding (CTP): CTP + Up-to-Seven + AFP & 75 & 3 & 1,92
+(0,66--5,60) & 0,230 & 96,8 & 0,692 & 1,03 \\
+Model Penuh (Semua kandidat p \textless{} 0,25) & 75 & 6 & 0,86
+(0,13--5,54) & 0,873 & 99,4 & 0,741 & 2,68 \\
 
 \end{longtable}
 
@@ -683,26 +912,536 @@ UpToSeven\_Kat & 1.03 & Aman (\textless5) \\
 }
 
 \caption{\label{fig-forest-aor}Forest plot Adjusted Odds Ratio (aOR) dan
-95\% CI dari model regresi logistik biner multivariat.}
+IK 95\% dari model regresi logistik biner multivariat utama}
 
 \end{figure}%
 
+\subsection{Analisis sensitivitas (mALBI, per-protocol, dan mortalitas
+dini)}\label{analisis-sensitivitas-malbi-per-protocol-dan-mortalitas-dini}
+
+Analisis sensitivitas mengevaluasi stratifikasi \emph{modified} ALBI
+(mALBI Derajat 1--2a \(\le -2{,}27\) vs 2b--3 \(> -2{,}27\)), subgrup
+\emph{per-protocol} pasien yang menjalani evaluasi CT scan 12--16 minggu
+(\(n = 57\)), serta luaran mortalitas dini sebelum sempat menjalani
+evaluasi CT (Tabel~\ref{tbl-sensitivitas}). Setelah dikontrol dengan
+kriteria \emph{Up-to-Seven} dan AFP, mALBI 1--2a menunjukkan aOR sebesar
+1,02 (0,37--2,81) (\(p = 0,971\)).
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.2722}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0167}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1167}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0944}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0444}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0722}}@{}}
+
+\caption{\label{tbl-sensitivitas}Ringkasan Analisis Sensitivitas
+Stratifikasi mALBI, Subgrup Per-Protocol CT, dan Mortalitas Dini}
+
+\tabularnewline
+
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Analisis Sensitivitas
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Perbandingan
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Kejadian (Kelompok Uji)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Kejadian (Referensi)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+RR (IK 95\%)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Nilai p
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Uji
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+mALBI (titik potong -2,27) --- ITT & 75 & mALBI 1--2a (≤ -2,27) vs mALBI
+2b--3 (\textgreater{} -2,27) & 13/34 (38,2\%) & 14/41 (34,1\%) & 1,12
+(0,61--2,05) & 0,713 & Chi-square \\
+ALBI Derajat 1 vs 2--3 --- Per-Protocol CT & 57 & ALBI Derajat 1 vs ALBI
+Derajat 2--3 & 8/15 (53,3\%) & 19/42 (45,2\%) & 1,18 (0,66--2,10) &
+0,590 & Chi-square \\
+mALBI 1--2a vs 2b--3 --- Per-Protocol CT & 57 & mALBI 1--2a (≤ -2,27) vs
+mALBI 2b--3 (\textgreater{} -2,27) & 13/28 (46,4\%) & 14/29 (48,3\%) &
+0,96 (0,56--1,66) & 0,889 & Chi-square \\
+ALBI Derajat 1 vs 2--3 --- Mortalitas Dini/Tanpa CT & 75 & ALBI Derajat
+1 vs ALBI Derajat 2--3 & 3/18 (16,7\%) & 15/57 (26,3\%) & 0,63
+(0,21--1,94) & 0,534 & Fisher Exact \\
+mALBI 1--2a vs 2b--3 --- Mortalitas Dini/Tanpa CT & 75 & mALBI 1--2a (≤
+-2,27) vs mALBI 2b--3 (\textgreater{} -2,27) & 6/34 (17,6\%) & 12/41
+(29,3\%) & 0,60 (0,25--1,44) & 0,241 & Chi-square \\
+
+\end{longtable}
+
 \section{Pembahasan}\label{pembahasan}
 
-{[}Diisi setelah hasil bivariat dan multivariat terbentuk: bahas
-perbandingan dengan studi REFLECT dan kohort Asia Timur, mekanisme
-fisiologis ALBI terhadap RDI/tolerabilitas lenvatinib, hasil evaluasi
-VIF terhadap CTP/PNI, serta keterbatasan desain retrospektif.{]}
+\subsection{Karakteristik subjek dan profil respon
+terapi}\label{karakteristik-subjek-dan-profil-respon-terapi}
+
+Penelitian ini menganalisis 75 subjek karsinoma sel hati (KSH) yang
+tidak dapat direseksi dan menerima terapi sistemik lenvatinib di RSUP
+Prof.~dr. I.G.N.G. Ngoerah Denpasar. Rerata usia subjek saat diagnosis
+adalah 55,53 ± 11,35 tahun dengan dominasi jenis kelamin laki-laki
+sebesar 77,3\% (58/75) dan etiologi infeksi virus hepatitis sebesar
+66,7\% (50/75). Profil demografis ini sejalan dengan epidemiologi KSH di
+kawasan Asia dan Indonesia yang umumnya muncul pada dekade kelima hingga
+keenam kehidupan, didominasi laki-laki akibat pengaruh hormon seks
+terhadap hepatokarsinogenesis, serta berlatar belakang infeksi virus
+hepatitis B dan C kronis (Bachtiar dkk., 2022; Forner dkk., 2018; Wang
+dkk., 2021). Apabila dibandingkan dengan kohort uji klinis fase III
+REFLECT maupun studi praktik nyata di Jepang, usia rerata subjek pada
+penelitian ini jauh lebih muda (55,5 tahun dibandingkan median 62--73
+tahun di Jepang), yang mencerminkan perbedaan pola penularan hepatitis B
+vertikal dan struktur demografi populasi Indonesia (Fuchigami dkk.,
+2020; Kudo dkk., 2018; Yamashita dkk., 2020).
+
+Karakteristik klinis awal kohort ini menunjukkan derajat keparahan
+penyakit yang sangat berat saat inisiasi terapi sistemik. Sebagian besar
+subjek datang pada stadium BCLC C (75,7\%), memiliki beban tumor
+melampaui kriteria \emph{Up-to-Seven} (86,7\%), serta mengalami gangguan
+cadangan fungsi hati yang signifikan dengan proporsi ALBI Derajat 2--3
+mencapai 76,0\% (54,7\% Derajat 2 dan 21,3\% Derajat 3) dan
+Child-Turcotte-Pugh (CTP) kelas B--C sebesar 38,7\%. Kondisi ini berbeda
+kontras dengan uji klinis REFLECT yang secara ketat mengeksklusi pasien
+CTP B--C sehingga 99\% pesertanya berada pada CTP kelas A dan mayoritas
+berstatus performa ECOG 0 (Kudo dkk., 2018). Tingginya proporsi stadium
+lanjut, disfungsi hati moderat hingga berat, serta status gizi buruk
+berdasarkan \emph{Prognostic Nutritional Index} (PNI \textless{} 49,75
+sebesar 74,7\%) mencerminkan realitas klinis RSUP Prof.~dr. I.G.N.G.
+Ngoerah sebagai rumah sakit pusat rujukan tersier di Bali dan Nusa
+Tenggara, di mana pasien KSH umumnya baru terdiagnosis atau dirujuk
+setelah muncul manifestasi klinis lanjut dan komplikasi sirosis
+(Perhimpunan Peneliti Hati Indonesia, 2017).
+
+Berdasarkan pendekatan \emph{intention-to-treat} (ITT) pada rentang
+evaluasi 12--16 minggu pertama menggunakan kriteria mRECIST, pencapaian
+penyakit terkontrol (\emph{disease control rate}/DCR) sebesar 36,0\%
+(27/75 subjek), terdiri atas 2,7\% \emph{complete response} (CR), 9,3\%
+\emph{partial response} (PR), dan 24,0\% \emph{stable disease} (SD),
+sehingga menghasilkan \emph{objective response rate} (ORR) sebesar
+12,0\%. Sebanyak 40,0\% subjek mengalami progresivitas radiologis pada
+CT scan evaluasi dan 24,0\% lainnya meninggal atau mengalami perburukan
+klinis berat sebelum sempat menjalani evaluasi pencitraan. Apabila
+analisis dibatasi pada 57 subjek yang menyelesaikan evaluasi CT
+(\emph{per-protocol}), angka DCR meningkat menjadi 47,4\% (27/57) dan
+ORR menjadi 15,8\% (9/57). Capaian ini lebih rendah dibandingkan uji
+REFLECT (ORR mRECIST 24,1\% dan DCR 75,5\%) maupun studi retrospektif
+Jepang oleh Fuchigami dkk. (2020) yang melaporkan DCR sebesar 85,1\% dan
+ORR 48,1\% (Fuchigami dkk., 2020; Kudo dkk., 2018). Namun, angka ORR
+\emph{per-protocol} sebesar 15,8\% tersebut sebanding dengan temuan
+meta-analisis Yu dkk. (2022) mengenai evaluasi mRECIST pada terapi
+target molekuler KSH (ORR 15,9\%) serta kohort multinasional praktik
+nyata di Taiwan oleh Lu dkk. (2025) yang melaporkan ORR 13,2\% (Lu dkk.,
+2025; Yu dkk., 2022). Perbedaan tajam pada angka DCR terutama
+dipengaruhi oleh penerapan prinsip ITT yang memasukkan 24,0\% kematian
+dini sebagai penyakit progresif, inklusi pasien CTP B--C dan ALBI
+Derajat 3, serta tingginya beban tumor \emph{beyond Up-to-Seven} pada
+kohort penelitian ini.
+
+\subsection{Hubungan skor ALBI pra-terapi dengan respon radiologis dini
+terapi
+lenvatinib}\label{hubungan-skor-albi-pra-terapi-dengan-respon-radiologis-dini-terapi-lenvatinib}
+
+Pada penelitian ini, hipotesis mengenai hubungan skor ALBI pra-terapi
+dengan respon radiologis dini terapi lenvatinib 12--16 minggu belum
+dapat dibuktikan secara statistik. Meskipun proporsi penyakit terkontrol
+secara numerik lebih tinggi pada kelompok ALBI Derajat 1 dibandingkan
+ALBI Derajat 2--3 (44,4\% vs 33,3\%; selisih absolut 11,1\%), uji
+\emph{Chi-square} menunjukkan \emph{Relative Risk} (RR) sebesar 1,33 (IK
+95\% 0,71--2,51; \(p = 0,392\)). Serupa dengan analisis kategorik,
+distribusi skor ALBI sebagai variabel kontinu tidak berbeda bermakna
+antara kelompok penyakit terkontrol dan penyakit progresif (median -2,22
+vs -2,21; \(p = 0,728\)) dengan kemampuan diskriminasi kurva ROC yang
+rendah (AUC 0,525; IK 95\% 0,381--0,669). Setelah dikontrol terhadap
+beban tumor (\emph{Up-to-Seven}) dan kadar AFP dalam model regresi
+logistik \emph{parsimonious}, arah asosiasi ALBI Derajat 1 tetap
+konsisten bersifat protektif dengan \emph{adjusted Odds Ratio} (aOR)
+sebesar 1,70 (IK 95\% 0,55--5,27), namun belum mencapai kemaknaan
+statistik (\(p = 0,360\)).
+
+Temuan ini berbeda dari beberapa studi validasi terdahulu yang
+melaporkan keunggulan skor ALBI sebagai prediktor luaran terapi KSH
+(Demirtas dkk., 2021; Hiraoka dkk., 2016; Johnson dkk., 2015; Pinato
+dkk., 2017). Namun, keselarasan yang menarik tampak apabila hasil ini
+dibandingkan dengan studi Fuchigami dkk. (2020) dan Saeki dkk. (2020)
+yang secara spesifik mengevaluasi respon radiologis awal terhadap
+lenvatinib (Fuchigami dkk., 2020; Saeki dkk., 2020). Fuchigami dkk.
+(2020) menemukan bahwa pada analisis multivariat, faktor yang
+berhubungan bermakna dengan efikasi respon radiologis awal justru
+stadium BCLC dan kadar AFP serum, sedangkan derajat \emph{modified} ALBI
+(mALBI) lebih berperan dalam memprediksi kesintasan jangka menengah
+(\emph{middle-term survival}) dibandingkan respon radiologis pertama
+(Fuchigami dkk., 2020). Demikian pula, Saeki dkk. (2020) melaporkan
+bahwa skor ALBI pra-terapi hanya menjadi prediktor independen respon
+objektif pada subkelompok pasien dengan kadar AFP baseline rendah
+(\textless{} 10 ng/mL), sedangkan pada kelompok AFP tinggi respon tumor
+jauh lebih ditentukan oleh respons biologis AFP terhadap lenvatinib
+(Saeki dkk., 2020).
+
+Terdapat empat penjelasan metodologis dan biologis utama yang mendasari
+belum terbuktinya signifikansi statistik skor ALBI pada penelitian ini:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Perbedaan titik akhir (\emph{endpoint}) yang dievaluasi. Sebagian
+  besar studi besar yang membuktikan superioritas ALBI dan mALBI
+  menggunakan \emph{overall survival} (OS) atau \emph{progression-free
+  survival} (PFS) jangka panjang sebagai luaran utama (Hiraoka dkk.,
+  2017; Johnson dkk., 2015; Lu dkk., 2025). Cadangan fungsi hati yang
+  baik memungkinkan pasien bertahan lebih lama, menoleransi terapi lini
+  kedua setelah progresi, dan terhindar dari dekompensasi hati;
+  sebaliknya, kontrol lesi radiologis pada jendela waktu dini 12--16
+  minggu lebih langsung ditentukan oleh biologi intrinsik,
+  vaskularisasi, serta beban massa tumor.
+\item
+  Keterbatasan kuasa statistik (\emph{statistical power}) akibat
+  ketimpangan proporsi lengan paparan. Perhitungan besar sampel awal
+  mengasumsikan pembagian lengan seimbang 1:1 (masing-masing 34 subjek)
+  dengan selisih proporsi respon 25\%. Pada data aktual, rasio kelompok
+  ALBI Derajat 1 terhadap Derajat 2--3 sangat timpang (18 berbanding 57
+  subjek, atau 1:3,2) dengan selisih proporsi respon aktual sebesar
+  11,1\%. Kondisi ini memperlebar interval kepercayaan (IK 95\% aOR
+  0,55--5,27) sehingga daya uji tidak memadai untuk mengonfirmasi besar
+  efek moderat tersebut.
+\item
+  Sifat statis dan potensi perancu non-hepatik dari komponen ALBI.
+  Pengukuran skor ALBI pada satu titik waktu pra-terapi tidak menangkap
+  fluktuasi dinamis fungsi hati selama 12 minggu pemberian lenvatinib,
+  padahal penurunan skor ALBI selama terapi (\emph{delta} ALBI)
+  dilaporkan kerap terjadi pada minggu ke-4 hingga ke-12 dan berkorelasi
+  erat dengan kegagalan terapi (Fuchigami dkk., 2020; Serenari \&
+  Ercolani, 2020). Selain itu, kadar albumin serum dapat menurun akibat
+  malnutrisi berat, kaheksia kanker, dan inflamasi sistemik, sedangkan
+  bilirubin total dapat meningkat akibat kompresi bilier oleh massa
+  tumor besar, sehingga skor ALBI tidak sepenuhnya murni mencerminkan
+  cadangan parenkim hepatosit (Hayata dkk., 2025; Lei dkk., 2023).
+\item
+  Pola pemisahan efek antara kontrol lesi radiologis dan mortalitas dini
+  pada analisis sensitivitas. Pada analisis sensitivitas
+  (Tabel~\ref{tbl-sensitivitas}), baik ALBI Derajat 1 maupun
+  stratifikasi mALBI 1--2a (\(\le -2,27\)) (Hiraoka dkk., 2017) tidak
+  membedakan pencapaian penyakit terkontrol pada subgrup
+  \emph{per-protocol} yang menjalani CT evaluasi (53,3\% vs 45,2\%;
+  \(p = 0,590\) untuk ALBI dan 46,4\% vs 48,3\%; \(p = 0,889\) untuk
+  mALBI). Sebaliknya, pada luaran mortalitas dini atau perburukan klinis
+  sebelum sempat menjalani CT evaluasi, keduanya menunjukkan arah
+  protektif yang konsisten sebesar penurunan risiko relatif 37\%--40\%
+  (16,7\% vs 26,3\%; RR 0,63 untuk ALBI Derajat 1 dan 17,6\% vs 29,3\%;
+  RR 0,60; \(p = 0,241\) untuk mALBI 1--2a). Pola ini mengisyaratkan
+  bahwa pada populasi KSH lanjut di RSUP Prof.~dr. I.G.N.G. Ngoerah,
+  fungsi hati pra-terapi yang lebih baik cenderung berperan melindungi
+  pasien dari kegagalan klinis dan kematian dini, bukan semata
+  menentukan penyusutan lesi radiologis.
+\end{enumerate}
+
+\subsection{Peran beban tumor, biomarker, dan variabel perancu
+lainnya}\label{peran-beban-tumor-biomarker-dan-variabel-perancu-lainnya}
+
+Temuan paling menonjol pada penelitian ini adalah dominasi faktor beban
+tumor dan agresivitas biologis tumor terhadap pencapaian kontrol
+penyakit dini. Kriteria \emph{Up-to-Seven} (\(\le 7\) dibandingkan
+\(> 7\)) menjadi satu-satunya prediktor yang berhubungan bermakna secara
+statistik baik pada analisis bivariat (penyakit terkontrol 70,0\% vs
+30,8\%; RR 2,28; IK 95\% 1,32--3,93; \(p = 0,030\)) maupun setelah
+penyesuaian multivariat bersama skor ALBI dan AFP (aOR 4,47; IK 95\%
+1,01--19,81; \(p = 0,049\)). Hasil ini mendukung literatur mutakhir yang
+menekankan pentingnya kriteria \emph{Up-to-Seven} dalam menyeleksi
+kandidat terapi sistemik KSH (Mazzaferro dkk., 2009; Silk dkk., 2022).
+Studi multisenter Lu dkk. (2025) terhadap 205 pasien KSH yang diterapi
+lenvatinib juga membuktikan bahwa beban tumor sesuai \emph{Up-to-Seven}
+berkaitan dengan respon terapi yang lebih baik (ORR 22,7\% vs 13,2\%
+keseluruhan) serta mengintegrasikannya dengan ALBI menjadi skor
+\emph{Up7-ALBI} yang memiliki nilai prediksi lebih tajam dibandingkan
+klasifikasi BCLC ataupun ALBI tunggal (Lu dkk., 2025). Meskipun
+demikian, interval kepercayaan aOR kriteria \emph{Up-to-Seven} pada
+penelitian ini cukup lebar (1,01--19,81) karena jumlah subjek yang
+berada dalam kriteria \(\le 7\) relatif sedikit (10/75 subjek), sehingga
+presisi estimasi efeknya perlu diinterpretasikan secara hati-hati.
+
+Kadar \emph{alpha-fetoprotein} (AFP) pra-terapi turut memperlihatkan
+sinyal klinis yang kuat. Pada analisis variabel kontinu
+(Tabel~\ref{tbl-karakteristik}), median kadar AFP kelompok penyakit
+terkontrol jauh lebih rendah secara bermakna dibandingkan kelompok
+penyakit progresif (10,25 vs 560,78 ng/mL; \(p = 0,017\)). Ketika
+dikategorikan berdasarkan ambang diagnostik konsensus nasional sebesar
+200 ng/mL (Perhimpunan Peneliti Hati Indonesia, 2017), kelompok AFP
+\textless{} 200 ng/mL menunjukkan kecenderungan penyakit terkontrol
+hampir dua kali lipat lebih tinggi pada bivariat (46,2\% vs 25,0\%; RR
+1,85; IK 95\% 0,95--3,57; \(p = 0,057\)) dan mempertahankan arah positif
+pada multivariat (aOR 2,10; IK 95\% 0,75--5,88; \(p = 0,156\)).
+Perbedaan signifikansi antara analisis kontinu dan kategorik ini
+mencerminkan hilangnya sebagian informasi statistik saat variabel
+numerik berskala luas dikotomisasi, namun konsisten dengan peran AFP
+tinggi sebagai penanda proliferasi sel ganas yang agresif, invasi
+vaskular, dan resistensi terhadap penghambatan multikinase (Fuchigami
+dkk., 2020; Llovet dkk., 2021). Sementara itu, biomarker PIVKA-II hanya
+tercatat pada 5 dari 75 subjek (6,7\%) karena belum menjadi pemeriksaan
+rutin yang dijamin secara luas pada praktik klinis harian di RSUP
+Prof.~dr. I.G.N.G. Ngoerah, sehingga peran prediktifnya sebagaimana
+dilaporkan pada studi terapi sistemik mutakhir belum dapat dievaluasi
+(Chen dkk., 2025; Jiang dkk., 2025).
+
+Evaluasi perbandingan model multivariat
+(Tabel~\ref{tbl-perbandingan-model}) memberikan wawasan metodologis yang
+penting mengenai multikolinearitas dan \emph{overadjustment}. Ketika
+seluruh enam kandidat dengan \(p < 0,25\) pada bivariat (ALBI, usia,
+CTP, AFP, PNI, dan \emph{Up-to-Seven}) dimasukkan secara simultan dalam
+model penuh (\emph{events per variable} hanya 4,5), estimasi aOR skor
+ALBI justru berbalik arah menjadi 0,86 (IK 95\% 0,13--5,54;
+\(p = 0,873\)) disertai peningkatan nilai \emph{Akaike Information
+Criterion} (AIC 99,4 vs 97,5) dan kenaikan \emph{Variance Inflation
+Factor} (VIF) tertinggi pada ALBI (2,68) dan PNI (2,50). Fenomena
+pembalikan arah ini terjadi karena ALBI, CTP, dan PNI berbagi komponen
+biokimia yang sama---albumin serum terdapat pada ketiga indeks tersebut
+dan bilirubin total terdapat pada ALBI maupun CTP (Ellez dkk., 2023;
+Johnson dkk., 2015; Onodera dkk., 1984). Memasukkan CTP dan PNI bersama
+ALBI memecah variasi cadangan fungsi hati ke tiga variabel kolinear
+sekaligus. Ketika dibandingkan secara terpisah dalam model
+\emph{parsimonious} yang bersih dari kolinearitas (VIF 1,01--1,03),
+kinerja model berbasis ALBI (aOR 1,70; \(p = 0,360\); AIC 97,5; AUC
+0,685) sebanding dengan model berbasis CTP (aOR 1,92; \(p = 0,230\); AIC
+96,8; AUC 0,692), dengan keunggulan praktis bahwa ALBI tidak bergantung
+pada penilaian subjektif asites dan ensefalopati (Demirtas dkk., 2021;
+Feng dkk., 2020).
+
+Variabel \emph{Relative Dose Intensity} (RDI) 12 minggu tidak
+menunjukkan hubungan bermakna dengan pencapaian penyakit terkontrol
+(37,3\% pada RDI \textgreater{} 66,7\% vs 33,3\% pada RDI ≤ 66,7\%; RR
+1,12; \(p = 0,776\)). Hasil ini berbeda dari studi Kirino dkk. (2020)
+yang menemukan RDI 4 minggu ≥ 70\% berkorelasi kuat dengan DCR (91,7\%
+vs 54,2\%; \(p = 0,008\)), namun sejalan dengan hasil multivariat studi
+kohort Kanada oleh Pires Amaro dkk. (2022) yang mendapati bahwa RDI
+\textgreater{} 66,7\% tidak secara independen memprediksi kesintasan (HR
+0,70; \(p = 0,18\)) (Kirino dkk., 2020; Pires Amaro dkk., 2022). Tidak
+ditemukannya perbedaan pada kohort ini kemungkinan disebabkan oleh
+distribusi RDI yang sangat condong ke atas (median RDI 100,0\% dan
+79,7\% subjek memiliki RDI \textgreater{} 66,7\%) serta perhitungan RDI
+berbasis catatan peresepan rekam medis elektronik yang tidak dapat
+memastikan kepatuhan konsumsi obat harian pasien di rumah. Adapun
+variabel usia, jenis kelamin, etiologi viral versus non-viral, status
+performa ECOG, dan stadium BCLC tidak berhubungan bermakna dengan respon
+dini. Khusus untuk usia, nilai AUC kurva ROC sebesar 0,568 dengan IK
+95\% mencakup 0,5 (0,432--0,704) menunjukkan daya diskriminasi yang
+lemah, sehingga titik potong 43 tahun bersifat eksploratif dengan jumlah
+subjek sangat kecil (\(n = 10\)), sedangkan pengujian pada ambang klinis
+60 tahun juga tidak bermakna (\(p = 0,301\)). Untuk variabel
+komorbiditas, seluruh subjek pada dataset memiliki skor indeks
+komorbiditas dalam rentang 5--10 (median 6,00), yang mencerminkan
+fenomena klasik skor \emph{Charlson Comorbidity Index} (CCI) standar
+pada pasien KSH dengan sirosis---di mana bobot keganasan hati dan
+penyakit hati kronis secara otomatis menempatkan hampir seluruh pasien
+(\textgreater{} 94\%) ke kategori risiko tinggi sebagaimana dilaporkan
+Alimenti dkk. (2024)---sehingga analisis bivariat terkomparasi
+memerlukan rekalibrasi murni mCCI 0--5 tanpa komponen hati dan tumor
+(Alimenti dkk., 2024; Volk dkk., 2007).
+
+\subsection{Keterbatasan penelitian}\label{keterbatasan-penelitian}
+
+Penelitian ini memiliki beberapa keterbatasan yang perlu diperhatikan
+dalam menafsirkan hasil:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Desain kohort retrospektif berbasis rekam medis elektronik bergantung
+  pada kelengkapan dan akurasi pencatatan klinis, laboratorium, evaluasi
+  mRECIST radiologi rutin, serta catatan peresepan obat, sehingga
+  kepatuhan konsumsi lenvatinib harian secara aktual dan sebagian data
+  klinis (termasuk 5 pasien tanpa klasifikasi BCLC B/C baku dan 1 pasien
+  tanpa data RDI) tidak seluruhnya terdokumentasi sempurna.
+\item
+  Ketimpangan jumlah subjek antara kelompok ALBI Derajat 1 (\(n = 18\))
+  dan ALBI Derajat 2--3 (\(n = 57\)) menyebabkan daya uji statistik
+  lebih rendah daripada asumsi rasio 1:1 pada perhitungan besar sampel
+  awal, serta menghasilkan interval kepercayaan yang lebar pada analisis
+  multivariat.
+\item
+  Penilaian skor ALBI hanya dilakukan secara statis sebelum inisiasi
+  terapi dan tidak mengevaluasi perubahan dinamis skor ALBI selama
+  terapi berlangsung, padahal perburukan cadangan hati dalam 4--12
+  minggu pertama dapat memengaruhi keberlanjutan terapi.
+\item
+  Pemeriksaan penanda tumor PIVKA-II hanya tersedia pada sebagian sangat
+  kecil subjek (6,7\%) sehingga tidak dapat dianalisis secara
+  inferensial, dan indeks komorbiditas pada data sekunder masih
+  terkonsentrasi pada skor tinggi (5--10) sehingga tidak dapat
+  mendiskriminasi beban komorbiditas ekstrahepatik pada analisis
+  bivariat.
+\item
+  Penelitian ini berfokus pada titik akhir pengganti berupa respon
+  radiologis dini dalam 12--16 minggu pertama dan belum mengevaluasi
+  luaran kesintasan jangka panjang seperti \emph{overall survival} (OS)
+  dan \emph{progression-free survival} (PFS).
+\end{enumerate}
+
+\chapter{SIMPULAN DAN SARAN}\label{simpulan-dan-saran}
 
 \section{Simpulan}\label{simpulan}
 
-{[}Diisi berdasarkan nilai \(p\) dan aOR akhir skor ALBI
-pasca-penyesuaian perancu.{]}
+Berdasarkan hasil penelitian pada 75 pasien KSH yang tidak dapat
+direseksi dan mendapatkan terapi lenvatinib di RSUP Prof.~dr. I.G.N.G.
+Ngoerah Denpasar, dapat disimpulkan hal-hal sebagai berikut:
 
-\section{Daftar Pustaka}\label{daftar-pustaka}
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Belum dapat dibuktikan adanya hubungan yang bermakna secara statistik
+  antara skor ALBI pra-terapi dengan pencapaian penyakit terkontrol
+  berdasarkan kriteria mRECIST dalam rentang 12--16 minggu pertama
+  terapi lenvatinib, baik pada analisis bivariat maupun setelah
+  penyesuaian terhadap beban tumor \emph{Up-to-Seven} dan kadar AFP.
+\item
+  Beban tumor sesuai kriteria \emph{Up-to-Seven} menunjukkan hubungan
+  bermakna sebagai prediktor pencapaian penyakit terkontrol pada
+  evaluasi 12--16 minggu pertama, sementara skor ALBI/mALBI yang lebih
+  baik memperlihatkan kecenderungan protektif terhadap kejadian
+  mortalitas dini sebelum evaluasi pencitraan.
+\end{enumerate}
+
+\section{Saran}\label{saran}
+
+\subsection{Saran akademis}\label{saran-akademis}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Penelitian selanjutnya disarankan menggunakan rancangan kohort
+  prospektif multisenter dengan ukuran sampel lebih besar dan pemantauan
+  jangka panjang terhadap \emph{overall survival} serta
+  \emph{progression-free survival}.
+\item
+  Evaluasi dinamika perubahan skor ALBI selama terapi (\emph{delta}
+  ALBI) serta integrasi skor komposit fungsi hati dan beban tumor
+  (seperti \emph{Up7-ALBI}) perlu diteliti lebih lanjut pada populasi
+  Indonesia.
+\end{enumerate}
+
+\subsection{Saran praktis}\label{saran-praktis}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Penilaian cadangan fungsi hati menggunakan skor ALBI/mALBI tetap
+  dianjurkan sebagai parameter objektif pendamping penilaian beban tumor
+  sebelum inisiasi terapi lenvatinib untuk mengidentifikasi pasien
+  berisiko tinggi mengalami perburukan klinis dini.
+\item
+  Pencatatan terstandar untuk kriteria mRECIST, berat badan, penyesuaian
+  dosis harian, serta indeks komorbiditas perlu dibakukan dalam
+  \emph{clinical pathway} tatalaksana KSH sistemik di RSUP Prof.~dr.
+  I.G.N.G. Ngoerah Denpasar.
+\end{enumerate}
+
+\section*{Daftar Pustaka}\label{daftar-pustaka}
+\addcontentsline{toc}{section}{Daftar Pustaka}
 
 \protect\phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-alimenti_modified_2024}
+Alimenti, E., Iavarone, M., Canova, L., Fracas, E., Antonelli, B.,
+Ierardi, A. M., Crespi, S., Zefelippo, A., Sangiovanni, A., \&
+Lampertico, P. (2024). A modified {Charlson} {Comorbidity} {Index} to
+improve management of patients with hepatocellular carcinoma: a step
+towards precision medicine. \emph{Digestive and Liver Disease},
+\emph{56}, S81. \url{https://doi.org/10.1016/j.dld.2024.01.142}
+
+\bibitem[\citeproctext]{ref-bachtiar_perubahan_2022}
+Bachtiar, R., Parewangi, M. L., Akil, F., Daud, N. A., Kusuma, S. H., \&
+Rifai, A. (2022). Perubahan {Paradigma} pada {Strategi} {Penanganan}
+{Karsinoma} {Hepatoseluler}: {Systematic} {Review}. \emph{UMI Medical
+Journal}, \emph{7}(1), 59--71.
+\url{https://doi.org/10.33096/umj.v7i1.150}
+
+\bibitem[\citeproctext]{ref-chen_pivka-ii_2025}
+Chen, S.-C., Ho, H.-L., Liu, C.-A., Hung, Y., Chiang, N.-J., Chen, M.,
+Chao, Y., \& Yang, M.-H. (2025). {PIVKA}-{II} as a surrogate biomarker
+for therapeutic response in {Non}-{AFP}-secreting hepatocellular
+carcinoma. \emph{BMC Cancer}, \emph{25}(1), 199.
+\url{https://doi.org/10.1186/s12885-025-13568-4}
+
+\bibitem[\citeproctext]{ref-demirtas_albi_2021}
+Demirtas, C. O., D'Alessio, A., Rimassa, L., Sharma, R., \& Pinato, D.
+J. (2021). {ALBI} grade: {Evidence} for an improved model for liver
+functional estimation in patients with hepatocellular carcinoma.
+\emph{JHEP Reports}, \emph{3}(5), 100347.
+\url{https://doi.org/10.1016/j.jhepr.2021.100347}
+
+\bibitem[\citeproctext]{ref-ellez_prognostic_2023}
+Ellez, H. I., Keskinkilic, M., Semiz, H. S., Arayici, M. E., Kısa, E.,
+\& Oztop, I. (2023). The {Prognostic} {Nutritional} {Index} ({PNI}): {A}
+{New} {Biomarker} for {Determining} {Prognosis} in {Metastatic}
+{Castration}-{Sensitive} {Prostate} {Carcinoma}. \emph{Journal of
+Clinical Medicine}, \emph{12}(17), 5434.
+\url{https://doi.org/10.3390/jcm12175434}
+
+\bibitem[\citeproctext]{ref-feng_prognostic_2020}
+Feng, D., Wang, M., Hu, J., Li, S., Zhao, S., Li, H., \& Liu, L. (2020).
+Prognostic value of the albumin-bilirubin grade in patients with
+hepatocellular carcinoma and other liver diseases. \emph{Annals of
+Translational Medicine}, \emph{8}(8), 553.
+\url{https://doi.org/10.21037/atm.2020.02.116}
+
+\bibitem[\citeproctext]{ref-forner_hepatocellular_2018}
+Forner, A., Reig, M., \& Bruix, J. (2018). Hepatocellular carcinoma.
+\emph{Lancet}, \emph{391}(10127), 1301--1314.
+\url{https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(18)30010-2/abstract}
+
+\bibitem[\citeproctext]{ref-fuchigami_therapeutic_2020}
+Fuchigami, A., Imai, Y., Uchida, Y., Uchiya, H., Fujii, Y., Nakazawa,
+M., Ando, S., Sugawara, K., Nakayama, N., Tomiya, T., \& Mochida, S.
+(2020). Therapeutic efficacy of lenvatinib for patients with
+unresectable hepatocellular carcinoma based on the middle-term outcome.
+\emph{PLOS ONE}, \emph{15}(4), e0231427.
+\url{https://doi.org/10.1371/journal.pone.0231427}
+
+\bibitem[\citeproctext]{ref-hayata_impact_2025}
+Hayata, N., Hosui, A., Kurahashi, T., Suemura, S., Namiki, A., Okamoto,
+A., Tanimoto, T., Murai, H., Ohnishi, K., Hirao, M., Yamada, T., \&
+Hiramatsu, N. (2025). Impact of {Serum} {Albumin} {Levels} on
+{Prognosis} and {Recurrence} in {Patients} with {Hepatocellular}
+{Carcinoma}. \emph{Cancers}, \emph{17}(18), 2971.
+\url{https://doi.org/10.3390/cancers17182971}
+
+\bibitem[\citeproctext]{ref-hiraoka_usefulness_2016}
+Hiraoka, A., Kumada, T., Michitaka, K., Toyoda, H., Tada, T., Ueki, H.,
+Kaneto, M., Aibiki, T., Okudaira, T., Kawakami, T., Kawamura, T.,
+Yamago, H., Suga, Y., Miyamoto, Y., Tomida, H., Azemoto, N., Mori, K.,
+Miyata, H., Ninomiya, T., \& Kawasaki, H. (2016). Usefulness of
+albumin--bilirubin grade for evaluation of prognosis of 2584 {Japanese}
+patients with hepatocellular carcinoma. \emph{Journal of
+Gastroenterology and Hepatology}, \emph{31}(5), 1031--1036.
+\url{https://doi.org/10.1111/jgh.13250}
+
+\bibitem[\citeproctext]{ref-hiraoka_validation_2017}
+Hiraoka, A., Michitaka, K., Kumada, T., Izumi, N., Kadoya, M., Kokudo,
+N., Kubo, S., Matsuyama, Y., Nakashima, O., Sakamoto, M., Takayama, T.,
+Kokudo, T., Kashiwabara, K., \& Kudo, M. (2017). Validation and
+{Potential} of {Albumin}-{Bilirubin} {Grade} and {Prognostication} in a
+{Nationwide} {Survey} of 46,681 {Hepatocellular} {Carcinoma} {Patients}
+in {Japan}: {The} {Need} for a {More} {Detailed} {Evaluation} of
+{Hepatic} {Function}. \emph{Liver Cancer}, \emph{6}(4), 325--336.
+\url{https://doi.org/10.1159/000479984}
+
+\bibitem[\citeproctext]{ref-jiang_clinical_2025}
+Jiang, S., Wang, Y., Fu, X., Lou, J., Gong, B., Liu, W., Li, Y., Sun,
+Y., Liu, C., Song, Z., \& Zhou, G. (2025). Clinical significance of
+{AFP} and {PIVKA}-{II} for predicting prognosis in hepatocellular
+carcinoma patients treated with immune checkpoint inhibitors.
+\emph{Therapeutic Advances in Medical Oncology}, \emph{17},
+17588359251386801. \url{https://doi.org/10.1177/17588359251386801}
+
 \bibitem[\citeproctext]{ref-johnson2015assessment}
 Johnson, P. J., Berhane, S., Kagebayashi, C., Satomura, S., Teng, M.,
 Reeves, H. L., O'Beirne, J., Fox, R., Skowronska, A., Palmer, D., Yeo,
@@ -712,6 +1451,16 @@ R., Tada, T., Kumada, T., \& Toyoda, H. (2015). Assessment of {Liver}
 {Evidence}-{Based} {Approach}---{The} {ALBI} {Grade}. \emph{Journal of
 Clinical Oncology}, \emph{33}(6), 550--558.
 \url{https://doi.org/10.1200/JCO.2014.57.9151}
+
+\bibitem[\citeproctext]{ref-kirino_relative_2020}
+Kirino, S., Tsuchiya, K., Kurosaki, M., Kaneko, S., Inada, K.,
+Yamashita, K., Osawa, L., Hayakawa, Y., Sekiguchi, S., Okada, M., Wang,
+W., Higuchi, M., Takaura, K., Maeyashiki, C., Tamaki, N., Yasui, Y.,
+Nakanishi, H., Itakura, J., Takahashi, Y., \ldots{} Izumi, N. (2020).
+Relative dose intensity over the first four weeks of lenvatinib therapy
+is a factor of favorable response and overall survival in patients with
+unresectable hepatocellular carcinoma. \emph{PLOS ONE}, \emph{15}(4),
+e0231828. \url{https://doi.org/10.1371/journal.pone.0231828}
 
 \bibitem[\citeproctext]{ref-kudo2018lenvatinib}
 Kudo, M., Finn, R. S., Qin, S., Han, K.-H., Ikeda, K., Piscaglia, F.,
@@ -723,10 +1472,117 @@ carcinoma: a randomised phase 3 non-inferiority trial. \emph{Lancet
 (London, England)}, \emph{391}(10126), 1163--1173.
 \url{https://doi.org/10.1016/S0140-6736(18)30207-1}
 
+\bibitem[\citeproctext]{ref-lei_bilirubin_2023}
+Lei, Y., Lu, X., Duan, X., Tang, W., \& Wang, Q. (2023). Bilirubin is a
+superior biomarker for hepatocellular carcinoma diagnosis and for
+differential diagnosis of benign liver disease. \emph{Journal of
+Laboratory Medicine}, \emph{47}(5), 233--241.
+\url{https://doi.org/10.1515/labmed-2023-0023}
+
+\bibitem[\citeproctext]{ref-llovet_hepatocellular_2021}
+Llovet, J. M., Kelley, R. K., Villanueva, A., Singal, A. G., Pikarsky,
+E., Roayaie, S., Lencioni, R., Koike, K., Zucman-Rossi, J., \& Finn, R.
+S. (2021). Hepatocellular carcinoma. \emph{Nature Reviews Disease
+Primers}, \emph{7}(1), 1--28.
+\url{https://doi.org/10.1038/s41572-020-00240-3}
+
+\bibitem[\citeproctext]{ref-lu_predicting_2025}
+Lu, C.-H., Kao, W.-Y., Wu, C.-H., Ting, W.-Y., Lu, C.-H., Chuang, K.-I.,
+Ni, C.-F., Hsieh, Y.-Y., Wu, M.-S., Su, C.-W., \& Chen, S.-C. (2025).
+Predicting {Survival} {Outcomes} in {Patients} with {Hepatocellular}
+{Carcinoma} {Receiving} {Lenvatinib} by {Using} the {Up7}-{ALBI}
+{Score}. \emph{Liver Cancer}. \url{https://doi.org/10.1159/000546185}
+
+\bibitem[\citeproctext]{ref-mazzaferro_predicting_2009}
+Mazzaferro, V., Llovet, J. M., Miceli, R., Bhoori, S., Schiavo, M.,
+Mariani, L., Camerini, T., Roayaie, S., Schwartz, M. E., Grazi, G. L.,
+Adam, R., Neuhaus, P., Salizzoni, M., Bruix, J., Forner, A., Carlis, L.
+D., Cillo, U., Burroughs, A. K., Troisi, R., \ldots{} Majno, P. (2009).
+Predicting survival after liver transplantation in patients with
+hepatocellular carcinoma beyond the {Milan} criteria: a retrospective,
+exploratory analysis. \emph{The Lancet Oncology}, \emph{10}(1), 35--43.
+\url{https://www.thelancet.com/journals/lanonc/article/PIIS1470-2045(08)70284-5/abstract}
+
+\bibitem[\citeproctext]{ref-onodera_prognostic_1984}
+Onodera, T., Goseki, N., \& Kosaki, G. (1984). Prognostic nutritional
+index in gastrointestinal surgery of malnourished cancer patients.
+\emph{Nihon Geka Gakkai Zasshi}, \emph{85}(9), 1001--1005.
+\url{https://pubmed.ncbi.nlm.nih.gov/6438478/}
+
 \bibitem[\citeproctext]{ref-pphi2017}
 Perhimpunan Peneliti Hati Indonesia. (2017). \emph{Konsensus {Nasional}
 {Penatalaksanaan} {Karsinoma} {Hati}}. Perhimpunan Peneliti Hati
 Indonesia.
+
+\bibitem[\citeproctext]{ref-pinato_albi_2017}
+Pinato, D. J., Sharma, R., Allara, E., Yen, C., Arizumi, T., Kubota, K.,
+Bettinger, D., Jang, J. W., Smirne, C., Kim, Y. W., Kudo, M., Howell,
+J., Ramaswami, R., Burlone, M. E., Guerra, V., Thimme, R., Ishizuka, M.,
+Stebbing, J., Pirisi, M., \& Carr, B. I. (2017). The {ALBI} grade
+provides objective hepatic reserve estimation across each {BCLC} stage
+of hepatocellular carcinoma. \emph{Journal of Hepatology}, \emph{66}(2),
+338--346. \url{https://doi.org/10.1016/j.jhep.2016.09.008}
+
+\bibitem[\citeproctext]{ref-pires_amaro_dosing_2022}
+Pires Amaro, C., Allen, M. J., Knox, J. J., Tsang, E. S., Lim, H. J.,
+Lee-Ying, R. M., Chan, K. W., Qian, J., Meyers, B. M., Thawer, A.,
+Al-Saadi, S. M. S., Hsu, T., Ramjeesingh, R., Karachiwala, H., Abedin,
+T., \& Tam, V. C. (2022). Dosing, efficacy and safety of lenvatinib in
+the real-world treatment of hepatocellular carcinoma: {Results} from a
+{Canadian} database. \emph{Liver Cancer International}, \emph{3}(3),
+119--127. \url{https://doi.org/10.1002/lci2.59}
+
+\bibitem[\citeproctext]{ref-saeki_early_2020}
+Saeki, I., Yamasaki, T., Yamashita, S., Hanazono, T., Urata, Y.,
+Furutani, T., Yokoyama, Y., Oishi, T., Maeda, M., Kimura, T., Kotoh, Y.,
+Sasaki, R., Miyaji, T., Oono, T., Aibe, Y., Hisanaga, T., Iwamoto, T.,
+Matsumoto, T., Hidaka, I., \ldots{} Sakaida, I. (2020). Early
+{Predictors} of {Objective} {Response} in {Patients} with
+{Hepatocellular} {Carcinoma} {Undergoing} {Lenvatinib} {Treatment}.
+\emph{Cancers}, \emph{12}(4), 779.
+\url{https://doi.org/10.3390/cancers12040779}
+
+\bibitem[\citeproctext]{ref-serenari_albumin-bilirubin_2020}
+Serenari, M., \& Ercolani, G. (2020). Albumin-bilirubin score: an
+additional tool for the management of patients with hepatocellular
+carcinoma. \emph{Annals of Translational Medicine}, \emph{8}(19), 1207.
+\url{https://doi.org/10.21037/atm-20-5086}
+
+\bibitem[\citeproctext]{ref-silk_up_2022}
+Silk, T., Silk, M., \& Wu, J. (2022). Up to seven criteria in selection
+of systemic therapy for hepatocellular carcinoma. \emph{World Journal of
+Gastroenterology}, \emph{28}(23), 2561--2568.
+\url{https://doi.org/10.3748/wjg.v28.i23.2561}
+
+\bibitem[\citeproctext]{ref-volk_modified_2007}
+Volk, M., Hernandez, J., Lok, A., \& Marrero, J. (2007). Modified
+{Charlson} comorbidity index for predicting survival after liver
+transplantation. \emph{Liver Transplantation}, \emph{13}(11),
+1515--1520. \url{https://doi.org/10.1002/lt.21172}
+
+\bibitem[\citeproctext]{ref-wang_unique_2021}
+Wang, S.-H., Yeh, S.-H., \& Chen, P.-J. (2021). Unique {Features} of
+{Hepatitis} {B} {Virus}-{Related} {Hepatocellular} {Carcinoma} in
+{Pathogenesis} and {Clinical} {Significance}. \emph{Cancers},
+\emph{13}(10), 2454. \url{https://doi.org/10.3390/cancers13102454}
+
+\bibitem[\citeproctext]{ref-yamashita_reflect-phase_2020}
+Yamashita, T., Kudo, M., Ikeda, K., Izumi, N., Tateishi, R., Ikeda, M.,
+Aikata, H., Kawaguchi, Y., Wada, Y., Numata, K., Inaba, Y., Kuromatsu,
+R., Kobayashi, M., Okusaka, T., Tamai, T., Kitamura, C., Saito, K.,
+Haruna, K., Okita, K., \& Kumada, H. (2020). {REFLECT}-a phase 3 trial
+comparing efficacy and safety of lenvatinib to sorafenib for the
+treatment of unresectable hepatocellular carcinoma: an analysis of
+{Japanese} subset. \emph{Journal of Gastroenterology}, \emph{55}(1),
+113--122. \url{https://doi.org/10.1007/s00535-019-01642-1}
+
+\bibitem[\citeproctext]{ref-yu_recist_2022}
+Yu, H., Bai, Y., Xie, X., Feng, Y., Yang, Y., \& Zhu, Q. (2022).
+{RECIST} 1.1 versus {mRECIST} for assessment of tumour response to
+molecular targeted therapies and disease outcomes in patients with
+hepatocellular carcinoma: a systematic review and meta-analysis.
+\emph{BMJ Open}, \emph{12}(6), e052294.
+\url{https://doi.org/10.1136/bmjopen-2021-052294}
 
 \end{CSLReferences}
 

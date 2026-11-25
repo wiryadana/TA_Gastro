@@ -1,5 +1,5 @@
 ---
-title: "Hubungan Skor Albumin-Bilirubin (ALBI) Pra-Terapi dengan Respon Radiologis Terapi Lenvatinib dalam Rentang 12–16 Minggu Pertama pada Karsinoma Sel Hati yang Tidak Dapat Direseksi"
+title: "HUBUNGAN SKOR ALBUMIN-BILIRUBIN (ALBI) PRA-TERAPI DENGAN RESPON RADIOLOGIS TERAPI LENVATINIB DALAM RENTANG 12–16 MINGGU PERTAMA PADA KARSINOMA SEL HATI YANG TIDAK DAPAT DIRESEKSI"
 date: now
 date-format: "DD MMMM YYYY"
 author:
@@ -8,7 +8,7 @@ author:
     corresponding: true
     affiliations:
       - id: ppds
-        name: Program Studi Spesialis Penyakit Dalam, Fakultas Kedokteran, Universitas Udayana / RSUP Prof. dr. I.G.N.G. Ngoerah
+        name: Program Studi Pendidikan Dokter Spesialis Penyakit Dalam, Fakultas Kedokteran, Universitas Udayana / RSUP Prof. dr. I.G.N.G. Ngoerah
         city: Denpasar
         country: Indonesia
   - name: Gde Somayana
@@ -20,21 +20,14 @@ author:
   - name: I Komang Agus Wira Nugraha
     affiliations:
       - ref: geh
-abstract: |
-  **Latar Belakang:** Karsinoma sel hati (KSH) sebagian besar terdiagnosis pada stadium lanjut sehingga terapi sistemik lini pertama seperti lenvatinib menjadi pilihan utama. Respon klinis terhadap lenvatinib sangat bervariasi dan dipengaruhi cadangan fungsional hati. Skor Albumin-Bilirubin (ALBI) menawarkan penilaian fungsi hati yang objektif dibandingkan skor Child-Turcotte-Pugh (CTP).
-
-  **Metode:** Studi kohort retrospektif pada pasien KSH tidak dapat direseksi (BCLC B non-kandidat kuratif/lokoregional dan BCLC C) yang menerima terapi lenvatinib di RSUP Prof. dr. I.G.N.G. Ngoerah periode 1 Januari 2023 hingga 31 Desember 2025. Penilaian luaran menggunakan pendekatan *intention-to-treat* (ITT) berdasarkan kriteria mRECIST pada minggu ke-12 hingga ke-16 (Penyakit Terkontrol [CR/PR/SD] vs Penyakit Progresif [PD/meninggal sebelum evaluasi CT]). Analisis mencakup statistik deskriptif, bivariat (*Chi-square*/*Fisher exact* dan *Relative Risk*), penentuan titik potong variabel numerik melalui kurva ROC/AUC, serta regresi logistik biner multivariat.
-
-  **Hasil:** [Terisi otomatis setelah hasil render diverifikasi]
-
-  **Simpulan:** [Terisi otomatis setelah hasil akhir diverifikasi]
-keywords:
-  - karsinoma sel hati
-  - skor ALBI
-  - lenvatinib
-  - mRECIST
-  - respon radiologis
 format:
+  docx:
+    echo: false
+    warning: false
+    message: false
+    number-sections: true
+    number-offset: [4, 0]
+    reference-doc: Template_Tesis_IPD_Unud_2026.docx
   html:
     embed-resources: true
     theme:
@@ -42,18 +35,15 @@ format:
       dark: darkly
     toc: true
     number-sections: true
+    number-offset: 4
     code-fold: true
     warning: false
     message: false
-  docx:
-    echo: false
-    warning: false
-    message: false
-    # reference-doc: Template_Tesis_Unud.docx
   pdf:
-    documentclass: article
+    documentclass: report
     keep-tex: true
     number-sections: true
+    number-offset: 4
     echo: false
     warning: false
     message: false
@@ -61,8 +51,10 @@ bibliography: thesis_albi_lenvatinib.bib
 csl: Wiryadana-APA-7th.csl
 lang: id
 crossref:
+  chapters: true
   tbl-title: Tabel
   fig-title: Gambar
+  title-delim: ""
 ---
 
 ```{r}
@@ -72,7 +64,7 @@ crossref:
 #| message: false
 
 # ==============================================================================
-# 1. PAKET & PARAMETER KENDALI ANALISIS
+# 1. PAKET & SAKELAR KENDALI ANALISIS
 # ==============================================================================
 library(googlesheets4)
 library(dplyr)
@@ -84,15 +76,18 @@ library(pROC)
 library(car)
 library(DiagrammeR)
 
+SHOW_AUDIT        <- TRUE     # Ubah ke FALSE saat merender naskah tesis final (menyembunyikan RM & blok audit)
 TARGET_N          <- 68       # Besar sampel minimal sesuai proposal
 MODE_PRIOR_TX     <- "auto"   # "auto" (eksklusi jika n tanpa prior tx >= 68), "exclude", atau "include"
 P_SCREEN_MULTI    <- 0.25     # Ambang p bivariat masuk kandidat multivariat
 MAX_MISSING_MULTI <- 0.20     # Proporsi missing maksimal agar variabel aman masuk regresi multivariat
 SHEET_TARGET      <- "MAIN_60"
+BIB_FILE          <- "thesis_albi_lenvatinib.bib"
+TAHUN_TESIS       <- 2026
 DIR_FIG_EXPORT    <- "Figures_Thesis_Editable"
 dir.create(DIR_FIG_EXPORT, showWarnings = FALSE)
 
-# Fungsi aman menangani list-column, koma desimal, dan simbol >/< dari Google Sheets
+# Fungsi bantu konversi & format angka baku Indonesia (desimal koma, ribuan titik)
 to_chr <- function(x) {
   if (is.list(x)) {
     vapply(x, function(el) if (length(el) == 0 || is.null(el)) NA_character_ else as.character(el[1]), character(1))
@@ -122,19 +117,25 @@ to_date_safe <- function(x) {
   d
 }
 
-fmt_p <- function(p) {
-  ifelse(is.na(p), "-", ifelse(p < 0.001, "<0.001", format(round(p, 3), nsmall = 3)))
+fmt_num <- function(x, digits = 2, big_mark = ".") {
+  vapply(x, function(v) {
+    if (is.na(v) || is.nan(v) || is.infinite(v)) return("-")
+    trimws(formatC(round(v, digits), format = "f", digits = digits,
+                   decimal.mark = ",", big.mark = big_mark))
+  }, character(1))
 }
 
-fmt_num <- function(x, digits = 2) {
-  ifelse(is.na(x), "-", format(round(x, digits), nsmall = digits))
+fmt_p <- function(p) {
+  vapply(p, function(v) {
+    if (is.na(v)) return("-")
+    if (v < 0.001) return("<0,001")
+    trimws(formatC(round(v, 3), format = "f", digits = 3, decimal.mark = ","))
+  }, character(1))
 }
 
 # ==============================================================================
 # 2. IMPOR DATA DARI GOOGLE SHEETS (KOLOM A:AF TAB MAIN_60)
 # ==============================================================================
-# Jalankan googlesheets4::gs4_auth() sekali di Console RStudio sebelum Render
-# (atau ganti baris di bawah menjadi gs4_deauth() jika akses sheet disetel publik)
 gs4_auth(email = TRUE)
 
 url_sheet <- "[https://docs.google.com/spreadsheets/d/1A6WNMCTLlWBLoow7D_ak3Yjy1DNDGgSv26aveFiQTJY/edit?gid=0#gid=0](https://docs.google.com/spreadsheets/d/1A6WNMCTLlWBLoow7D_ak3Yjy1DNDGgSv26aveFiQTJY/edit?gid=0#gid=0)"
@@ -152,7 +153,6 @@ data_raw <- read_sheet(
 # ==============================================================================
 data_clean <- data_raw %>%
   mutate(
-    # Numerik dasar (AFP sudah dalam satuan ng/mL sesuai RSUP Ngoerah)
     Usia_Num          = to_num(USIA_DIAGNOSIS),
     ECOG_Num          = to_num(ECOG_SKOR),
     CTP_Skor_Num      = to_num(CTP_SKOR_ANGKA),
@@ -168,19 +168,16 @@ data_clean <- data_raw %>%
     Jumlah_Nodul      = to_num(JUMLAH_NODUL),
     Ukuran_Maks_cm    = to_num(UKURAN_NODUL_TERBESAR_CM),
 
-    # Nilai pra-kalkulasi dari sheet (untuk audit selisih)
     ALBI_Sheet        = to_num(SKOR_ALBI),
     PNI_Sheet         = to_num(SKOR_PNI),
     RDI_Sheet         = to_num(RDI_PERSEN),
 
-    # Tanggal
     Tgl_Mulai         = to_date_safe(TGL_MULAI_TERAPI),
     Tgl_Eval          = to_date_safe(TGL_EVALUASI_12MG),
     Tgl_FU_Meninggal  = to_date_safe(TGL_MENINGGAL_ATAU_TERAKHIR_FOLLOWUP),
     Hari_ke_Evaluasi  = as.numeric(Tgl_Eval - Tgl_Mulai),
     Hari_FU           = as.numeric(Tgl_FU_Meninggal - Tgl_Mulai),
 
-    # Standarisasi teks kategorik
     Jenis_Kelamin = case_when(
       grepl("^L", trimws(JENIS_KELAMIN), ignore.case = TRUE) ~ "Laki-laki",
       grepl("^P", trimws(JENIS_KELAMIN), ignore.case = TRUE) ~ "Perempuan",
@@ -198,23 +195,22 @@ data_clean <- data_raw %>%
     ),
     CTP_Kat = case_when(
       toupper(trimws(CTP_KELAS)) == "A" ~ "CTP A",
-      toupper(trimws(CTP_KELAS)) %in% c("B", "C", "B-C") ~ "CTP B-C",
+      toupper(trimws(CTP_KELAS)) %in% c("B", "C", "B-C") ~ "CTP B–C",
       !is.na(CTP_Skor_Num) & CTP_Skor_Num <= 6 ~ "CTP A",
-      !is.na(CTP_Skor_Num) & CTP_Skor_Num >= 7 ~ "CTP B-C",
+      !is.na(CTP_Skor_Num) & CTP_Skor_Num >= 7 ~ "CTP B–C",
       TRUE ~ NA_character_
     ),
     ECOG_Kat = case_when(
-      ECOG_Num %in% c(0, 1) ~ "ECOG 0-1",
-      ECOG_Num >= 2         ~ "ECOG >= 2",
+      ECOG_Num %in% c(0, 1) ~ "ECOG 0–1",
+      ECOG_Num >= 2         ~ "ECOG ≥ 2",
       TRUE ~ NA_character_
     ),
 
-    # Identifikasi riwayat terapi sebelumnya & kriteria eksklusi
     Riwayat_Tx_Raw = trimws(coalesce(RIWAYAT_TERAPI_SEBELUMNYA, "")),
     Is_Transplant  = grepl("transplant", Riwayat_Tx_Raw, ignore.case = TRUE),
     Is_Prior_Tx    = (!Is_Transplant) & grepl("tace|reseksi|ablasi|rfa|sbrt|tare|operasi|peit", Riwayat_Tx_Raw, ignore.case = TRUE),
 
-    # 1. Skor ALBI (Bilirubin mg/dL x 17.1 -> umol/L; Albumin g/dL x 10 -> g/L)
+    # 1. Skor ALBI & mALBI
     Skor_ALBI_Calc = ifelse(
       !is.na(Bilirubin_mgdL) & Bilirubin_mgdL > 0 & !is.na(Albumin_gdL),
       (0.66 * log10(Bilirubin_mgdL * 17.1)) - (0.085 * (Albumin_gdL * 10)),
@@ -228,33 +224,40 @@ data_clean <- data_raw %>%
       TRUE ~ NA_character_
     ),
     ALBI_Kat = factor(
-      ifelse(Skor_ALBI <= -2.60, "ALBI Derajat 1", "ALBI Derajat 2-3"),
-      levels = c("ALBI Derajat 2-3", "ALBI Derajat 1")
+      ifelse(Skor_ALBI <= -2.60, "ALBI Derajat 1", "ALBI Derajat 2–3"),
+      levels = c("ALBI Derajat 2–3", "ALBI Derajat 1")
+    ),
+    mALBI_Kat = factor(
+      ifelse(Skor_ALBI <= -2.27, "mALBI 1–2a (≤ -2,27)", "mALBI 2b–3 (> -2,27)"),
+      levels = c("mALBI 2b–3 (> -2,27)", "mALBI 1–2a (≤ -2,27)")
     ),
 
-    # 2. Luaran Respon Radiologis mRECIST 12-16 Minggu (Pendekatan ITT)
+    # 2. Luaran Respon Radiologis mRECIST 12–16 Minggu (Pendekatan ITT)
     mRECIST_Raw = trimws(coalesce(MRECIST_HASIL, "")),
     Respon_Detail = case_when(
-      grepl("^CR$|complete", mRECIST_Raw, ignore.case = TRUE)              ~ "CR",
-      grepl("^PR$|partial", mRECIST_Raw, ignore.case = TRUE)               ~ "PR",
-      grepl("^SD$|stable", mRECIST_Raw, ignore.case = TRUE)                ~ "SD",
-      grepl("^PD$|progressive", mRECIST_Raw, ignore.case = TRUE)           ~ "PD (CT Evaluasi)",
-      grepl("meninggal|death|wafat|dead", mRECIST_Raw, ignore.case = TRUE) ~ "Meninggal / Tanpa CT (ITT -> PD)",
-      mRECIST_Raw %in% c("", "-", "NA", "N/A", "Tidak ada", "Belum evaluasi") ~ "Meninggal / Tanpa CT (ITT -> PD)",
-      TRUE ~ paste0("Lainnya (", mRECIST_Raw, ") -> PD")
+      grepl("^CR$|complete", mRECIST_Raw, ignore.case = TRUE)              ~ "Complete Response (CR)",
+      grepl("^PR$|partial", mRECIST_Raw, ignore.case = TRUE)               ~ "Partial Response (PR)",
+      grepl("^SD$|stable", mRECIST_Raw, ignore.case = TRUE)                ~ "Stable Disease (SD)",
+      grepl("^PD$|progressive", mRECIST_Raw, ignore.case = TRUE)           ~ "Progressive Disease (CT Evaluasi)",
+      grepl("meninggal|death|wafat|dead", mRECIST_Raw, ignore.case = TRUE) ~ "Meninggal / Tanpa CT (ITT)",
+      mRECIST_Raw %in% c("", "-", "NA", "N/A", "Tidak ada", "Belum evaluasi") ~ "Meninggal / Tanpa CT (ITT)",
+      TRUE ~ paste0("Lainnya (", mRECIST_Raw, ")")
     ),
     Status_Evaluasi = ifelse(
-      Respon_Detail %in% c("CR", "PR", "SD", "PD (CT Evaluasi)"),
-      "CT Evaluasi 12-16 Minggu",
-      "Tanpa CT / Meninggal (ITT -> PD)"
+      Respon_Detail %in% c("Complete Response (CR)", "Partial Response (PR)",
+                           "Stable Disease (SD)", "Progressive Disease (CT Evaluasi)"),
+      "CT Evaluasi 12–16 Minggu",
+      "Tanpa CT / Meninggal (ITT)"
     ),
     Respon_Kat = factor(
-      ifelse(Respon_Detail %in% c("CR", "PR", "SD"), "Penyakit Terkontrol", "Penyakit Progresif"),
+      ifelse(Respon_Detail %in% c("Complete Response (CR)", "Partial Response (PR)", "Stable Disease (SD)"),
+             "Penyakit Terkontrol", "Penyakit Progresif"),
       levels = c("Penyakit Progresif", "Penyakit Terkontrol")
     ),
-    Respon_Bin = ifelse(Respon_Kat == "Penyakit Terkontrol", 1L, 0L),
+    Respon_Bin         = ifelse(Respon_Kat == "Penyakit Terkontrol", 1L, 0L),
+    Meninggal_Dini_Bin = ifelse(Status_Evaluasi != "CT Evaluasi 12–16 Minggu", 1L, 0L),
 
-    # 3. Prognostic Nutritional Index (PNI)
+    # 3. PNI
     Skor_PNI_Calc = ifelse(
       !is.na(Albumin_gdL) & !is.na(Limfosit_Num),
       (10 * Albumin_gdL) + (0.005 * Limfosit_Num),
@@ -262,26 +265,26 @@ data_clean <- data_raw %>%
     ),
     Skor_PNI = coalesce(Skor_PNI_Calc, PNI_Sheet),
     PNI_Kat  = factor(
-      ifelse(Skor_PNI >= 49.75, "PNI Baik (>=49.75)", "PNI Buruk (<49.75)"),
-      levels = c("PNI Buruk (<49.75)", "PNI Baik (>=49.75)")
+      ifelse(Skor_PNI >= 49.75, "PNI Baik (≥ 49,75)", "PNI Buruk (< 49,75)"),
+      levels = c("PNI Buruk (< 49,75)", "PNI Baik (≥ 49,75)")
     ),
 
-    # 4. Kriteria Up-to-Seven
+    # 4. Up-to-Seven
     Skor_UpToSeven = ifelse(
       !is.na(Jumlah_Nodul) & !is.na(Ukuran_Maks_cm),
       Jumlah_Nodul + Ukuran_Maks_cm,
       NA_real_
     ),
     UpToSeven_Kat = case_when(
-      !is.na(Skor_UpToSeven) & Skor_UpToSeven <= 7 ~ "Sesuai (<=7)",
-      !is.na(Skor_UpToSeven) & Skor_UpToSeven > 7  ~ "Tidak Sesuai (>7)",
-      grepl("within|sesuai|in", UP_TO_SEVEN_STATUS, ignore.case = TRUE) ~ "Sesuai (<=7)",
-      grepl("beyond|out|tidak", UP_TO_SEVEN_STATUS, ignore.case = TRUE) ~ "Tidak Sesuai (>7)",
+      !is.na(Skor_UpToSeven) & Skor_UpToSeven <= 7 ~ "Sesuai (≤ 7)",
+      !is.na(Skor_UpToSeven) & Skor_UpToSeven > 7  ~ "Tidak Sesuai (> 7)",
+      grepl("within|sesuai|in", UP_TO_SEVEN_STATUS, ignore.case = TRUE) ~ "Sesuai (≤ 7)",
+      grepl("beyond|out|tidak", UP_TO_SEVEN_STATUS, ignore.case = TRUE) ~ "Tidak Sesuai (> 7)",
       TRUE ~ NA_character_
     ),
-    UpToSeven_Kat = factor(UpToSeven_Kat, levels = c("Tidak Sesuai (>7)", "Sesuai (<=7)")),
+    UpToSeven_Kat = factor(UpToSeven_Kat, levels = c("Tidak Sesuai (> 7)", "Sesuai (≤ 7)")),
 
-    # 5. RDI 12 Minggu (84 hari) berbasis Berat Badan (>=60 kg = 12 mg; <60 kg = 8 mg)
+    # 5. RDI 12 Minggu berbasis Berat Badan
     Dosis_Standar_BB = ifelse(BB_kg >= 60, 12, 8),
     RDI_Calc = ifelse(
       !is.na(Total_Dosis_12m) & !is.na(Dosis_Standar_BB),
@@ -290,22 +293,22 @@ data_clean <- data_raw %>%
     ),
     RDI_12m = coalesce(RDI_Calc, RDI_Sheet),
     RDI_Kat = factor(
-      ifelse(RDI_12m > 66.7, "RDI >66.7%", "RDI <=66.7%"),
-      levels = c("RDI <=66.7%", "RDI >66.7%")
+      ifelse(RDI_12m > 66.7, "RDI > 66,7%", "RDI ≤ 66,7%"),
+      levels = c("RDI ≤ 66,7%", "RDI > 66,7%")
     ),
 
     # 6. AFP, PIVKA-II, mCCI, Prior Tx
     AFP_Kat = factor(
-      ifelse(AFP_ng_Num < 200, "AFP <200 ng/mL", "AFP >=200 ng/mL"),
-      levels = c("AFP >=200 ng/mL", "AFP <200 ng/mL")
+      ifelse(AFP_ng_Num < 200, "AFP < 200 ng/mL", "AFP ≥ 200 ng/mL"),
+      levels = c("AFP ≥ 200 ng/mL", "AFP < 200 ng/mL")
     ),
     PIVKA_Kat = factor(
-      ifelse(PIVKA_Num < 40, "PIVKA-II <40 mAU/mL", "PIVKA-II >=40 mAU/mL"),
-      levels = c("PIVKA-II >=40 mAU/mL", "PIVKA-II <40 mAU/mL")
+      ifelse(PIVKA_Num < 40, "PIVKA-II < 40 mAU/mL", "PIVKA-II ≥ 40 mAU/mL"),
+      levels = c("PIVKA-II ≥ 40 mAU/mL", "PIVKA-II < 40 mAU/mL")
     ),
     mCCI_Kat = factor(
-      ifelse(mCCI_Num <= 1, "mCCI Rendah (0-1)", "mCCI Tinggi (>=2)"),
-      levels = c("mCCI Tinggi (>=2)", "mCCI Rendah (0-1)")
+      ifelse(mCCI_Num <= 1, "mCCI Rendah (0–1)", "mCCI Tinggi (≥ 2)"),
+      levels = c("mCCI Tinggi (≥ 2)", "mCCI Rendah (0–1)")
     ),
     Prior_Tx_Kat = factor(
       ifelse(Is_Prior_Tx, "Ada Riwayat TACE/Reseksi/Ablasi", "Naif Terapi"),
@@ -314,19 +317,15 @@ data_clean <- data_raw %>%
   )
 
 # ==============================================================================
-# 4. PENERAPAN KRITERIA INKLUSI & EKSKLUSI (SAKELAR PRIOR TX OTOMATIS)
+# 4. PENERAPAN KRITERIA INKLUSI & EKSKLUSI
 # ==============================================================================
 n_terjangkau <- nrow(data_clean)
-n_ex_usia <- sum(with(data_clean, is.na(Usia_Num) | Usia_Num < 18), na.rm = TRUE)
+n_ex_usia    <- sum(with(data_clean, is.na(Usia_Num) | Usia_Num < 18), na.rm = TRUE)
 n_ex_trans   <- sum(data_clean$Is_Transplant, na.rm = TRUE)
 n_ex_albi_na <- sum(is.na(data_clean$Skor_ALBI))
 
 data_base <- data_clean %>%
-  filter(
-    !is.na(Usia_Num) & Usia_Num >= 18,
-    !Is_Transplant,
-    !is.na(Skor_ALBI)
-  )
+  filter(!is.na(Usia_Num) & Usia_Num >= 18, !Is_Transplant, !is.na(Skor_ALBI))
 
 n_prior_tx_avail <- sum(data_base$Is_Prior_Tx, na.rm = TRUE)
 n_tanpa_prior_tx <- sum(!data_base$Is_Prior_Tx, na.rm = TRUE)
@@ -341,17 +340,17 @@ if (exclude_prior_final) {
   df <- data_base %>% filter(!Is_Prior_Tx)
   n_ex_prior_used <- n_prior_tx_avail
   ket_prior_tx <- paste0(
-    "Jumlah sampel tanpa riwayat terapi sebelumnya (n = ", n_tanpa_prior_tx,
-    ") memenuhi target minimal (n >= ", TARGET_N, "), sehingga ", n_prior_tx_avail,
-    " pasien dengan riwayat TACE/reseksi/ablasi dieksklusi."
+    "jumlah sampel tanpa riwayat terapi sebelumnya (n = ", n_tanpa_prior_tx,
+    ") memenuhi target minimal (n ≥ ", TARGET_N, "), sehingga ", n_prior_tx_avail,
+    " pasien dengan riwayat TACE/reseksi/ablasi dieksklusi"
   )
 } else {
   df <- data_base
   n_ex_prior_used <- 0
   ket_prior_tx <- paste0(
-    "Jumlah sampel tanpa riwayat terapi sebelumnya (n = ", n_tanpa_prior_tx,
-    ") kurang dari target minimal (n = ", TARGET_N, "), sehingga ", n_prior_tx_avail,
-    " pasien dengan riwayat TACE/reseksi/ablasi tetap diinklusi dan diuji sebagai kovariat."
+    "jumlah sampel tanpa riwayat terapi sebelumnya (n = ", n_tanpa_prior_tx,
+    ") belum mencapai target minimal (n = ", TARGET_N, "), sehingga ", n_prior_tx_avail,
+    " pasien dengan riwayat TACE/reseksi/ablasi tetap diinklusi sebagai kovariat"
   )
 }
 
@@ -360,22 +359,28 @@ df <- df %>%
     Jenis_Kelamin = factor(Jenis_Kelamin, levels = c("Perempuan", "Laki-laki")),
     BCLC_Kat      = factor(BCLC_Kat, levels = c("BCLC C", "BCLC B")),
     Etiologi_Kat  = factor(Etiologi_Kat, levels = c("Non-viral", "Viral")),
-    CTP_Kat       = factor(CTP_Kat, levels = c("CTP B-C", "CTP A")),
-    ECOG_Kat      = factor(ECOG_Kat, levels = c("ECOG >= 2", "ECOG 0-1"))
+    CTP_Kat       = factor(CTP_Kat, levels = c("CTP B–C", "CTP A")),
+    ECOG_Kat      = factor(ECOG_Kat, levels = c("ECOG ≥ 2", "ECOG 0–1"))
   )
 
-# Ringkasan angka kunci untuk inline text & diagram alur
+# Ringkasan angka kunci
 n_final       <- nrow(df)
+n_ctrl_tot    <- sum(df$Respon_Bin == 1, na.rm = TRUE)
+n_pd_tot      <- sum(df$Respon_Bin == 0, na.rm = TRUE)
+pct_ctrl_tot  <- fmt_num(100 * n_ctrl_tot / n_final, 1)
+pct_pd_tot    <- fmt_num(100 * n_pd_tot / n_final, 1)
 n_albi1       <- sum(df$ALBI_Kat == "ALBI Derajat 1", na.rm = TRUE)
-n_albi23      <- sum(df$ALBI_Kat == "ALBI Derajat 2-3", na.rm = TRUE)
-n_itt_pd      <- sum(df$Status_Evaluasi != "CT Evaluasi 12-16 Minggu", na.rm = TRUE)
-n_dcr_total   <- sum(df$Respon_Bin == 1, na.rm = TRUE)
-pct_dcr_tot   <- fmt_num(100 * n_dcr_total / n_final, 1)
-
+n_albi23      <- sum(df$ALBI_Kat == "ALBI Derajat 2–3", na.rm = TRUE)
+n_itt_pd      <- sum(df$Status_Evaluasi != "CT Evaluasi 12–16 Minggu", na.rm = TRUE)
 n_albi1_ctrl  <- sum(df$ALBI_Kat == "ALBI Derajat 1" & df$Respon_Bin == 1, na.rm = TRUE)
 n_albi1_pd    <- sum(df$ALBI_Kat == "ALBI Derajat 1" & df$Respon_Bin == 0, na.rm = TRUE)
-n_albi23_ctrl <- sum(df$ALBI_Kat == "ALBI Derajat 2-3" & df$Respon_Bin == 1, na.rm = TRUE)
-n_albi23_pd   <- sum(df$ALBI_Kat == "ALBI Derajat 2-3" & df$Respon_Bin == 0, na.rm = TRUE)
+n_albi23_ctrl <- sum(df$ALBI_Kat == "ALBI Derajat 2–3" & df$Respon_Bin == 1, na.rm = TRUE)
+n_albi23_pd   <- sum(df$ALBI_Kat == "ALBI Derajat 2–3" & df$Respon_Bin == 0, na.rm = TRUE)
+
+# Normalitas variabel numerik (Shapiro-Wilk)
+p_shapiro_usia <- shapiro.test(na.omit(df$Usia_Num))$p.value
+p_shapiro_pni  <- shapiro.test(na.omit(df$Skor_PNI))$p.value
+p_shapiro_albi <- shapiro.test(na.omit(df$Skor_ALBI))$p.value
 ```
 
 ```{r}
@@ -385,51 +390,61 @@ n_albi23_pd   <- sum(df$ALBI_Kat == "ALBI Derajat 2-3" & df$Respon_Bin == 0, na.
 #| message: false
 
 # ==============================================================================
-# 5. KURVA ROC / AUC UNTUK VARIABEL NUMERIK (USIA & ALBI KONTINU)
+# 5. KURVA ROC / AUC (USIA & SKOR ALBI KONTINU)
 # ==============================================================================
-roc_usia <- roc(
-  response  = df$Respon_Bin,
-  predictor = df$Usia_Num,
-  quiet     = TRUE,
-  ci        = TRUE
-)
-
-best_usia <- coords(
-  roc_usia,
-  x           = "best",
-  best.method = "youden",
-  ret         = c("threshold", "sensitivity", "specificity"),
-  transpose   = FALSE
-)[1, ]
+roc_usia <- roc(response = df$Respon_Bin, predictor = df$Usia_Num, quiet = TRUE, ci = TRUE)
+best_usia <- coords(roc_usia, x = "best", best.method = "youden",
+                    ret = c("threshold", "sensitivity", "specificity"), transpose = FALSE)[1, ]
 
 cutoff_usia <- round(best_usia$threshold, 1)
-auc_usia    <- fmt_num(as.numeric(auc(roc_usia)), 3)
-auc_usia_lo <- fmt_num(as.numeric(ci.auc(roc_usia))[1], 3)
-auc_usia_hi <- fmt_num(as.numeric(ci.auc(roc_usia))[3], 3)
+auc_usia_v  <- as.numeric(auc(roc_usia))
+ci_usia_v   <- as.numeric(ci.auc(roc_usia))
+auc_usia    <- fmt_num(auc_usia_v, 3)
+auc_usia_lo <- fmt_num(ci_usia_v[1], 3)
+auc_usia_hi <- fmt_num(ci_usia_v[3], 3)
 sens_usia   <- fmt_num(best_usia$sensitivity * 100, 1)
 spec_usia   <- fmt_num(best_usia$specificity * 100, 1)
+p_roc_usia  <- wilcox.test(Usia_Num ~ Respon_Bin, data = df)$p.value
 
+# Catatan metodologis ala Angela (2026): jika IK 95% AUC mencakup 0,5, cut-off ROC
+# bersifat eksploratif sehingga disiapkan pula kategori klinis baku (<60 vs >=60 th)
 df <- df %>%
   mutate(
     Usia_Kat = factor(
-      ifelse(Usia_Num < cutoff_usia, paste0("< ", cutoff_usia, " tahun"), paste0(">= ", cutoff_usia, " tahun")),
-      levels = c(paste0(">= ", cutoff_usia, " tahun"), paste0("< ", cutoff_usia, " tahun"))
+      ifelse(Usia_Num < cutoff_usia,
+             paste0("< ", fmt_num(cutoff_usia, 0), " tahun"),
+             paste0("≥ ", fmt_num(cutoff_usia, 0), " tahun")),
+      levels = c(paste0("≥ ", fmt_num(cutoff_usia, 0), " tahun"),
+                 paste0("< ", fmt_num(cutoff_usia, 0), " tahun"))
+    ),
+    Usia_60_Kat = factor(
+      ifelse(Usia_Num < 60, "< 60 tahun", "≥ 60 tahun"),
+      levels = c("≥ 60 tahun", "< 60 tahun")
     )
   )
 
-roc_albi <- roc(
-  response  = df$Respon_Bin,
-  predictor = df$Skor_ALBI,
-  direction = ">",
-  quiet     = TRUE,
-  ci        = TRUE
-)
-best_albi   <- coords(roc_albi, x = "best", best.method = "youden",
-                      ret = c("threshold", "sensitivity", "specificity"), transpose = FALSE)[1, ]
-auc_albi    <- fmt_num(as.numeric(auc(roc_albi)), 3)
-auc_albi_lo <- fmt_num(as.numeric(ci.auc(roc_albi))[1], 3)
-auc_albi_hi <- fmt_num(as.numeric(ci.auc(roc_albi))[3], 3)
+roc_albi <- roc(response = df$Respon_Bin, predictor = df$Skor_ALBI, direction = ">", quiet = TRUE, ci = TRUE)
+best_albi <- coords(roc_albi, x = "best", best.method = "youden",
+                    ret = c("threshold", "sensitivity", "specificity"), transpose = FALSE)[1, ]
+auc_albi_v  <- as.numeric(auc(roc_albi))
+ci_albi_v   <- as.numeric(ci.auc(roc_albi))
+auc_albi    <- fmt_num(auc_albi_v, 3)
+auc_albi_lo <- fmt_num(ci_albi_v[1], 3)
+auc_albi_hi <- fmt_num(ci_albi_v[3], 3)
 cut_albi_op <- fmt_num(best_albi$threshold, 2)
+sens_albi   <- fmt_num(best_albi$sensitivity * 100, 1)
+spec_albi   <- fmt_num(best_albi$specificity * 100, 1)
+p_roc_albi  <- wilcox.test(Skor_ALBI ~ Respon_Bin, data = df)$p.value
+
+tabel_roc <- tibble(
+  Variabel          = c("Usia saat diagnosis (tahun)", "Skor ALBI pra-terapi (kontinu)"),
+  `AUC (IK 95%)`    = c(paste0(auc_usia, " (", auc_usia_lo, "–", auc_usia_hi, ")"),
+                        paste0(auc_albi, " (", auc_albi_lo, "–", auc_albi_hi, ")")),
+  `Nilai p`         = c(fmt_p(p_roc_usia), fmt_p(p_roc_albi)),
+  `Titik Potong`    = c(paste0("< ", fmt_num(cutoff_usia, 0), " tahun"), paste0("≤ ", cut_albi_op)),
+  `Sensitivitas (%)` = c(sens_usia, sens_albi),
+  `Spesifisitas (%)` = c(spec_usia, spec_albi)
+)
 ```
 
 ```{r}
@@ -441,9 +456,9 @@ cut_albi_op <- fmt_num(best_albi$threshold, 2)
 # ==============================================================================
 # 6. ANALISIS BIVARIAT (CHI-SQUARE / FISHER EXACT + RELATIVE RISK 2x2)
 # ==============================================================================
-calc_bivar <- function(data, var_name, label_var) {
+calc_bivar <- function(data, var_name, label_var, outcome_col = "Respon_Bin") {
   d_sub <- data %>%
-    select(x = all_of(var_name), y = Respon_Bin) %>%
+    select(x = all_of(var_name), y = all_of(outcome_col)) %>%
     filter(!is.na(x) & !is.na(y))
 
   n_valid <- nrow(d_sub)
@@ -503,14 +518,14 @@ calc_bivar <- function(data, var_name, label_var) {
 
 daftar_prediktor <- list(
   c("ALBI_Kat",      "Skor ALBI Pra-Terapi"),
-  c("Usia_Kat",      paste0("Usia (cut-off ROC ", cutoff_usia, " th)")),
+  c("Usia_Kat",      paste0("Usia (titik potong ROC ", fmt_num(cutoff_usia, 0), " th)")),
+  c("Usia_60_Kat",   "Usia (titik potong klinis 60 th)"),
   c("Jenis_Kelamin", "Jenis Kelamin"),
   c("BCLC_Kat",      "Stadium BCLC"),
   c("Etiologi_Kat",  "Etiologi KSH"),
   c("CTP_Kat",       "Skor Child-Pugh (CTP)"),
   c("ECOG_Kat",      "Status Performa ECOG"),
   c("AFP_Kat",       "Kadar AFP Pra-Terapi"),
-  c("PIVKA_Kat",     "Kadar PIVKA-II Pra-Terapi"),
   c("PNI_Kat",       "Prognostic Nutritional Index (PNI)"),
   c("UpToSeven_Kat", "Beban Tumor (Up-to-Seven)"),
   c("mCCI_Kat",      "Komorbiditas (mCCI)"),
@@ -532,73 +547,194 @@ dcr_albi1    <- row_albi_biv$Terkontrol_Exp
 dcr_albi23   <- row_albi_biv$Terkontrol_Ref
 
 # ==============================================================================
-# 7. ANALISIS MULTIVARIAT (REGRESI LOGISTIK BINER + CEK VIF & MISSINGNESS)
+# 7. ANALISIS MULTIVARIAT + DIAGNOSTIK MODEL (OMNIBUS, NAGELKERKE R2, HOSMER-LEMESHOW)
 # ==============================================================================
-vars_dilewati_missing <- hasil_bivariat %>%
-  filter(Var_Col != "ALBI_Kat" & p_num < P_SCREEN_MULTI & Prop_Missing > MAX_MISSING_MULTI) %>%
-  pull(Variabel)
-
-kandidat_vars <- hasil_bivariat %>%
-  filter(Var_Col == "ALBI_Kat" | (p_num < P_SCREEN_MULTI & Prop_Missing <= MAX_MISSING_MULTI)) %>%
-  pull(Var_Col) %>%
-  unique()
-
-df_multi      <- df %>% select(Respon_Bin, all_of(kandidat_vars)) %>% na.omit()
-n_multi_final <- nrow(df_multi)
-
-formula_multi <- as.formula(paste("Respon_Bin ~", paste(kandidat_vars, collapse = " + ")))
-fit_multi     <- glm(formula_multi, data = df_multi, family = binomial(link = "logit"))
-sum_multi     <- summary(fit_multi)
-ci_multi      <- suppressMessages(confint.default(fit_multi))
-
-if (length(kandidat_vars) >= 2) {
-  vif_vals <- car::vif(fit_multi)
-  tabel_vif <- tibble(
-    Variabel = names(vif_vals),
-    VIF      = round(as.numeric(vif_vals), 2),
-    Status   = ifelse(as.numeric(vif_vals) >= 5, "Waspada Multikolinearitas", "Aman (<5)")
+rapikan_label <- function(term) {
+  case_when(
+    term == "ALBI_KatALBI Derajat 1"     ~ "ALBI Derajat 1 (vs 2–3)",
+    grepl("^mALBI_Kat", term)            ~ "mALBI 1–2a (vs 2b–3)",
+    term == "CTP_KatCTP A"               ~ "Child-Pugh A (vs B–C)",
+    term == "UpToSeven_KatSesuai (≤ 7)"  ~ "Up-to-Seven ≤ 7 (vs > 7)",
+    term == "AFP_KatAFP < 200 ng/mL"     ~ "AFP < 200 ng/mL (vs ≥ 200)",
+    term == "PNI_KatPNI Baik (≥ 49,75)"  ~ "PNI Baik ≥ 49,75 (vs < 49,75)",
+    grepl("^Usia_Kat", term)             ~ paste0("Usia ", sub("^Usia_Kat", "", term)),
+    TRUE ~ term
   )
-  max_vif <- max(tabel_vif$VIF, na.rm = TRUE)
-} else {
-  tabel_vif <- tibble(Variabel = kandidat_vars, VIF = NA_real_, Status = "Prediktor Tunggal")
-  max_vif   <- NA_real_
 }
 
-coef_mat <- sum_multi$coefficients
-tabel_multivariat <- tibble(
-  Term    = rownames(coef_mat),
-  Beta    = coef_mat[, "Estimate"],
-  SE      = coef_mat[, "Std. Error"],
-  aOR     = exp(coef_mat[, "Estimate"]),
-  CI_Low  = exp(ci_multi[, 1]),
-  CI_High = exp(ci_multi[, 2]),
-  p_num   = coef_mat[, "Pr(>|z|)"]
-) %>%
-  filter(Term != "(Intercept)") %>%
-  mutate(
-    aOR_CI  = paste0(fmt_num(aOR, 2), " (", fmt_num(CI_Low, 2), "–", fmt_num(CI_High, 2), ")"),
-    p_value = fmt_p(p_num)
-  )
+ekstrak_glm <- function(fit_obj) {
+  s  <- summary(fit_obj)$coefficients
+  ci <- suppressMessages(confint.default(fit_obj))
+  tibble(
+    Term_Raw = rownames(s),
+    Term     = rapikan_label(rownames(s)),
+    Beta     = s[, "Estimate"],
+    SE       = s[, "Std. Error"],
+    aOR      = exp(s[, "Estimate"]),
+    CI_Low   = exp(ci[, 1]),
+    CI_High  = exp(ci[, 2]),
+    p_num    = s[, "Pr(>|z|)"]
+  ) %>%
+    filter(Term_Raw != "(Intercept)") %>%
+    mutate(
+      aOR_CI  = paste0(fmt_num(aOR, 2), " (", fmt_num(CI_Low, 2), "–", fmt_num(CI_High, 2), ")"),
+      p_value = fmt_p(p_num)
+    )
+}
 
-row_albi_mul <- tabel_multivariat %>% filter(grepl("^ALBI_Kat", Term))
+# Fungsi diagnostik kebaikan model (base R tanpa paket tambahan)
+calc_glm_diag <- function(fit_obj, y_vec) {
+  p_hat    <- predict(fit_obj, type = "response")
+  n_obs    <- length(y_vec)
+  # 1. Uji Omnibus (Likelihood Ratio Test)
+  chi_omni <- fit_obj$null.deviance - fit_obj$deviance
+  df_omni  <- fit_obj$df.null - fit_obj$df.residual
+  p_omni   <- pchisq(chi_omni, df = df_omni, lower.tail = FALSE)
+  # 2. Nagelkerke R-squared
+  cs_r2    <- 1 - exp((fit_obj$deviance - fit_obj$null.deviance) / n_obs)
+  nag_r2   <- cs_r2 / (1 - exp(-fit_obj$null.deviance / n_obs))
+  # 3. Hosmer-Lemeshow goodness-of-fit (aman untuk prediktor dikotom)
+  if (length(unique(round(p_hat, 6))) <= 10) {
+    grp <- factor(round(p_hat, 6))
+  } else {
+    qs  <- unique(quantile(p_hat, probs = seq(0, 1, length.out = 11)))
+    grp <- cut(p_hat, breaks = qs, include.lowest = TRUE)
+  }
+  hl_tab <- tibble(y = y_vec, p = p_hat, grp = grp) %>%
+    group_by(grp) %>%
+    summarise(n = n(), o1 = sum(y), e1 = sum(p), o0 = n - o1, e0 = n - e1, .groups = "drop") %>%
+    filter(e1 > 0 & e0 > 0)
+  hl_stat <- sum(((hl_tab$o1 - hl_tab$e1)^2 / hl_tab$e1) + ((hl_tab$o0 - hl_tab$e0)^2 / hl_tab$e0))
+  hl_df   <- max(1, nrow(hl_tab) - 2)
+  p_hl    <- pchisq(hl_stat, df = hl_df, lower.tail = FALSE)
+  # 4. Ketepatan klasifikasi & AUC
+  acc_pct <- mean(ifelse(p_hat >= 0.5, 1L, 0L) == y_vec) * 100
+  auc_val <- as.numeric(auc(roc(y_vec, p_hat, quiet = TRUE)))
+  list(p_omni = p_omni, nag_r2 = nag_r2, p_hl = p_hl, acc_pct = acc_pct, auc = auc_val)
+}
+
+# Model Utama (Parsimonious): ALBI + Up-to-Seven + AFP
+vars_utama    <- c("ALBI_Kat", "UpToSeven_Kat", "AFP_Kat")
+df_multi      <- df %>% select(Respon_Bin, all_of(vars_utama)) %>% na.omit()
+n_multi_final <- nrow(df_multi)
+fit_multi     <- glm(Respon_Bin ~ ALBI_Kat + UpToSeven_Kat + AFP_Kat, data = df_multi, family = binomial())
+tabel_multivariat <- ekstrak_glm(fit_multi)
+diag_multi    <- calc_glm_diag(fit_multi, df_multi$Respon_Bin)
+
+vif_vals <- car::vif(fit_multi)
+tabel_vif <- tibble(
+  Variabel = c("Skor ALBI Pra-Terapi", "Beban Tumor (Up-to-Seven)", "Kadar AFP Pra-Terapi"),
+  VIF      = fmt_num(as.numeric(vif_vals), 2),
+  Status   = ifelse(as.numeric(vif_vals) >= 5, "Waspada Multikolinearitas", "Aman (< 5)")
+)
+max_vif <- fmt_num(max(as.numeric(vif_vals), na.rm = TRUE), 2)
+
+row_albi_mul <- tabel_multivariat %>% filter(Term_Raw == "ALBI_KatALBI Derajat 1")
 aor_albi     <- fmt_num(row_albi_mul$aOR, 2)
 aor_albi_lo  <- fmt_num(row_albi_mul$CI_Low, 2)
 aor_albi_hi  <- fmt_num(row_albi_mul$CI_High, 2)
 p_albi_mul   <- row_albi_mul$p_value
+auc_model    <- fmt_num(diag_multi$auc, 3)
 
-pred_prob <- predict(fit_multi, type = "response")
-roc_model <- roc(df_multi$Respon_Bin, pred_prob, quiet = TRUE)
-auc_model <- fmt_num(as.numeric(auc(roc_model)), 3)
+# Model Pembanding A: CTP menggantikan ALBI
+df_ctp   <- df %>% select(Respon_Bin, CTP_Kat, UpToSeven_Kat, AFP_Kat) %>% na.omit()
+fit_ctp  <- glm(Respon_Bin ~ CTP_Kat + UpToSeven_Kat + AFP_Kat, data = df_ctp, family = binomial())
+tab_ctp  <- ekstrak_glm(fit_ctp) %>% filter(Term_Raw == "CTP_KatCTP A")
+diag_ctp <- calc_glm_diag(fit_ctp, df_ctp$Respon_Bin)
+
+# Model Pembanding B: Model Penuh (seluruh kandidat p < 0,25 dengan Usia ROC)
+kandidat_full <- hasil_bivariat %>%
+  filter(Var_Col != "Usia_60_Kat") %>%
+  filter(Var_Col == "ALBI_Kat" | (p_num < P_SCREEN_MULTI & Prop_Missing <= MAX_MISSING_MULTI)) %>%
+  pull(Var_Col) %>% unique()
+df_full   <- df %>% select(Respon_Bin, all_of(kandidat_full)) %>% na.omit()
+fit_full  <- glm(as.formula(paste("Respon_Bin ~", paste(kandidat_full, collapse = " + "))),
+                 data = df_full, family = binomial())
+tab_full  <- ekstrak_glm(fit_full) %>% filter(Term_Raw == "ALBI_KatALBI Derajat 1")
+diag_full <- calc_glm_diag(fit_full, df_full$Respon_Bin)
+vif_full  <- fmt_num(max(as.numeric(car::vif(fit_full))), 2)
+
+tabel_perbandingan_model <- tibble(
+  Model = c(
+    "Model Utama (Parsimonious): ALBI + Up-to-Seven + AFP",
+    "Model Pembanding (CTP): CTP + Up-to-Seven + AFP",
+    "Model Penuh (Semua kandidat p < 0,25)"
+  ),
+  n            = c(nrow(df_multi), nrow(df_ctp), nrow(df_full)),
+  Prediktor    = c(3, 3, length(kandidat_full)),
+  `aOR Fungsi Hati (IK 95%)` = c(row_albi_mul$aOR_CI, tab_ctp$aOR_CI, tab_full$aOR_CI),
+  `Nilai p`    = c(row_albi_mul$p_value, tab_ctp$p_value, tab_full$p_value),
+  AIC          = c(fmt_num(AIC(fit_multi), 1), fmt_num(AIC(fit_ctp), 1), fmt_num(AIC(fit_full), 1)),
+  AUC          = c(fmt_num(diag_multi$auc, 3), fmt_num(diag_ctp$auc, 3), fmt_num(diag_full$auc, 3)),
+  `VIF Maks`   = c(max_vif, fmt_num(max(as.numeric(car::vif(fit_ctp))), 2), vif_full)
+)
+
+# ==============================================================================
+# 8. ANALISIS SENSITIVITAS (mALBI -2,27, PER-PROTOCOL, & MORTALITAS DINI)
+# ==============================================================================
+df_pp <- df %>% filter(Status_Evaluasi == "CT Evaluasi 12–16 Minggu")
+n_pp  <- nrow(df_pp)
+
+tabel_sensitivitas <- bind_rows(
+  calc_bivar(df,    "mALBI_Kat", "mALBI (titik potong -2,27) — ITT",               "Respon_Bin"),
+  calc_bivar(df_pp, "ALBI_Kat",  "ALBI Derajat 1 vs 2–3 — Per-Protocol CT",        "Respon_Bin"),
+  calc_bivar(df_pp, "mALBI_Kat", "mALBI 1–2a vs 2b–3 — Per-Protocol CT",           "Respon_Bin"),
+  calc_bivar(df,    "ALBI_Kat",  "ALBI Derajat 1 vs 2–3 — Mortalitas Dini/Tanpa CT", "Meninggal_Dini_Bin"),
+  calc_bivar(df,    "mALBI_Kat", "mALBI 1–2a vs 2b–3 — Mortalitas Dini/Tanpa CT",    "Meninggal_Dini_Bin")
+) %>%
+  select(
+    `Analisis Sensitivitas`   = Variabel,
+    n                         = n_valid,
+    Perbandingan              = Kategori_Uji,
+    `Kejadian (Kelompok Uji)` = Terkontrol_Exp,
+    `Kejadian (Referensi)`    = Terkontrol_Ref,
+    `RR (IK 95%)`             = RR_CI,
+    `Nilai p`                 = p_value,
+    Uji                       = Uji
+  )
+
+fit_malbi     <- glm(Respon_Bin ~ mALBI_Kat + UpToSeven_Kat + AFP_Kat, data = df, family = binomial())
+tab_malbi_mul <- ekstrak_glm(fit_malbi) %>% filter(grepl("^mALBI_Kat", Term_Raw))
 ```
 
-## Audit Kelengkapan Data & Validasi Formula
+# ABSTRAK {.unnumbered}
+
+Karsinoma sel hati (KSH) sebagian besar terdiagnosis pada stadium menengah hingga lanjut sehingga terapi sistemik lini pertama seperti lenvatinib menjadi pilihan utama. Respon klinis terhadap lenvatinib sangat bervariasi dan diduga dipengaruhi cadangan fungsional hati. Penelitian ini bertujuan mengevaluasi hubungan skor Albumin-Bilirubin (ALBI) pra-terapi terhadap respon radiologis terapi lenvatinib dalam rentang 12–16 minggu pertama pada pasien KSH yang tidak dapat direseksi di RSUP Prof. dr. I.G.N.G. Ngoerah Denpasar.
+
+Penelitian kohort retrospektif dilakukan terhadap pasien KSH tidak dapat direseksi berusia $\ge 18$ tahun yang memulai terapi lenvatinib periode 1 Januari 2023 hingga 31 Desember 2025. Penilaian respon radiologis mengikuti kriteria mRECIST pada minggu ke-12 hingga ke-16 dengan pendekatan *intention-to-treat* (ITT), yakni penyakit terkontrol (CR/PR/SD) dibandingkan penyakit progresif (PD atau meninggal sebelum evaluasi CT). Analisis dilakukan menggunakan uji *Chi-square* atau *Fisher exact* beserta *Relative Risk* (RR), kurva ROC, dan regresi logistik biner multivariat.
+
+Dari `r n_final` subjek yang memenuhi kriteria (`r n_albi1` ALBI Derajat 1 dan `r n_albi23` ALBI Derajat 2–3), penyakit terkontrol tercapai pada `r n_ctrl_tot` subjek (`r pct_ctrl_tot`%). Proporsi penyakit terkontrol lebih tinggi pada kelompok ALBI Derajat 1 dibandingkan ALBI Derajat 2–3 (`r dcr_albi1` vs `r dcr_albi23`; RR `r rr_albi`; IK 95% `r rr_albi_lo`–`r rr_albi_hi`; $p = `r p_albi_biv`$). Setelah dikontrol terhadap beban tumor *Up-to-Seven* dan kadar AFP, skor ALBI Derajat 1 menunjukkan *adjusted* OR `r aor_albi` (IK 95% `r aor_albi_lo`–`r aor_albi_hi`; $p = `r p_albi_mul`$).
+
+Hubungan bermakna antara skor ALBI pra-terapi dengan respon radiologis dini terapi lenvatinib belum dapat dibuktikan secara statistik pada kohort ini, sedangkan beban tumor tampak lebih berperan terhadap kontrol penyakit dini. Evaluasi lanjutan dengan sampel lebih besar dan pemantauan kesintasan jangka panjang diperlukan.
+
+**Kata kunci:** keganasan hati, fungsi hati, *tyrosine kinase inhibitor*, *modified* RECIST, *Up-to-Seven*
+
+# ABSTRACT {.unnumbered}
+
+Hepatocellular carcinoma (HCC) is predominantly diagnosed at intermediate-to-advanced stages, making first-line systemic therapy such as lenvatinib the mainstay of treatment. Clinical response to lenvatinib varies substantially and is influenced by residual hepatic reserve. This study aimed to evaluate the association between pretreatment Albumin-Bilirubin (ALBI) score and radiological response to lenvatinib within the first 12–16 weeks among patients with unresectable HCC at Prof. dr. I.G.N.G. Ngoerah Hospital, Denpasar.
+
+A retrospective cohort study was conducted on unresectable HCC patients aged $\ge 18$ years initiating lenvatinib between January 1, 2023 and December 31, 2025. Radiological response was evaluated using mRECIST criteria at 12–16 weeks under an intention-to-treat (ITT) approach, comparing disease control (CR/PR/SD) versus progressive disease (PD or death prior to CT evaluation). Data were analysed using Chi-square or Fisher's exact tests with Relative Risk (RR), ROC curves, and binary logistic regression.
+
+Among `r n_final` eligible subjects (`r n_albi1` ALBI Grade 1 and `r n_albi23` ALBI Grade 2–3), disease control was achieved in `r gsub(",", ".", n_ctrl_tot)` patients (`r gsub(",", ".", pct_ctrl_tot)`%). Disease control rate was numerically higher in ALBI Grade 1 than Grade 2–3 (`r gsub(",", ".", dcr_albi1)` vs `r gsub(",", ".", dcr_albi23)`; RR `r gsub(",", ".", rr_albi)`; 95% CI `r gsub(",", ".", rr_albi_lo)`–`r gsub(",", ".", rr_albi_hi)`; $p = `r gsub(",", ".", p_albi_biv)`$). After adjusting for Up-to-Seven tumor burden and AFP level, ALBI Grade 1 yielded an adjusted OR of `r gsub(",", ".", aor_albi)` (95% CI `r gsub(",", ".", aor_albi_lo)`–`r gsub(",", ".", aor_albi_hi)`; $p = `r gsub(",", ".", p_albi_mul)`$).
+
+A statistically significant association between pretreatment ALBI score and early 12–16 week radiological response to lenvatinib could not be demonstrated in this cohort, whereas tumor burden appeared more influential. Larger prospective studies incorporating long-term survival outcomes are warranted.
+
+**Key words:** liver malignancy, hepatic reserve, tyrosine kinase inhibitor, modified RECIST, Up-to-Seven
 
 ```{r}
-#| label: tbl-audit-data
-#| tbl-cap: "Audit Kelengkapan Data (Missingness) dan Verifikasi Kalkulasi pada Sampel Teranalisis."
+#| label: audit-header
+#| eval: !expr SHOW_AUDIT
+#| results: asis
+#| echo: false
+cat("\n# AUDIT DATA & REFERENSI (NONAKTIFKAN `SHOW_AUDIT` SAAT FINAL) {.unnumbered}\n")
+```
+
+```{r}
+#| label: audit-data
+#| eval: !expr SHOW_AUDIT
+#| tbl-cap: "Audit Kelengkapan Data dan Verifikasi Kalkulasi pada Sampel Teranalisis"
 #| echo: false
 #| warning: false
-#| message: false
 
 cek_var <- c(
   "Usia_Num", "Jenis_Kelamin", "BCLC_Kat", "Etiologi_Kat", "CTP_Kat", "ECOG_Kat",
@@ -607,10 +743,10 @@ cek_var <- c(
 )
 
 audit_tbl <- tibble(
-  Variabel    = cek_var,
-  Terisi_n    = sapply(cek_var, function(v) sum(!is.na(df[[v]]))),
-  Missing_n   = sapply(cek_var, function(v) sum(is.na(df[[v]]))),
-  Missing_Pct = paste0(fmt_num(100 * Missing_n / nrow(df), 1), "%")
+  Variabel      = cek_var,
+  `Terisi (n)`  = sapply(cek_var, function(v) sum(!is.na(df[[v]]))),
+  `Missing (n)` = sapply(cek_var, function(v) sum(is.na(df[[v]]))),
+  `Missing (%)` = paste0(fmt_num(100 * `Missing (n)` / nrow(df), 1), "%")
 )
 
 kable(audit_tbl, format = "markdown")
@@ -627,7 +763,21 @@ Status Keputusan Riwayat Terapi Sebelumnya: `r ket_prior_tx`
 
 Validasi Formula (R vs Sheet): Jumlah baris dengan selisih bermakna pada Skor ALBI ($>0{,}05$) = `r diff_albi`, PNI ($>0{,}2$) = `r diff_pni`, dan RDI ($>1\%$) = `r diff_rdi`.
 
-Validasi Skor mCCI: Rentang terukur `r mcci_min`– `r mcci_max` (jumlah pasien dengan skor $> 5$ = `r n_mcci_gt5`).
+Validasi Skor mCCI: Rentang terukur `r mcci_min`–`r mcci_max` (jumlah pasien dengan skor $> 5$ = `r n_mcci_gt5`).
+
+```{r}
+#| label: audit-ringkasan-text
+#| eval: !expr SHOW_AUDIT
+#| results: asis
+#| echo: false
+cat(paste0(
+  "1. Status keputusan riwayat terapi sebelumnya: ", ket_prior_tx, ".\n",
+  "2. Validasi formula R terhadap sheet: selisih bermakna ALBI (> 0,05) = ", diff_albi,
+  ", PNI (> 0,2) = ", diff_pni, ", RDI (> 1%) = ", diff_rdi, ".\n",
+  "3. Validasi skor mCCI: rentang terukur ", fmt_num(mcci_min, 0), "–", fmt_num(mcci_max, 0),
+  " (jumlah pasien dengan skor > 5 = ", n_mcci_gt5, ").\n"
+))
+```
 
 ```{r}
 #| label: tbl-audit-mrecist
@@ -640,34 +790,103 @@ df %>%
   kable(format = "markdown")
 ```
 
-## Pendahuluan
-
-Karsinoma sel hati (KSH) merupakan keganasan hati primer paling dominan (85%–90% kasus) yang sebagian besar terdiagnosis pada stadium menengah hingga lanjut sehingga membutuhkan terapi sistemik lini pertama seperti lenvatinib [@kudo2018lenvatinib; @pphi2017]. Cadangan fungsional hati residual berperan krusial dalam menentukan tolerabilitas dosis dan respon antitumor. Skor Albumin-Bilirubin (ALBI) menawarkan penilaian objektif berbasis albumin serum dan bilirubin total tanpa bias subjektif skor Child-Turcotte-Pugh (CTP) [@johnson2015assessment]. Penelitian ini bertujuan menganalisis hubungan skor ALBI pra-terapi dengan respon radiologis mRECIST dalam rentang 12–16 minggu pertama terapi lenvatinib pada pasien KSH tidak dapat direseksi di RSUP Prof. dr. I.G.N.G. Ngoerah Denpasar.
-
-## Metode
-
-Penelitian ini merupakan studi analitik kohort retrospektif berbasis rekam medis pada pasien KSH tidak dapat direseksi (BCLC B non-kandidat terapi kuratif/lokoregional dan BCLC C) usia $\ge 18$ tahun yang memulai terapi lenvatinib di RSUP Prof. dr. I.G.N.G. Ngoerah Denpasar periode 1 Januari 2023 hingga 31 Desember 2025 dengan target besar sampel minimal 68 pasien. Kriteria eksklusi mencakup riwayat transplantasi hati, kehamilan selama perawatan, serta penghentian terapi $< 12$ minggu di luar kejadian kematian. Evaluasi luaran mengikuti prinsip intention-to-treat (ITT), yakni pasien yang meninggal sebelum menjalani CT evaluasi minggu ke-12–16 diklasifikasikan sebagai penyakit progresif. Dosis standar penyebut Relative Dose Intensity (RDI) 12 minggu ditetapkan berdasarkan berat badan ($\ge 60\text{ kg}: 12\text{ mg/hari}$; $< 60\text{ kg}: 8\text{ mg/hari}$). Seluruh pengolahan data dilakukan menggunakan RStudio dan Quarto dengan uji normalitas Shapiro–Wilk, kurva ROC/AUC untuk penentuan cut-off variabel numerik, uji Chi-square/Fisher exact beserta Relative Risk (RR), serta regresi logistik biner multivariat beserta uji Variance Inflation Factor (VIF) untuk mendeteksi multikolinearitas antar skor fungsi hati/nutrisi (ALBI, CTP, dan PNI).
-
-## Hasil
-
-### Alur Seleksi Sampel dan Karakteristik Subjek
-
-Dari total r n_terjangkau data pasien pada tab `r SHEET_TARGET`, didapatkan `r n_final` subjek yang memenuhi kriteria analisis akhir (`r ket_prior_tx`), terdiri atas `r n_albi1` pasien pada kelompok ALBI Derajat 1 dan `r n_albi23` pasien pada kelompok ALBI Derajat 2–3 (@fig-alur). Sebanyak `r n_itt_pd` pasien tidak menjalani evaluasi CT 12–16 minggu (meninggal/perburukan klinis) dan dikategorikan sebagai penyakit progresif sesuai pendekatan ITT. Karakteristik dasar subjek disajikan pada @tbl-karakteristik.
-
 ```{r}
-#| label: fig-alur
-#| fig-cap: "Diagram alur seleksi sampel penelitian berdasarkan skor ALBI pra-terapi dan luaran respon radiologis mRECIST 12–16 minggu (ITT)."
+#| label: audit-rm-bermasalah
+#| eval: !expr SHOW_AUDIT
+#| tbl-cap: "Daftar Nomor RM dengan Data Kosong atau Selisih Formula untuk Verifikasi Rekam Medis"
 #| echo: false
 #| warning: false
 
+rm_anomali <- df %>%
+  mutate(
+    Masalah = paste(
+      ifelse(is.na(BCLC_Kat), paste0("BCLC kosong/tidak baku (", coalesce(BCLC_STADIUM, "NA"), ")"), ""),
+      ifelse(is.na(RDI_12m), "RDI kosong", ""),
+      ifelse(!is.na(Skor_ALBI_Calc) & !is.na(ALBI_Sheet) & abs(Skor_ALBI_Calc - ALBI_Sheet) > 0.05,
+             paste0("Selisih ALBI (R=", fmt_num(Skor_ALBI_Calc), " vs Sheet=", fmt_num(ALBI_Sheet), ")"), ""),
+      ifelse(!is.na(Skor_PNI_Calc) & !is.na(PNI_Sheet) & abs(Skor_PNI_Calc - PNI_Sheet) > 0.2,
+             paste0("Selisih PNI (R=", fmt_num(Skor_PNI_Calc), " vs Sheet=", fmt_num(PNI_Sheet), ")"), ""),
+      sep = "; "
+    ),
+    Masalah = gsub("^(;\\s*)+|(;\\s*)+$", "", gsub("(;\\s*){2,}", "; ", Masalah))
+  ) %>%
+  filter(Masalah != "") %>%
+  select(NO, RM, NAMA_INISIAL, Masalah)
+
+kable(rm_anomali, format = "markdown")
+```
+
+```{r}
+#| label: audit-bib
+#| eval: !expr SHOW_AUDIT
+#| results: asis
+#| echo: false
+#| warning: false
+
+if (file.exists(BIB_FILE)) {
+  bib_lines <- readLines(BIB_FILE, warn = FALSE)
+  bib_txt   <- paste(bib_lines, collapse = "\n")
+  entries   <- strsplit(bib_txt, "(?=@[a-zA-Z]+\\{)", perl = TRUE)[[1]]
+  entries   <- entries[grepl("^@[a-zA-Z]+\\{", entries)]
+
+  bib_df <- tibble(
+    Key   = sub("^@[a-zA-Z]+\\{([^,]+),.*$", "\\1", entries),
+    Year  = suppressWarnings(as.integer(str_match(entries, "year\\s*=\\s*\\{?(\\d{4})\\}?")[, 2])),
+    Title = str_squish(gsub("[\\{\\}]", "", str_match(entries, "title\\s*=\\s*\\{([^\\n]+)\\}")[, 2]))
+  ) %>%
+    mutate(
+      Status_10Th = case_when(
+        is.na(Year)                ~ "Tanpa Tahun",
+        Year >= (TAHUN_TESIS - 10) ~ "Mutakhir (<= 10 tahun)",
+        TRUE                       ~ "Lebih dari 10 tahun (Cek apakah klasik)"
+      ),
+      Duplikat_Judul = duplicated(tolower(Title)) | duplicated(tolower(Title), fromLast = TRUE)
+    )
+
+  ringkas_bib <- bib_df %>%
+    count(`Kategori Kemutakhiran` = Status_10Th, name = "Jumlah (n)") %>%
+    mutate(`Persentase (%)` = fmt_num(100 * `Jumlah (n)` / sum(`Jumlah (n)`), 1))
+
+  cat("\n**Ringkasan Kemutakhiran Pustaka (2016–2026)**\n\n")
+  print(kable(ringkas_bib, format = "markdown"))
+
+  bib_flag <- bib_df %>%
+    filter(Status_10Th != "Mutakhir (<= 10 tahun)" | Duplikat_Judul) %>%
+    select(Key, Year, Status_10Th, Duplikat_Judul)
+
+  if (nrow(bib_flag) > 0) {
+    cat("\n\n**Daftar Kunci BibTeX Berusia > 10 Tahun, Tanpa Tahun, atau Duplikat**\n\n")
+    print(kable(bib_flag, format = "markdown"))
+  }
+} else {
+  cat(paste0("\n*File BibTeX tidak ditemukan di folder kerja: `", BIB_FILE, "`*\n"))
+}
+```
+
+# HASIL PENELITIAN DAN PEMBAHASAN
+
+## Hasil Penelitian
+
+### Alur seleksi sampel dan karakteristik subjek penelitian
+
+Penelitian ini mengevaluasi data rekam medis elektronik pasien karsinoma sel hati (KSH) yang menerima terapi sistemik lenvatinib di RSUP Prof. dr. I.G.N.G. Ngoerah Denpasar periode 1 Januari 2023 sampai dengan 31 Desember 2025. Dari `r n_terjangkau` pasien dalam populasi terjangkau, sebanyak `r n_final` subjek memenuhi kriteria eligibilitas dan diikutsertakan dalam analisis akhir (`r ket_prior_tx`), terdiri atas `r n_albi1` pasien pada kelompok ALBI Derajat 1 dan `r n_albi23` pasien pada kelompok ALBI Derajat 2–3 (@fig-alur).
+
+```{r}
+#| label: fig-alur
+#| fig-cap: "Diagram alur seleksi sampel penelitian berdasarkan skor ALBI pra-terapi dan luaran respon radiologis mRECIST 12–16 minggu (pendekatan ITT)"
+#| echo: false
+#| warning: false
+#| out-width: "100%"
+#| fig-align: "center"
+
 alur_dot <- paste0(
   "digraph alur {
-    graph [splines=ortho, nodesep=0.35, ranksep=0.35]
-    node [shape=box, fontname=Helvetica, fontsize=11, style=filled, fillcolor=white, color=black]
+    graph [splines=ortho, nodesep=0.35, ranksep=0.35, pad=0.35, margin=0.25]
+    node [shape=box, fontname=Arial, fontsize=11, style=filled, fillcolor=white, color=black, margin='0.18,0.10']
     edge [color=black, arrowhead=open]
 
-    Pop [label='Populasi Terjangkau di MAIN_60\\n(n = ", n_terjangkau, ")']
-    Excl [label='Dieksklusi:\\n- Usia < 18 tahun / NA (n = ", n_ex_usia, ")\\n- Riwayat transplantasi hati (n = ", n_ex_trans, ")\\n- Data ALBI tidak tersedia (n = ", n_ex_albi_na, ")\\n- Riwayat TACE/Reseksi/Ablasi (n = ", n_ex_prior_used, ")']
+    Pop [label='Populasi Terjangkau KSH dengan Lenvatinib\\n(n = ", n_terjangkau, ")']
+    Excl [label='Dieksklusi:\\n1. Usia < 18 tahun / NA (n = ", n_ex_usia, ")\\n2. Riwayat transplantasi hati (n = ", n_ex_trans, ")\\n3. Data ALBI tidak tersedia (n = ", n_ex_albi_na, ")\\n4. Riwayat TACE/Reseksi/Ablasi (n = ", n_ex_prior_used, ")']
     Final [label='Sampel Akhir Dianalisis (ITT)\\n(n = ", n_final, ")']
     A1 [label='ALBI Derajat 1 (<= -2,60)\\n(n = ", n_albi1, ")']
     A23 [label='ALBI Derajat 2–3 (> -2,60)\\n(n = ", n_albi23, ")']
@@ -689,116 +908,224 @@ alur_dot <- paste0(
   }"
 )
 
-alur_graph <- grViz(alur_dot)
-alur_graph
+alur_graph    <- grViz(alur_dot)
+path_alur_png <- file.path(DIR_FIG_EXPORT, "Gambar5_1_Alur_Penelitian.png")
+
+if (requireNamespace("DiagrammeRsvg", quietly = TRUE) && requireNamespace("rsvg", quietly = TRUE)) {
+  alur_svg <- DiagrammeRsvg::export_svg(alur_graph)
+  rsvg::rsvg_png(charToRaw(alur_svg), file = path_alur_png, width = 2400)
+  knitr::include_graphics(path_alur_png)
+} else {
+  alur_graph
+}
 ```
+
+Uji normalitas Shapiro–Wilk menunjukkan bahwa variabel usia ($p = `r fmt_p(p_shapiro_usia)`$) dan PNI ($p = `r fmt_p(p_shapiro_pni)`$) berdistribusi normal sehingga disajikan dalam bentuk rerata $\pm$ simpang baku (SB), sedangkan albumin, bilirubin total, skor ALBI ($p = `r fmt_p(p_shapiro_albi)`$), AFP, PIVKA-II, mCCI, dan RDI tidak berdistribusi normal sehingga disajikan dalam bentuk median (rentang interkuartil/IQR). Karakteristik dasar subjek penelitian secara keseluruhan maupun berdasarkan kelompok luaran disajikan pada @tbl-karakteristik.
 
 ```{r}
 #| label: tbl-karakteristik
-#| tbl-cap: "Karakteristik Demografi, Klinis, Laboratorium, dan Respon Terapi Subjek Penelitian."
+#| tbl-cap: "Karakteristik Subjek Penelitian Berdasarkan Respon Terapi Lenvatinib 12–16 Minggu"
 #| echo: false
 #| warning: false
 #| message: false
 
-ringkas_num <- function(x, label) {
-  x_clean <- x[!is.na(x)]
-  if (length(x_clean) == 0) {
-    return(tibble(Karakteristik = label, `n Valid` = 0L, `Nilai / n (%)` = "-"))
-  }
-  p_norm <- if (length(x_clean) >= 3 && length(x_clean) <= 5000 && length(unique(x_clean)) > 1) {
-    shapiro.test(x_clean)$p.value
+# Tabel 5.1 terstratifikasi (Total | Penyakit Terkontrol | Penyakit Progresif | Nilai p)
+fmt_num_grp <- function(x, is_normal) {
+  xc <- x[!is.na(x)]
+  if (length(xc) == 0) return("-")
+  if (is_normal) {
+    paste0(fmt_num(mean(xc), 2), " ± ", fmt_num(sd(xc), 2))
   } else {
-    0
+    q <- quantile(xc, probs = c(0.25, 0.50, 0.75))
+    paste0(fmt_num(q[2], 2), " (", fmt_num(q[1], 2), "–", fmt_num(q[3], 2), ")")
   }
-  if (p_norm >= 0.05) {
-    val <- paste0(fmt_num(mean(x_clean), 2), " ± ", fmt_num(sd(x_clean), 2), " (Rerata ± SD)")
-  } else {
-    q <- quantile(x_clean, probs = c(0.25, 0.50, 0.75))
-    val <- paste0(fmt_num(q[2], 2), " (", fmt_num(q[1], 2), "–", fmt_num(q[3], 2), ") (Median [IQR])")
-  }
-  tibble(Karakteristik = label, `n Valid` = length(x_clean), `Nilai / n (%)` = val)
 }
 
-ringkas_kat <- function(x, label) {
-  tab <- table(x, useNA = "no")
-  tot <- sum(tab)
-  if (tot == 0) return(tibble(Karakteristik = paste0("**", label, "**"), `n Valid` = 0L, `Nilai / n (%)` = "-"))
-  pct <- 100 * tab / tot
-  bind_rows(
-    tibble(Karakteristik = paste0("**", label, "**"), `n Valid` = as.integer(tot), `Nilai / n (%)` = ""),
-    tibble(
-      Karakteristik   = paste0("— ", names(tab)),
-      `n Valid`       = NA_integer_,
-      `Nilai / n (%)` = paste0(as.integer(tab), " (", fmt_num(pct, 1), "%)")
-    )
+baris_num_strat <- function(data, col_name, label) {
+  x_all <- data[[col_name]]
+  xc    <- x_all[!is.na(x_all)]
+  is_norm <- if (length(xc) >= 3 && length(xc) <= 5000 && length(unique(xc)) > 1) {
+    shapiro.test(xc)$p.value >= 0.05
+  } else {
+    FALSE
+  }
+  x1 <- data[[col_name]][data$Respon_Bin == 1]
+  x0 <- data[[col_name]][data$Respon_Bin == 0]
+  
+  p_val <- NA_real_; sup <- ""
+  if (sum(!is.na(x1)) >= 2 && sum(!is.na(x0)) >= 2) {
+    if (is_norm) {
+      p_val <- t.test(x1, x0)$p.value; sup <- "a"
+    } else {
+      p_val <- suppressWarnings(wilcox.test(x1, x0)$p.value); sup <- "b"
+    }
+  }
+  jenis_stat <- ifelse(is_norm, "rerata ± SB", "median (IQR)")
+  tibble(
+    Karakteristik = paste0(label, ", ", jenis_stat),
+    Total         = fmt_num_grp(x_all, is_norm),
+    Terkontrol    = fmt_num_grp(x1, is_norm),
+    Progresif     = fmt_num_grp(x0, is_norm),
+    `Nilai p`     = ifelse(is.na(p_val), "-", paste0(fmt_p(p_val), sup))
   )
 }
 
-tabel_1 <- bind_rows(
-  ringkas_num(df$Usia_Num,        "Usia saat diagnosis (tahun)"),
-  ringkas_kat(df$Jenis_Kelamin,   "Jenis Kelamin"),
-  ringkas_kat(df$BCLC_Kat,        "Stadium BCLC"),
-  ringkas_kat(df$Etiologi_Kat,    "Etiologi KSH"),
-  ringkas_kat(df$CTP_Kat,         "Skor Child-Pugh (CTP)"),
-  ringkas_kat(df$ECOG_Kat,        "Status Performa ECOG"),
-  ringkas_num(df$Albumin_gdL,     "Albumin serum (g/dL)"),
-  ringkas_num(df$Bilirubin_mgdL,  "Bilirubin total (mg/dL)"),
-  ringkas_num(df$Skor_ALBI,       "Skor ALBI pra-terapi"),
-  ringkas_kat(df$ALBI_Grade,      "Derajat ALBI (1 / 2 / 3)"),
-  ringkas_kat(df$ALBI_Kat,        "Kategori Skor ALBI (Utama)"),
-  ringkas_num(df$AFP_ng_Num,      "Kadar AFP pra-terapi (ng/mL)"),
-  ringkas_kat(df$AFP_Kat,         "Kategori AFP"),
-  ringkas_num(df$PIVKA_Num,       "Kadar PIVKA-II pra-terapi (mAU/mL)"),
-  ringkas_kat(df$PIVKA_Kat,       "Kategori PIVKA-II"),
-  ringkas_num(df$Skor_PNI,        "Prognostic Nutritional Index (PNI)"),
-  ringkas_kat(df$PNI_Kat,         "Kategori PNI"),
-  ringkas_kat(df$UpToSeven_Kat,   "Kriteria Up-to-Seven"),
-  ringkas_num(df$mCCI_Num,        "Skor mCCI"),
-  ringkas_kat(df$mCCI_Kat,        "Kategori Komorbiditas (mCCI)"),
-  ringkas_num(df$RDI_12m,         "RDI 12 minggu (%)"),
-  ringkas_kat(df$RDI_Kat,         "Kategori RDI 12 minggu"),
-  ringkas_kat(df$Prior_Tx_Kat,    "Riwayat Terapi Sebelumnya"),
-  ringkas_kat(df$Status_Evaluasi, "Status Evaluasi 12–16 Minggu"),
-  ringkas_kat(df$Respon_Detail,   "Detail Respon mRECIST"),
-  ringkas_kat(df$Respon_Kat,      "Luaran Respon Terapi (Utama)")
-) %>%
-  mutate(`n Valid` = ifelse(is.na(`n Valid`), "", as.character(`n Valid`)))
+baris_kat_strat <- function(data, col_name, label) {
+  d_sub <- data %>% select(x = all_of(col_name), y = Respon_Bin) %>% filter(!is.na(x))
+  if (nrow(d_sub) == 0) return(NULL)
+  lvls <- if (is.factor(d_sub$x)) levels(d_sub$x) else sort(unique(d_sub$x))
+  
+  tab_all <- table(factor(d_sub$x, levels = lvls))
+  tab_1   <- table(factor(d_sub$x[d_sub$y == 1], levels = lvls))
+  tab_0   <- table(factor(d_sub$x[d_sub$y == 0], levels = lvls))
+  
+  mat <- rbind(tab_1, tab_0)
+  mat_nz <- mat[, colSums(mat) > 0, drop = FALSE]
+  p_txt <- "-"
+  if (ncol(mat_nz) >= 2 && nrow(mat_nz) >= 2) {
+    chi_o <- suppressWarnings(chisq.test(mat_nz, correct = FALSE))
+    if (any(chi_o$expected < 5)) {
+      p_txt <- paste0(fmt_p(fisher.test(mat_nz)$p.value), "c")
+    } else {
+      p_txt <- paste0(fmt_p(chi_o$p.value), "d")
+    }
+  }
+  
+  n_tot <- sum(tab_all); n1 <- sum(tab_1); n0 <- sum(tab_0)
+  rows <- tibble(
+    Karakteristik = paste0("   ", lvls),
+    Total         = paste0(as.integer(tab_all), " (", fmt_num(100 * as.integer(tab_all) / n_tot, 1), ")"),
+    Terkontrol    = paste0(as.integer(tab_1),   " (", fmt_num(100 * as.integer(tab_1)   / n1,    1), ")"),
+    Progresif     = paste0(as.integer(tab_0),   " (", fmt_num(100 * as.integer(tab_0)   / n0,    1), ")"),
+    `Nilai p`     = ""
+  )
+  rows$`Nilai p`[1] <- p_txt
+  
+  bind_rows(
+    tibble(Karakteristik = paste0("**", label, ", n (%)**"), Total = "", Terkontrol = "", Progresif = "", `Nilai p` = ""),
+    rows
+  )
+}
 
-kable(tabel_1, format = "markdown")
+tabel_5_1 <- bind_rows(
+  baris_num_strat(df, "Usia_Num",       "Usia saat diagnosis (tahun)"),
+  baris_kat_strat(df, "Jenis_Kelamin",  "Jenis kelamin"),
+  baris_kat_strat(df, "BCLC_Kat",       "Stadium BCLC"),
+  baris_kat_strat(df, "Etiologi_Kat",   "Etiologi KSH"),
+  baris_kat_strat(df, "CTP_Kat",        "Skor Child-Pugh (CTP)"),
+  baris_kat_strat(df, "ECOG_Kat",       "Status performa ECOG"),
+  baris_num_strat(df, "Albumin_gdL",    "Albumin serum (g/dL)"),
+  baris_num_strat(df, "Bilirubin_mgdL", "Bilirubin total (mg/dL)"),
+  baris_num_strat(df, "Skor_ALBI",      "Skor ALBI pra-terapi"),
+  baris_kat_strat(df, "ALBI_Grade",     "Derajat ALBI (1 / 2 / 3)"),
+  baris_kat_strat(df, "ALBI_Kat",       "Kategori skor ALBI"),
+  baris_num_strat(df, "AFP_ng_Num",     "Kadar AFP pra-terapi (ng/mL)"),
+  baris_kat_strat(df, "AFP_Kat",        "Kategori AFP"),
+  baris_num_strat(df, "PIVKA_Num",      "Kadar PIVKA-II pra-terapi (mAU/mL)"),
+  baris_num_strat(df, "Skor_PNI",       "Prognostic Nutritional Index (PNI)"),
+  baris_kat_strat(df, "PNI_Kat",        "Kategori PNI"),
+  baris_kat_strat(df, "UpToSeven_Kat",  "Kriteria Up-to-Seven"),
+  baris_num_strat(df, "mCCI_Num",       "Skor komorbiditas (mCCI)"),
+  baris_num_strat(df, "RDI_12m",        "Relative Dose Intensity 12 minggu (%)"),
+  baris_kat_strat(df, "RDI_Kat",        "Kategori RDI 12 minggu")
+)
+
+names(tabel_5_1) <- c(
+  "Karakteristik",
+  paste0("Total (n = ", n_final, ")"),
+  paste0("Penyakit Terkontrol (n = ", n_ctrl_tot, ")"),
+  paste0("Penyakit Progresif (n = ", n_pd_tot, ")"),
+  "Nilai p"
+)
+
+kable(tabel_5_1, format = "markdown")
 ```
 
-### Penentuan Titik Potong Variabel Numerik (Kurva ROC/AUC)
+Keterangan: SB = simpang baku; IQR = rentang interkuartil; ^\^a\^\ uji\ t\ tidak\ berpasangan;\ \^b\^\ uji\ Mann–Whitney;\ \^c\^\ uji\ Fisher\ exact;\ \^d\^^ uji Chi-square.
 
-Kurva ROC variabel usia menghasilkan AUC sebesar `r auc_usia` (95% CI: `r auc_usia_lo`–`r auc_usia_hi`) dengan titik potong optimal `r cutoff_usia` tahun (sensitivitas `r sens_usia`%, spesifisitas `r spec_usia`%). Skor ALBI kontinu menunjukkan AUC sebesar `r auc_albi` (95% CI: `r auc_albi_lo`–`r auc_albi_hi`) dengan titik potong empiris `r cut_albi_op` (@fig-roc).
+### Distribusi respon radiologis terapi lenvatinib 12–16 minggu
+
+Distribusi respon terapi berdasarkan kriteria mRECIST dengan pendekatan *intention-to-treat* (ITT) disajikan pada @tbl-respon. Penyakit terkontrol dicapai oleh `r n_ctrl_tot` subjek (`r pct_ctrl_tot`%), sedangkan `r n_pd_tot` subjek (`r pct_pd_tot`%) mengalami penyakit progresif, termasuk `r n_itt_pd` subjek yang meninggal atau mengalami perburukan klinis sebelum sempat menjalani evaluasi CT scan.
+
+```{r}
+#| label: tbl-respon
+#| tbl-cap: "Distribusi Respon Radiologis Terapi Lenvatinib 12–16 Minggu Berdasarkan Kriteria mRECIST (Pendekatan ITT)"
+#| echo: false
+#| warning: false
+
+urutan_mrecist <- c(
+  "Complete Response (CR)",
+  "Partial Response (PR)",
+  "Stable Disease (SD)",
+  "Progressive Disease (CT Evaluasi)",
+  "Meninggal / Tanpa CT (ITT)"
+)
+
+tab_resp_detail <- df %>%
+  mutate(Respon_Detail = factor(Respon_Detail, levels = urutan_mrecist)) %>%
+  count(Respon_Detail, .drop = FALSE) %>%
+  mutate(Persen = fmt_num(100 * n / n_final, 1))
+
+tabel_5_2 <- bind_rows(
+  tibble(`Kategori Respon Terapi` = "**Penyakit Terkontrol**", n = n_ctrl_tot, `%` = pct_ctrl_tot),
+  tab_resp_detail %>%
+    filter(Respon_Detail %in% urutan_mrecist[1:3]) %>%
+    transmute(`Kategori Respon Terapi` = paste0("   ", as.character(Respon_Detail)), n = n, `%` = Persen),
+  tibble(`Kategori Respon Terapi` = "**Penyakit Progresif**", n = n_pd_tot, `%` = pct_pd_tot),
+  tab_resp_detail %>%
+    filter(Respon_Detail %in% urutan_mrecist[4:5]) %>%
+    transmute(`Kategori Respon Terapi` = paste0("   ", as.character(Respon_Detail)), n = n, `%` = Persen),
+  tibble(`Kategori Respon Terapi` = "**Total**", n = n_final, `%` = "100,0")
+)
+
+kable(tabel_5_2, format = "markdown")
+```
+
+### Analisis kurva ROC variabel numerik
+
+Kemampuan diskriminasi variabel numerik usia saat diagnosis serta skor ALBI kontinu dalam memprediksi pencapaian penyakit terkontrol dievaluasi melalui kurva ROC (@fig-roc; @tbl-roc). Variabel usia menunjukkan nilai AUC sebesar `r auc_usia` (IK 95% `r auc_usia_lo`–`r auc_usia_hi`; $p = `r fmt_p(p_roc_usia)`$) dengan titik potong berbasis indeks Youden sebesar `r fmt_num(cutoff_usia, 0)` tahun (sensitivitas `r sens_usia`%, spesifisitas `r spec_usia`%). Skor ALBI kontinu menghasilkan AUC sebesar `r auc_albi` (IK 95% `r auc_albi_lo`–`r auc_albi_hi`; $p = `r fmt_p(p_roc_albi)`$) dengan titik potong empiris `r cut_albi_op`. Mengingat interval kepercayaan 95% AUC usia mencakup nilai 0,5, analisis bivariat turut melaporkan titik potong klinis baku 60 tahun sebagai pembanding.
 
 ```{r}
 #| label: fig-roc
-#| fig-cap: "Kurva ROC penentuan titik potong usia (kiri) dan evaluasi diskriminasi skor ALBI kontinu (kanan) dalam memprediksi penyakit terkontrol."
+#| fig-cap: "Kurva ROC penentuan titik potong variabel usia (kiri) dan evaluasi diskriminasi skor ALBI kontinu (kanan) dalam memprediksi penyakit terkontrol"
 #| echo: false
 #| warning: false
 #| fig-width: 10
 #| fig-height: 4.5
 
+old_dec <- options(OutDec = ","); on.exit(options(old_dec))
+
 par(mfrow = c(1, 2))
 plot(roc_usia, col = "#1f78b4", lwd = 2, legacy.axes = TRUE,
+     identity = TRUE, identity.lty = 2, identity.col = "gray50",
+     xlab = "1 - Spesifisitas", ylab = "Sensitivitas",
      main = paste0("ROC Usia (AUC = ", auc_usia, ")"))
-abline(a = 0, b = 1, lty = 2, col = "gray50")
-legend("bottomright", legend = paste0("Cut-off: ", cutoff_usia, " th"), bty = "n")
+legend("bottomright", legend = paste0("Titik potong: < ", fmt_num(cutoff_usia, 0), " th"), bty = "n")
 
 plot(roc_albi, col = "#d95f02", lwd = 2, legacy.axes = TRUE,
+     identity = TRUE, identity.lty = 2, identity.col = "gray50",
+     xlab = "1 - Spesifisitas", ylab = "Sensitivitas",
      main = paste0("ROC Skor ALBI Kontinu (AUC = ", auc_albi, ")"))
-abline(a = 0, b = 1, lty = 2, col = "gray50")
-legend("bottomright", legend = paste0("Cut-off empiris: ", cut_albi_op), bty = "n")
+legend("bottomright", legend = paste0("Titik potong empiris: ", cut_albi_op), bty = "n")
 par(mfrow = c(1, 1))
 ```
 
-### Analisis Bivariat
+```{r}
+#| label: tbl-roc
+#| tbl-cap: "Hasil Analisis Kurva ROC Variabel Usia dan Skor ALBI Kontinu terhadap Penyakit Terkontrol"
+#| echo: false
+#| warning: false
 
-Secara keseluruhan, penyakit terkontrol tercapai pada `r pct_dcr_tot`% (`r n_dcr_total`/`r n_final` pasien). Pada kelompok ALBI Derajat 1, penyakit terkontrol tercapai pada `r dcr_albi1`, dibandingkan `r dcr_albi23` pada ALBI Derajat 2–3, dengan Relative Risk (RR) sebesar `r rr_albi` (95% CI: `r rr_albi_lo`–`r rr_albi_hi`; $p =$ `r p_albi_biv`) (@tbl-bivariat; @fig-proporsi-albi).
+kable(tabel_roc, format = "markdown")
+```
+
+### Analisis bivariat hubungan skor ALBI dan variabel perancu terhadap respon terapi
+
+Pada kelompok ALBI Derajat 1, penyakit terkontrol tercapai pada `r dcr_albi1`, sedangkan pada kelompok ALBI Derajat 2–3 tercapai pada `r dcr_albi23` (@fig-proporsi-albi). Uji *Chi-square* menghasilkan *Relative Risk* (RR) sebesar `r rr_albi` (IK 95% `r rr_albi_lo`–`r rr_albi_hi`; $p = `r p_albi_biv`$). Rangkuman analisis bivariat seluruh variabel independen dan perancu disajikan pada @tbl-bivariat.
 
 ```{r}
 #| label: tbl-bivariat
-#| tbl-cap: "Hasil Analisis Bivariat Hubungan Skor ALBI dan Variabel Perancu terhadap Penyakit Terkontrol (mRECIST 12–16 Minggu)."
+#| tbl-cap: "Hasil Analisis Bivariat Hubungan Skor ALBI dan Variabel Perancu terhadap Pencapaian Penyakit Terkontrol"
 #| echo: false
 #| warning: false
 #| message: false
@@ -806,20 +1133,22 @@ Secara keseluruhan, penyakit terkontrol tercapai pada `r pct_dcr_tot`% (`r n_dcr
 hasil_bivariat %>%
   select(
     Variabel,
-    `n`                         = n_valid,
+    n                           = n_valid,
     `Perbandingan Kategori`     = Kategori_Uji,
     `Terkontrol (Kelompok Uji)` = Terkontrol_Exp,
     `Terkontrol (Referensi)`    = Terkontrol_Ref,
-    `RR (95% CI)`               = RR_CI,
+    `RR (IK 95%)`               = RR_CI,
     `Nilai p`                   = p_value,
     `Metode Uji`                = Uji
   ) %>%
   kable(format = "markdown")
 ```
 
+Keterangan: RR = relative risk untuk mencapai penyakit terkontrol (CR/PR/SD); PIVKA-II tidak dimasukkan ke uji inferensial karena kelengkapan data \< 10%; mCCI tidak menghasilkan tabel 2×2 apabila seluruh subjek berada pada satu kategori.
+
 ```{r}
 #| label: fig-proporsi-albi
-#| fig-cap: "Proporsi penyakit terkontrol (CR/PR/SD) dan penyakit progresif (PD/ITT) berdasarkan kategori skor ALBI pra-terapi."
+#| fig-cap: "Perbandingan proporsi penyakit terkontrol dan penyakit progresif berdasarkan kategori skor ALBI pra-terapi"
 #| echo: false
 #| warning: false
 #| fig-width: 7
@@ -841,13 +1170,13 @@ p_bar_albi <- df %>%
 p_bar_albi
 ```
 
-### Analisis Multivariat (Regresi Logistik Biner) dan Uji Multikolinearitas
+### Analisis multivariat regresi logistik biner dan evaluasi multikolinearitas
 
-Sebanyak `r n_multi_final` subjek dengan data lengkap pada seluruh variabel kandidat ($p < `r P_SCREEN_MULTI`$ pada bivariat dengan missingness $\le `r MAX_MISSING_MULTI * 100`\%$) dimasukkan ke dalam model regresi logistik biner. Setelah penyesuaian terhadap variabel perancu, ALBI Derajat 1 menunjukkan adjusted Odds Ratio (aOR) sebesar `r aor_albi` (95% CI: `r aor_albi_lo`–`r aor_albi_hi`; $p =$ `r p_albi_mul`) dengan diskriminasi model AUC = `r auc_model` dan nilai VIF maksimum = `r max_vif` (@tbl-multivariat; @tbl-vif; @fig-forest-aor). `r if (length(vars_dilewati_missing) > 0) paste0("Catatan: variabel berikut dikecualikan dari model multivariat utama karena proporsi data kosong melebihi ", MAX_MISSING_MULTI * 100, "%: ", paste(vars_dilewati_missing, collapse = ", "), ".")`
+Untuk menjaga rasio *events per variable* serta mencegah kolinearitas komponen biokimia antara skor ALBI, CTP, dan PNI, model multivariat utama disusun secara *parsimonious* dengan memasukkan skor ALBI pra-terapi bersama beban tumor (*Up-to-Seven*) dan kadar AFP ($n = `r n_multi_final`$). Setelah penyesuaian, ALBI Derajat 1 menunjukkan *adjusted Odds Ratio* (aOR) sebesar `r aor_albi` (IK 95% `r aor_albi_lo`–`r aor_albi_hi`; $p = `r p_albi_mul`$) dengan nilai VIF maksimum `r max_vif` (@tbl-multivariat; @tbl-vif; @fig-forest-aor). Perbandingan kinerja model utama terhadap model berbasis CTP serta model penuh (seluruh kandidat $p < 0{,}25$) disajikan pada @tbl-perbandingan-model.
 
 ```{r}
 #| label: tbl-multivariat
-#| tbl-cap: "Hasil Analisis Multivariat Regresi Logistik Biner Prediktor Penyakit Terkontrol."
+#| tbl-cap: "Hasil Analisis Regresi Logistik Biner Multivariat Prediktor Penyakit Terkontrol (Model Parsimonious)"
 #| echo: false
 #| warning: false
 #| message: false
@@ -855,43 +1184,66 @@ Sebanyak `r n_multi_final` subjek dengan data lengkap pada seluruh variabel kand
 tabel_multivariat %>%
   select(
     `Variabel Prediktor`   = Term,
-    `Koefisien (B)`        = Beta,
+    `B`                    = Beta,
     `SE`                   = SE,
-    `Adjusted OR (95% CI)` = aOR_CI,
+    `Adjusted OR (IK 95%)` = aOR_CI,
     `Nilai p`              = p_value
   ) %>%
-  mutate(`Koefisien (B)` = fmt_num(`Koefisien (B)`, 3), SE = fmt_num(SE, 3)) %>%
+  mutate(B = fmt_num(B, 3), SE = fmt_num(SE, 3)) %>%
   kable(format = "markdown")
 ```
 
+Keterangan: B = koefisien regresi; SE = standard error; OR = odds ratio; IK = interval kepercayaan. Uji Omnibus p = `r fmt_p(diag_multi$p_omni)`; Nagelkerke $R^2$ = `r fmt_num(diag_multi$nag_r2, 3)`; uji Hosmer–Lemeshow p = `r fmt_p(diag_multi$p_hl)`; ketepatan klasifikasi `r fmt_num(diag_multi$acc_pct, 1)`%; AUC model = `r auc_model`. Variabel dependen dikodekan 0 = penyakit progresif dan 1 = penyakit terkontrol; kategori referensi adalah ALBI Derajat 2–3, Up-to-Seven \> 7, dan AFP ≥ 200 ng/mL.
 
 ```{r}
 #| label: tbl-vif
-#| tbl-cap: "Evaluasi Multikolinearitas Model Multivariat Berdasarkan Variance Inflation Factor (VIF)."
+#| tbl-cap: "Evaluasi Multikolinearitas Model Multivariat Utama Berdasarkan Variance Inflation Factor (VIF)"
 #| echo: false
 #| warning: false
-#| message: false
 
 kable(tabel_vif, format = "markdown")
 ```
 
 ```{r}
+#| label: tbl-perbandingan-model
+#| tbl-cap: "Perbandingan Kinerja Model Multivariat Utama (ALBI), Model Pembanding (CTP), dan Model Penuh"
+#| echo: false
+#| warning: false
+
+kable(tabel_perbandingan_model, format = "markdown")
+```
+
+```{r}
 #| label: fig-forest-aor
-#| fig-cap: "Forest plot Adjusted Odds Ratio (aOR) dan 95% CI dari model regresi logistik biner multivariat."
+#| fig-cap: "Forest plot Adjusted Odds Ratio (aOR) dan IK 95% dari model regresi logistik biner multivariat utama"
 #| echo: false
 #| warning: false
 #| fig-width: 8
-#| fig-height: 4.5
+#| fig-height: 3.8
 
 p_forest_aor <- ggplot(tabel_multivariat, aes(x = aOR, y = reorder(Term, aOR))) +
   geom_vline(xintercept = 1, linetype = "dashed", color = "gray40") +
-  geom_errorbarh(aes(xmin = CI_Low, xmax = CI_High), height = 0.2, linewidth = 0.8, color = "#2c3e50") +
-  geom_point(size = 3.5, color = "#1f78b4") +
-  scale_x_log10() +
-  labs(x = "Adjusted Odds Ratio (Skala Log, 95% CI)", y = NULL) +
-  theme_minimal(base_size = 12)
+  geom_errorbarh(aes(xmin = CI_Low, xmax = CI_High), height = 0.18, linewidth = 0.8, color = "#2c3e50") +
+  geom_point(size = 3.8, color = "#1f78b4") +
+  scale_x_log10(labels = function(x) fmt_num(x, 1)) +
+  labs(x = "Adjusted Odds Ratio (Skala Log, IK 95%)", y = NULL) +
+  theme_minimal(base_size = 12) +
+  theme(plot.margin = margin(10, 15, 10, 15))
 
 p_forest_aor
+```
+
+### Analisis sensitivitas (mALBI, per-protocol, dan mortalitas dini)
+
+Analisis sensitivitas mengevaluasi stratifikasi *modified* ALBI (mALBI Derajat 1–2a $\le -2{,}27$ vs 2b–3 $> -2{,}27$), subgrup *per-protocol* pasien yang menjalani evaluasi CT scan 12–16 minggu ($n = `r n_pp`$), serta luaran mortalitas dini sebelum sempat menjalani evaluasi CT (@tbl-sensitivitas). Setelah dikontrol dengan kriteria *Up-to-Seven* dan AFP, mALBI 1–2a menunjukkan aOR sebesar `r tab_malbi_mul$aOR_CI` ($p = `r tab_malbi_mul$p_value`$).
+
+```{r}
+#| label: tbl-sensitivitas
+#| tbl-cap: "Ringkasan Analisis Sensitivitas Stratifikasi mALBI, Subgrup Per-Protocol CT, dan Mortalitas Dini"
+#| echo: false
+#| warning: false
+
+kable(tabel_sensitivitas, format = "markdown")
 ```
 
 ```{r}
@@ -900,37 +1252,102 @@ p_forest_aor
 #| warning: false
 #| message: false
 
+old_dec <- options(OutDec = ","); on.exit(options(old_dec))
+
 if (requireNamespace("DiagrammeRsvg", quietly = TRUE)) {
   alur_svg <- DiagrammeRsvg::export_svg(alur_graph)
-  writeLines(alur_svg, file.path(DIR_FIG_EXPORT, "Gambar1_Alur_Penelitian.svg"))
+  writeLines(alur_svg, file.path(DIR_FIG_EXPORT, "Gambar5_1_Alur_Penelitian.svg"))
   if (requireNamespace("rsvg", quietly = TRUE)) {
-    rsvg::rsvg_pdf(charToRaw(alur_svg), file.path(DIR_FIG_EXPORT, "Gambar1_Alur_Penelitian.pdf"))
+    rsvg::rsvg_pdf(charToRaw(alur_svg), file.path(DIR_FIG_EXPORT, "Gambar5_1_Alur_Penelitian.pdf"))
   }
 }
 
-pdf(file.path(DIR_FIG_EXPORT, "Gambar2_Kurva_ROC.pdf"), width = 10, height = 4.5)
+pdf(file.path(DIR_FIG_EXPORT, "Gambar5_2_Kurva_ROC.pdf"), width = 10, height = 4.5)
 par(mfrow = c(1, 2))
 plot(roc_usia, col = "#1f78b4", lwd = 2, legacy.axes = TRUE,
+     identity = TRUE, identity.lty = 2, identity.col = "gray50",
+     xlab = "1 - Spesifisitas", ylab = "Sensitivitas",
      main = paste0("ROC Usia (AUC = ", auc_usia, ")"))
-abline(a = 0, b = 1, lty = 2, col = "gray50")
+legend("bottomright", legend = paste0("Titik potong: < ", fmt_num(cutoff_usia, 0), " th"), bty = "n")
 plot(roc_albi, col = "#d95f02", lwd = 2, legacy.axes = TRUE,
+     identity = TRUE, identity.lty = 2, identity.col = "gray50",
+     xlab = "1 - Spesifisitas", ylab = "Sensitivitas",
      main = paste0("ROC Skor ALBI Kontinu (AUC = ", auc_albi, ")"))
-abline(a = 0, b = 1, lty = 2, col = "gray50")
+legend("bottomright", legend = paste0("Titik potong empiris: ", cut_albi_op), bty = "n")
 dev.off()
 
-ggsave(file.path(DIR_FIG_EXPORT, "Gambar3_Proporsi_ALBI_Respon.pdf"), p_bar_albi, width = 7, height = 4.5)
-ggsave(file.path(DIR_FIG_EXPORT, "Gambar4_Forest_aOR_Multivariat.pdf"), p_forest_aor, width = 8, height = 4.5)
+ggsave(file.path(DIR_FIG_EXPORT, "Gambar5_3_Proporsi_ALBI_Respon.pdf"), p_bar_albi, width = 7, height = 4.5)
+ggsave(file.path(DIR_FIG_EXPORT, "Gambar5_4_Forest_aOR_Multivariat.pdf"), p_forest_aor, width = 8, height = 3.8)
 ```
 
 ## Pembahasan
 
-\[Diisi setelah hasil bivariat dan multivariat terbentuk: bahas perbandingan dengan studi REFLECT dan kohort Asia Timur, mekanisme fisiologis ALBI terhadap RDI/tolerabilitas lenvatinib, hasil evaluasi VIF terhadap CTP/PNI, serta keterbatasan desain retrospektif.\]
+### Karakteristik subjek dan profil respon terapi
+
+Penelitian ini menganalisis 75 subjek karsinoma sel hati (KSH) yang tidak dapat direseksi dan menerima terapi sistemik lenvatinib di RSUP Prof. dr. I.G.N.G. Ngoerah Denpasar. Rerata usia subjek saat diagnosis adalah 55,53 ± 11,35 tahun dengan dominasi jenis kelamin laki-laki sebesar 77,3% (58/75) dan etiologi infeksi virus hepatitis sebesar 66,7% (50/75). Profil demografis ini sejalan dengan epidemiologi KSH di kawasan Asia dan Indonesia yang umumnya muncul pada dekade kelima hingga keenam kehidupan, didominasi laki-laki akibat pengaruh hormon seks terhadap hepatokarsinogenesis, serta berlatar belakang infeksi virus hepatitis B dan C kronis [@forner_hepatocellular_2018; @wang_unique_2021; @bachtiar_perubahan_2022]. Apabila dibandingkan dengan kohort uji klinis fase III REFLECT maupun studi praktik nyata di Jepang, usia rerata subjek pada penelitian ini jauh lebih muda (55,5 tahun dibandingkan median 62–73 tahun di Jepang), yang mencerminkan perbedaan pola penularan hepatitis B vertikal dan struktur demografi populasi Indonesia [@kudo2018lenvatinib; @yamashita_reflect-phase_2020; @fuchigami_therapeutic_2020].
+
+Karakteristik klinis awal kohort ini menunjukkan derajat keparahan penyakit yang sangat berat saat inisiasi terapi sistemik. Sebagian besar subjek datang pada stadium BCLC C (75,7%), memiliki beban tumor melampaui kriteria *Up-to-Seven* (86,7%), serta mengalami gangguan cadangan fungsi hati yang signifikan dengan proporsi ALBI Derajat 2–3 mencapai 76,0% (54,7% Derajat 2 dan 21,3% Derajat 3) dan Child-Turcotte-Pugh (CTP) kelas B–C sebesar 38,7%. Kondisi ini berbeda kontras dengan uji klinis REFLECT yang secara ketat mengeksklusi pasien CTP B–C sehingga 99% pesertanya berada pada CTP kelas A dan mayoritas berstatus performa ECOG 0 [@kudo2018lenvatinib]. Tingginya proporsi stadium lanjut, disfungsi hati moderat hingga berat, serta status gizi buruk berdasarkan *Prognostic Nutritional Index* (PNI < 49,75 sebesar 74,7%) mencerminkan realitas klinis RSUP Prof. dr. I.G.N.G. Ngoerah sebagai rumah sakit pusat rujukan tersier di Bali dan Nusa Tenggara, di mana pasien KSH umumnya baru terdiagnosis atau dirujuk setelah muncul manifestasi klinis lanjut dan komplikasi sirosis [@pphi2017].
+
+Berdasarkan pendekatan *intention-to-treat* (ITT) pada rentang evaluasi 12–16 minggu pertama menggunakan kriteria mRECIST, pencapaian penyakit terkontrol (*disease control rate*/DCR) sebesar 36,0% (27/75 subjek), terdiri atas 2,7% *complete response* (CR), 9,3% *partial response* (PR), dan 24,0% *stable disease* (SD), sehingga menghasilkan *objective response rate* (ORR) sebesar 12,0%. Sebanyak 40,0% subjek mengalami progresivitas radiologis pada CT scan evaluasi dan 24,0% lainnya meninggal atau mengalami perburukan klinis berat sebelum sempat menjalani evaluasi pencitraan. Apabila analisis dibatasi pada 57 subjek yang menyelesaikan evaluasi CT (*per-protocol*), angka DCR meningkat menjadi 47,4% (27/57) dan ORR menjadi 15,8% (9/57). Capaian ini lebih rendah dibandingkan uji REFLECT (ORR mRECIST 24,1% dan DCR 75,5%) maupun studi retrospektif Jepang oleh Fuchigami dkk. (2020) yang melaporkan DCR sebesar 85,1% dan ORR 48,1% [@kudo2018lenvatinib; @fuchigami_therapeutic_2020]. Namun, angka ORR *per-protocol* sebesar 15,8% tersebut sebanding dengan temuan meta-analisis Yu dkk. (2022) mengenai evaluasi mRECIST pada terapi target molekuler KSH (ORR 15,9%) serta kohort multinasional praktik nyata di Taiwan oleh Lu dkk. (2025) yang melaporkan ORR 13,2% [@yu_recist_2022; @lu_predicting_2025]. Perbedaan tajam pada angka DCR terutama dipengaruhi oleh penerapan prinsip ITT yang memasukkan 24,0% kematian dini sebagai penyakit progresif, inklusi pasien CTP B–C dan ALBI Derajat 3, serta tingginya beban tumor *beyond Up-to-Seven* pada kohort penelitian ini.
+
+### Hubungan skor ALBI pra-terapi dengan respon radiologis dini terapi lenvatinib
+
+Pada penelitian ini, hipotesis mengenai hubungan skor ALBI pra-terapi dengan respon radiologis dini terapi lenvatinib 12–16 minggu belum dapat dibuktikan secara statistik. Meskipun proporsi penyakit terkontrol secara numerik lebih tinggi pada kelompok ALBI Derajat 1 dibandingkan ALBI Derajat 2–3 (44,4% vs 33,3%; selisih absolut 11,1%), uji *Chi-square* menunjukkan *Relative Risk* (RR) sebesar 1,33 (IK 95% 0,71–2,51; $p = 0,392$). Serupa dengan analisis kategorik, distribusi skor ALBI sebagai variabel kontinu tidak berbeda bermakna antara kelompok penyakit terkontrol dan penyakit progresif (median -2,22 vs -2,21; $p = 0,728$) dengan kemampuan diskriminasi kurva ROC yang rendah (AUC 0,525; IK 95% 0,381–0,669). Setelah dikontrol terhadap beban tumor (*Up-to-Seven*) dan kadar AFP dalam model regresi logistik *parsimonious*, arah asosiasi ALBI Derajat 1 tetap konsisten bersifat protektif dengan *adjusted Odds Ratio* (aOR) sebesar 1,70 (IK 95% 0,55–5,27), namun belum mencapai kemaknaan statistik ($p = 0,360$).
+
+Temuan ini berbeda dari beberapa studi validasi terdahulu yang melaporkan keunggulan skor ALBI sebagai prediktor luaran terapi KSH [@johnson2015assessment; @hiraoka_usefulness_2016; @pinato_albi_2017; @demirtas_albi_2021]. Namun, keselarasan yang menarik tampak apabila hasil ini dibandingkan dengan studi Fuchigami dkk. (2020) dan Saeki dkk. (2020) yang secara spesifik mengevaluasi respon radiologis awal terhadap lenvatinib [@fuchigami_therapeutic_2020; @saeki_early_2020]. Fuchigami dkk. (2020) menemukan bahwa pada analisis multivariat, faktor yang berhubungan bermakna dengan efikasi respon radiologis awal justru stadium BCLC dan kadar AFP serum, sedangkan derajat *modified* ALBI (mALBI) lebih berperan dalam memprediksi kesintasan jangka menengah (*middle-term survival*) dibandingkan respon radiologis pertama [@fuchigami_therapeutic_2020]. Demikian pula, Saeki dkk. (2020) melaporkan bahwa skor ALBI pra-terapi hanya menjadi prediktor independen respon objektif pada subkelompok pasien dengan kadar AFP baseline rendah (< 10 ng/mL), sedangkan pada kelompok AFP tinggi respon tumor jauh lebih ditentukan oleh respons biologis AFP terhadap lenvatinib [@saeki_early_2020].
+
+Terdapat empat penjelasan metodologis dan biologis utama yang mendasari belum terbuktinya signifikansi statistik skor ALBI pada penelitian ini:
+
+1. Perbedaan titik akhir (*endpoint*) yang dievaluasi. Sebagian besar studi besar yang membuktikan superioritas ALBI dan mALBI menggunakan *overall survival* (OS) atau *progression-free survival* (PFS) jangka panjang sebagai luaran utama [@johnson2015assessment; @hiraoka_validation_2017; @lu_predicting_2025]. Cadangan fungsi hati yang baik memungkinkan pasien bertahan lebih lama, menoleransi terapi lini kedua setelah progresi, dan terhindar dari dekompensasi hati; sebaliknya, kontrol lesi radiologis pada jendela waktu dini 12–16 minggu lebih langsung ditentukan oleh biologi intrinsik, vaskularisasi, serta beban massa tumor.
+2. Keterbatasan kuasa statistik (*statistical power*) akibat ketimpangan proporsi lengan paparan. Perhitungan besar sampel awal mengasumsikan pembagian lengan seimbang 1:1 (masing-masing 34 subjek) dengan selisih proporsi respon 25%. Pada data aktual, rasio kelompok ALBI Derajat 1 terhadap Derajat 2–3 sangat timpang (18 berbanding 57 subjek, atau 1:3,2) dengan selisih proporsi respon aktual sebesar 11,1%. Kondisi ini memperlebar interval kepercayaan (IK 95% aOR 0,55–5,27) sehingga daya uji tidak memadai untuk mengonfirmasi besar efek moderat tersebut.
+3. Sifat statis dan potensi perancu non-hepatik dari komponen ALBI. Pengukuran skor ALBI pada satu titik waktu pra-terapi tidak menangkap fluktuasi dinamis fungsi hati selama 12 minggu pemberian lenvatinib, padahal penurunan skor ALBI selama terapi (*delta* ALBI) dilaporkan kerap terjadi pada minggu ke-4 hingga ke-12 dan berkorelasi erat dengan kegagalan terapi [@fuchigami_therapeutic_2020; @serenari_albumin-bilirubin_2020]. Selain itu, kadar albumin serum dapat menurun akibat malnutrisi berat, kaheksia kanker, dan inflamasi sistemik, sedangkan bilirubin total dapat meningkat akibat kompresi bilier oleh massa tumor besar, sehingga skor ALBI tidak sepenuhnya murni mencerminkan cadangan parenkim hepatosit [@lei_bilirubin_2023; @hayata_impact_2025].
+4. Pola pemisahan efek antara kontrol lesi radiologis dan mortalitas dini pada analisis sensitivitas. Pada analisis sensitivitas (@tbl-sensitivitas), baik ALBI Derajat 1 maupun stratifikasi mALBI 1–2a ($\le -2,27$) [@hiraoka_validation_2017] tidak membedakan pencapaian penyakit terkontrol pada subgrup *per-protocol* yang menjalani CT evaluasi (53,3% vs 45,2%; $p = 0,590$ untuk ALBI dan 46,4% vs 48,3%; $p = 0,889$ untuk mALBI). Sebaliknya, pada luaran mortalitas dini atau perburukan klinis sebelum sempat menjalani CT evaluasi, keduanya menunjukkan arah protektif yang konsisten sebesar penurunan risiko relatif 37%–40% (16,7% vs 26,3%; RR 0,63 untuk ALBI Derajat 1 dan 17,6% vs 29,3%; RR 0,60; $p = 0,241$ untuk mALBI 1–2a). Pola ini mengisyaratkan bahwa pada populasi KSH lanjut di RSUP Prof. dr. I.G.N.G. Ngoerah, fungsi hati pra-terapi yang lebih baik cenderung berperan melindungi pasien dari kegagalan klinis dan kematian dini, bukan semata menentukan penyusutan lesi radiologis.
+
+### Peran beban tumor, biomarker, dan variabel perancu lainnya
+
+Temuan paling menonjol pada penelitian ini adalah dominasi faktor beban tumor dan agresivitas biologis tumor terhadap pencapaian kontrol penyakit dini. Kriteria *Up-to-Seven* ($\le 7$ dibandingkan $> 7$) menjadi satu-satunya prediktor yang berhubungan bermakna secara statistik baik pada analisis bivariat (penyakit terkontrol 70,0% vs 30,8%; RR 2,28; IK 95% 1,32–3,93; $p = 0,030$) maupun setelah penyesuaian multivariat bersama skor ALBI dan AFP (aOR 4,47; IK 95% 1,01–19,81; $p = 0,049$). Hasil ini mendukung literatur mutakhir yang menekankan pentingnya kriteria *Up-to-Seven* dalam menyeleksi kandidat terapi sistemik KSH [@mazzaferro_predicting_2009; @silk_up_2022]. Studi multisenter Lu dkk. (2025) terhadap 205 pasien KSH yang diterapi lenvatinib juga membuktikan bahwa beban tumor sesuai *Up-to-Seven* berkaitan dengan respon terapi yang lebih baik (ORR 22,7% vs 13,2% keseluruhan) serta mengintegrasikannya dengan ALBI menjadi skor *Up7-ALBI* yang memiliki nilai prediksi lebih tajam dibandingkan klasifikasi BCLC ataupun ALBI tunggal [@lu_predicting_2025]. Meskipun demikian, interval kepercayaan aOR kriteria *Up-to-Seven* pada penelitian ini cukup lebar (1,01–19,81) karena jumlah subjek yang berada dalam kriteria $\le 7$ relatif sedikit (10/75 subjek), sehingga presisi estimasi efeknya perlu diinterpretasikan secara hati-hati.
+
+Kadar *alpha-fetoprotein* (AFP) pra-terapi turut memperlihatkan sinyal klinis yang kuat. Pada analisis variabel kontinu (@tbl-karakteristik), median kadar AFP kelompok penyakit terkontrol jauh lebih rendah secara bermakna dibandingkan kelompok penyakit progresif (10,25 vs 560,78 ng/mL; $p = 0,017$). Ketika dikategorikan berdasarkan ambang diagnostik konsensus nasional sebesar 200 ng/mL [@pphi2017], kelompok AFP < 200 ng/mL menunjukkan kecenderungan penyakit terkontrol hampir dua kali lipat lebih tinggi pada bivariat (46,2% vs 25,0%; RR 1,85; IK 95% 0,95–3,57; $p = 0,057$) dan mempertahankan arah positif pada multivariat (aOR 2,10; IK 95% 0,75–5,88; $p = 0,156$). Perbedaan signifikansi antara analisis kontinu dan kategorik ini mencerminkan hilangnya sebagian informasi statistik saat variabel numerik berskala luas dikotomisasi, namun konsisten dengan peran AFP tinggi sebagai penanda proliferasi sel ganas yang agresif, invasi vaskular, dan resistensi terhadap penghambatan multikinase [@fuchigami_therapeutic_2020; @llovet_hepatocellular_2021]. Sementara itu, biomarker PIVKA-II hanya tercatat pada 5 dari 75 subjek (6,7%) karena belum menjadi pemeriksaan rutin yang dijamin secara luas pada praktik klinis harian di RSUP Prof. dr. I.G.N.G. Ngoerah, sehingga peran prediktifnya sebagaimana dilaporkan pada studi terapi sistemik mutakhir belum dapat dievaluasi [@chen_pivka-ii_2025; @jiang_clinical_2025].
+
+Evaluasi perbandingan model multivariat (@tbl-perbandingan-model) memberikan wawasan metodologis yang penting mengenai multikolinearitas dan *overadjustment*. Ketika seluruh enam kandidat dengan $p < 0,25$ pada bivariat (ALBI, usia, CTP, AFP, PNI, dan *Up-to-Seven*) dimasukkan secara simultan dalam model penuh (*events per variable* hanya 4,5), estimasi aOR skor ALBI justru berbalik arah menjadi 0,86 (IK 95% 0,13–5,54; $p = 0,873$) disertai peningkatan nilai *Akaike Information Criterion* (AIC 99,4 vs 97,5) dan kenaikan *Variance Inflation Factor* (VIF) tertinggi pada ALBI (2,68) dan PNI (2,50). Fenomena pembalikan arah ini terjadi karena ALBI, CTP, dan PNI berbagi komponen biokimia yang sama—albumin serum terdapat pada ketiga indeks tersebut dan bilirubin total terdapat pada ALBI maupun CTP [@onodera_prognostic_1984; @johnson2015assessment; @ellez_prognostic_2023]. Memasukkan CTP dan PNI bersama ALBI memecah variasi cadangan fungsi hati ke tiga variabel kolinear sekaligus. Ketika dibandingkan secara terpisah dalam model *parsimonious* yang bersih dari kolinearitas (VIF 1,01–1,03), kinerja model berbasis ALBI (aOR 1,70; $p = 0,360$; AIC 97,5; AUC 0,685) sebanding dengan model berbasis CTP (aOR 1,92; $p = 0,230$; AIC 96,8; AUC 0,692), dengan keunggulan praktis bahwa ALBI tidak bergantung pada penilaian subjektif asites dan ensefalopati [@feng_prognostic_2020; @demirtas_albi_2021].
+
+Variabel *Relative Dose Intensity* (RDI) 12 minggu tidak menunjukkan hubungan bermakna dengan pencapaian penyakit terkontrol (37,3% pada RDI > 66,7% vs 33,3% pada RDI ≤ 66,7%; RR 1,12; $p = 0,776$). Hasil ini berbeda dari studi Kirino dkk. (2020) yang menemukan RDI 4 minggu ≥ 70% berkorelasi kuat dengan DCR (91,7% vs 54,2%; $p = 0,008$), namun sejalan dengan hasil multivariat studi kohort Kanada oleh Pires Amaro dkk. (2022) yang mendapati bahwa RDI > 66,7% tidak secara independen memprediksi kesintasan (HR 0,70; $p = 0,18$) [@kirino_relative_2020; @pires_amaro_dosing_2022]. Tidak ditemukannya perbedaan pada kohort ini kemungkinan disebabkan oleh distribusi RDI yang sangat condong ke atas (median RDI 100,0% dan 79,7% subjek memiliki RDI > 66,7%) serta perhitungan RDI berbasis catatan peresepan rekam medis elektronik yang tidak dapat memastikan kepatuhan konsumsi obat harian pasien di rumah. Adapun variabel usia, jenis kelamin, etiologi viral versus non-viral, status performa ECOG, dan stadium BCLC tidak berhubungan bermakna dengan respon dini. Khusus untuk usia, nilai AUC kurva ROC sebesar 0,568 dengan IK 95% mencakup 0,5 (0,432–0,704) menunjukkan daya diskriminasi yang lemah, sehingga titik potong 43 tahun bersifat eksploratif dengan jumlah subjek sangat kecil ($n = 10$), sedangkan pengujian pada ambang klinis 60 tahun juga tidak bermakna ($p = 0,301$). Untuk variabel komorbiditas, seluruh subjek pada dataset memiliki skor indeks komorbiditas dalam rentang 5–10 (median 6,00), yang mencerminkan fenomena klasik skor *Charlson Comorbidity Index* (CCI) standar pada pasien KSH dengan sirosis—di mana bobot keganasan hati dan penyakit hati kronis secara otomatis menempatkan hampir seluruh pasien (> 94%) ke kategori risiko tinggi sebagaimana dilaporkan Alimenti dkk. (2024)—sehingga analisis bivariat terkomparasi memerlukan rekalibrasi murni mCCI 0–5 tanpa komponen hati dan tumor [@volk_modified_2007; @alimenti_modified_2024].
+
+### Keterbatasan penelitian
+
+Penelitian ini memiliki beberapa keterbatasan yang perlu diperhatikan dalam menafsirkan hasil:
+
+1. Desain kohort retrospektif berbasis rekam medis elektronik bergantung pada kelengkapan dan akurasi pencatatan klinis, laboratorium, evaluasi mRECIST radiologi rutin, serta catatan peresepan obat, sehingga kepatuhan konsumsi lenvatinib harian secara aktual dan sebagian data klinis (termasuk 5 pasien tanpa klasifikasi BCLC B/C baku dan 1 pasien tanpa data RDI) tidak seluruhnya terdokumentasi sempurna.
+2. Ketimpangan jumlah subjek antara kelompok ALBI Derajat 1 ($n = 18$) dan ALBI Derajat 2–3 ($n = 57$) menyebabkan daya uji statistik lebih rendah daripada asumsi rasio 1:1 pada perhitungan besar sampel awal, serta menghasilkan interval kepercayaan yang lebar pada analisis multivariat.
+3. Penilaian skor ALBI hanya dilakukan secara statis sebelum inisiasi terapi dan tidak mengevaluasi perubahan dinamis skor ALBI selama terapi berlangsung, padahal perburukan cadangan hati dalam 4–12 minggu pertama dapat memengaruhi keberlanjutan terapi.
+4. Pemeriksaan penanda tumor PIVKA-II hanya tersedia pada sebagian sangat kecil subjek (6,7%) sehingga tidak dapat dianalisis secara inferensial, dan indeks komorbiditas pada data sekunder masih terkonsentrasi pada skor tinggi (5–10) sehingga tidak dapat mendiskriminasi beban komorbiditas ekstrahepatik pada analisis bivariat.
+5. Penelitian ini berfokus pada titik akhir pengganti berupa respon radiologis dini dalam 12–16 minggu pertama dan belum mengevaluasi luaran kesintasan jangka panjang seperti *overall survival* (OS) dan *progression-free survival* (PFS).
+
+# SIMPULAN DAN SARAN
 
 ## Simpulan
 
-\[Diisi berdasarkan nilai $p$ dan aOR akhir skor ALBI pasca-penyesuaian perancu.\]
+Berdasarkan hasil penelitian pada `r n_final` pasien KSH yang tidak dapat direseksi dan mendapatkan terapi lenvatinib di RSUP Prof. dr. I.G.N.G. Ngoerah Denpasar, dapat disimpulkan hal-hal sebagai berikut:
 
-## Daftar Pustaka
+1.  Belum dapat dibuktikan adanya hubungan yang bermakna secara statistik antara skor ALBI pra-terapi dengan pencapaian penyakit terkontrol berdasarkan kriteria mRECIST dalam rentang 12–16 minggu pertama terapi lenvatinib, baik pada analisis bivariat maupun setelah penyesuaian terhadap beban tumor *Up-to-Seven* dan kadar AFP.
+
+2.  Beban tumor sesuai kriteria *Up-to-Seven* menunjukkan hubungan bermakna sebagai prediktor pencapaian penyakit terkontrol pada evaluasi 12–16 minggu pertama, sementara skor ALBI/mALBI yang lebih baik memperlihatkan kecenderungan protektif terhadap kejadian mortalitas dini sebelum evaluasi pencitraan.
+
+## Saran
+
+### Saran akademis
+
+1.  Penelitian selanjutnya disarankan menggunakan rancangan kohort prospektif multisenter dengan ukuran sampel lebih besar dan pemantauan jangka panjang terhadap *overall survival* serta *progression-free survival*.
+
+2.  Evaluasi dinamika perubahan skor ALBI selama terapi (*delta* ALBI) serta integrasi skor komposit fungsi hati dan beban tumor (seperti *Up7-ALBI*) perlu diteliti lebih lanjut pada populasi Indonesia.
+
+### Saran praktis
+
+1.  Penilaian cadangan fungsi hati menggunakan skor ALBI/mALBI tetap dianjurkan sebagai parameter objektif pendamping penilaian beban tumor sebelum inisiasi terapi lenvatinib untuk mengidentifikasi pasien berisiko tinggi mengalami perburukan klinis dini.
+
+2.  Pencatatan terstandar untuk kriteria mRECIST, berat badan, penyesuaian dosis harian, serta indeks komorbiditas perlu dibakukan dalam *clinical pathway* tatalaksana KSH sistemik di RSUP Prof. dr. I.G.N.G. Ngoerah Denpasar.
+
+## Daftar Pustaka {.unnumbered}
 
 ::: {#refs}
 :::
