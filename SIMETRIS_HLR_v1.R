@@ -16,7 +16,7 @@ gs4_auth()
 # URL Sheet HCC_Systemic_Therapy Anda
 sheet_url <- "https://docs.google.com/spreadsheets/d/1A6WNMCTLlWBLoow7D_ak3Yjy1DNDGgSv26aveFiQTJY/edit#gid=0"
 
-data_pasien <- read_sheet(sheet_url, sheet = "MAIN")
+data_pasien <- read_sheet(sheet_url, sheet = "Sept2025-Okt2025")
 daftar_rm <- data_pasien$RM
 
 # ==========================================
