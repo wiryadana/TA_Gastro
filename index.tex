@@ -213,7 +213,7 @@ RADIOLOGIS TERAPI LENVATINIB DALAM RENTANG 12--16 MINGGU PERTAMA PADA
 KARSINOMA SEL HATI YANG TIDAK DAPAT DIRESEKSI}
 \author{Kadek Adit Wiryadana \and Gde Somayana \and I Komang Agus Wira
 Nugraha}
-\date{25 November 2026}
+\date{26 November 2026}
 \begin{document}
 \maketitle
 
@@ -315,7 +315,7 @@ Variabel & Terisi (n) & Missing (n) & Missing (\%) \\
 \endlastfoot
 Usia\_Num & 75 & 0 & 0,0\% \\
 Jenis\_Kelamin & 75 & 0 & 0,0\% \\
-BCLC\_Kat & 70 & 5 & 6,7\% \\
+BCLC\_Kat & 71 & 4 & 5,3\% \\
 Etiologi\_Kat & 75 & 0 & 0,0\% \\
 CTP\_Kat & 75 & 0 & 0,0\% \\
 ECOG\_Kat & 75 & 0 & 0,0\% \\
@@ -329,6 +329,7 @@ UpToSeven\_Kat & 75 & 0 & 0,0\% \\
 mCCI\_Num & 75 & 0 & 0,0\% \\
 RDI\_12m & 74 & 1 & 1,3\% \\
 Respon\_Kat & 75 & 0 & 0,0\% \\
+Creatinin\_Num & 73 & 2 & 2,7\% \\
 \end{longtable}
 
 Status Keputusan Riwayat Terapi Sebelumnya: jumlah sampel tanpa riwayat
@@ -336,11 +337,11 @@ terapi sebelumnya (n = 75) memenuhi target minimal (n ≥ 68), sehingga 4
 pasien dengan riwayat TACE/reseksi/ablasi dieksklusi
 
 Validasi Formula (R vs Sheet): Jumlah baris dengan selisih bermakna pada
-Skor ALBI (\(>0{,}05\)) = 1, PNI (\(>0{,}2\)) = 1, dan RDI (\(>1\%\)) =
+Skor ALBI (\(>0{,}05\)) = 0, PNI (\(>0{,}2\)) = 0, dan RDI (\(>1\%\)) =
 0.
 
-Validasi Skor mCCI: Rentang terukur 5--10 (jumlah pasien dengan skor
-\(> 5\) = 64).
+Validasi Skor mCCI: Rentang terukur 0--3 (jumlah pasien dengan skor
+\(> 5\) = 0).
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -351,11 +352,11 @@ Validasi Skor mCCI: Rentang terukur 5--10 (jumlah pasien dengan skor
   sehingga 4 pasien dengan riwayat TACE/reseksi/ablasi dieksklusi.
 \item
   Validasi formula R terhadap sheet: selisih bermakna ALBI
-  (\textgreater{} 0,05) = 1, PNI (\textgreater{} 0,2) = 1, RDI
+  (\textgreater{} 0,05) = 0, PNI (\textgreater{} 0,2) = 0, RDI
   (\textgreater{} 1\%) = 0.
 \item
-  Validasi skor mCCI: rentang terukur 5--10 (jumlah pasien dengan skor
-  \textgreater{} 5 = 64).
+  Validasi skor mCCI: rentang terukur 0--3 (jumlah pasien dengan skor
+  \textgreater{} 5 = 0).
 \end{enumerate}
 
 \begin{longtable}[]{@{}
@@ -399,47 +400,26 @@ Partial Response & Partial Response (PR) & Penyakit Terkontrol & 7 \\
 Complete Response & Complete Response (CR) & Penyakit Terkontrol & 2 \\
 \end{longtable}
 
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0273}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0818}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.6909}}@{}}
+\begin{longtable}[]{@{}llll@{}}
 \caption{Daftar Nomor RM dengan Data Kosong atau Selisih Formula untuk
 Verifikasi Rekam Medis}\tabularnewline
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-NO
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-RM
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-NAMA\_INISIAL
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Masalah
-\end{minipage} \\
+NO & RM & NAMA\_INISIAL & Masalah \\
 \midrule\noalign{}
 \endfirsthead
 \toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-NO
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-RM
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-NAMA\_INISIAL
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Masalah
-\end{minipage} \\
+NO & RM & NAMA\_INISIAL & Masalah \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
 7 & 20018746 & I KOMANG WIDI ADNYANA & BCLC kosong/tidak baku (A) \\
 8 & 20034439 & MADE ALIT WIDYANTARA & BCLC kosong/tidak baku (A) \\
-21 & 24004142 & I NYOMAN SUWARTAWAN & BCLC kosong/tidak baku (0) \\
+25 & 24028774 & I WAYAN SUGITA & Kreatinin kosong \\
 30 & 24041584 & INK & BCLC kosong/tidak baku (A) \\
 52 & 01414430 & Ida Ayu AMANDA SARI & BCLC kosong/tidak baku (A) \\
+59 & 24046477 & ALBERT FERDINAND MODOK & Kreatinin kosong \\
 62 & 26077975 & SUTRISNO & RDI kosong \\
-63 & 26078758 & I KETUT MANYIT & Selisih ALBI (R=-1,34 vs Sheet=-1,94);
-Selisih PNI (R=30,86 vs Sheet=37,86) \\
 \end{longtable}
 
 \textbf{Ringkasan Kemutakhiran Pustaka (2016--2026)}
@@ -531,8 +511,8 @@ Usia saat diagnosis (tahun), rerata ± SB & 55,53 ± 11,35 & 53,63 ± 11,24
 Perempuan & 17 (22,7) & 7 (25,9) & 10 (20,8) & 0,613d \\
 Laki-laki & 58 (77,3) & 20 (74,1) & 38 (79,2) & \\
 \textbf{Stadium BCLC, n (\%)} & & & & \\
-BCLC C & 53 (75,7) & 18 (81,8) & 35 (72,9) & 0,420d \\
-BCLC B & 17 (24,3) & 4 (18,2) & 13 (27,1) & \\
+BCLC C & 53 (74,6) & 18 (78,3) & 35 (72,9) & 0,628d \\
+BCLC B & 18 (25,4) & 5 (21,7) & 13 (27,1) & \\
 \textbf{Etiologi KSH, n (\%)} & & & & \\
 Non-viral & 25 (33,3) & 10 (37,0) & 15 (31,2) & 0,610d \\
 Viral & 50 (66,7) & 17 (63,0) & 33 (68,8) & \\
@@ -542,6 +522,8 @@ CTP A & 46 (61,3) & 19 (70,4) & 27 (56,2) & \\
 \textbf{Status performa ECOG, n (\%)} & & & & \\
 ECOG ≥ 2 & 11 (14,7) & 5 (18,5) & 6 (12,5) & 0,511c \\
 ECOG 0--1 & 64 (85,3) & 22 (81,5) & 42 (87,5) & \\
+Kreatinin serum (mg/dL), median (IQR) & 0,89 (0,78--1,05) & 0,86
+(0,81--1,01) & 0,94 (0,77--1,14) & 0,364b \\
 Albumin serum (g/dL), median (IQR) & 3,60 (2,90--4,00) & 3,60
 (3,00--4,15) & 3,60 (2,90--3,92) & 0,631b \\
 Bilirubin total (mg/dL), median (IQR) & 1,20 (0,70--1,66) & 1,30
@@ -572,14 +554,15 @@ PNI Baik (≥ 49,75) & 19 (25,3) & 9 (33,3) & 10 (20,8) & \\
 Tidak Sesuai (\textgreater{} 7) & 65 (86,7) & 20 (74,1) & 45 (93,8) &
 0,030c \\
 Sesuai (≤ 7) & 10 (13,3) & 7 (25,9) & 3 (6,2) & \\
-Skor komorbiditas (mCCI), median (IQR) & 6,00 (6,00--8,00) & 6,00
-(6,00--7,00) & 6,50 (6,00--8,00) & 0,317b \\
 Relative Dose Intensity 12 minggu (\%), median (IQR) & 100,00
 (71,43--100,00) & 100,00 (71,43--100,00) & 100,00 (71,43--100,00) &
 0,384b \\
 \textbf{Kategori RDI 12 minggu, n (\%)} & & & & \\
 RDI ≤ 66,7\% & 15 (20,3) & 5 (18,5) & 10 (21,3) & 0,776d \\
 RDI \textgreater{} 66,7\% & 59 (79,7) & 22 (81,5) & 37 (78,7) & \\
+\textbf{Kategori mCCI, n (\%)} & & & & \\
+mCCI Tinggi (≥ 2) & 4 (5,3) & 1 (3,7) & 3 (6,2) & 1,000c \\
+mCCI Rendah (0--1) & 71 (94,7) & 26 (96,3) & 45 (93,8) & \\
 
 \end{longtable}
 
@@ -746,8 +729,8 @@ tahun & 19/47 (40,4\%) & 8/28 (28,6\%) & 1,41 (0,72--2,79) & 0,301 &
 Chi-square \\
 Jenis Kelamin & 75 & Laki-laki vs Perempuan & 20/58 (34,5\%) & 7/17
 (41,2\%) & 0,84 (0,43--1,64) & 0,613 & Chi-square \\
-Stadium BCLC & 70 & BCLC B vs BCLC C & 4/17 (23,5\%) & 18/53 (34,0\%) &
-0,69 (0,27--1,77) & 0,420 & Chi-square \\
+Stadium BCLC & 71 & BCLC B vs BCLC C & 5/18 (27,8\%) & 18/53 (34,0\%) &
+0,82 (0,36--1,88) & 0,628 & Chi-square \\
 Etiologi KSH & 75 & Viral vs Non-viral & 17/50 (34,0\%) & 10/25 (40,0\%)
 & 0,85 (0,46--1,57) & 0,610 & Chi-square \\
 Skor Child-Pugh (CTP) & 75 & CTP A vs CTP B--C & 19/46 (41,3\%) & 8/29
@@ -763,6 +746,9 @@ Buruk (\textless{} 49,75) & 9/19 (47,4\%) & 18/56 (32,1\%) & 1,47
 Beban Tumor (Up-to-Seven) & 75 & Sesuai (≤ 7) vs Tidak Sesuai
 (\textgreater{} 7) & 7/10 (70,0\%) & 20/65 (30,8\%) & 2,28 (1,32--3,93)
 & 0,030 & Fisher Exact \\
+Komorbiditas (mCCI) & 75 & mCCI Rendah (0--1) vs mCCI Tinggi (≥ 2) &
+26/71 (36,6\%) & 1/4 (25,0\%) & 1,46 (0,26--8,22) & 1,000 & Fisher
+Exact \\
 Relative Dose Intensity (RDI 12 Minggu) & 74 & RDI \textgreater{} 66,7\%
 vs RDI ≤ 66,7\% & 22/59 (37,3\%) & 5/15 (33,3\%) & 1,12 (0,51--2,46) &
 0,776 & Chi-square \\

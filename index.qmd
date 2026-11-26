@@ -138,14 +138,31 @@ fmt_p <- function(p) {
 # ==============================================================================
 gs4_auth(email = TRUE)
 
-url_sheet <- "[https://docs.google.com/spreadsheets/d/1A6WNMCTLlWBLoow7D_ak3Yjy1DNDGgSv26aveFiQTJY/edit?gid=0#gid=0](https://docs.google.com/spreadsheets/d/1A6WNMCTLlWBLoow7D_ak3Yjy1DNDGgSv26aveFiQTJY/edit?gid=0#gid=0)"
+url_sheet <- "https://docs.google.com/spreadsheets/d/1A6WNMCTLlWBLoow7D_ak3Yjy1DNDGgSv26aveFiQTJY/edit?gid=0#gid=0"
 
-data_raw <- read_sheet(
+data_raw_main <- read_sheet(
   ss        = url_sheet,
   sheet     = SHEET_TARGET,
   range     = "A:AF",
   col_types = "c"
-) %>%
+)
+
+data_raw_cr <- read_sheet(
+  ss        = url_sheet,
+  sheet     = SHEET_TARGET,
+  range     = paste0("AO1:AO", nrow(data_raw_main) + 1),
+  col_types = "c"
+)
+
+# Jaga penyelarasan baris jika baris paling bawah pada kolom AO kosong
+if (nrow(data_raw_cr) < nrow(data_raw_main)) {
+  data_raw_cr <- bind_rows(
+    data_raw_cr,
+    tibble(Creatinin_pretreatment = rep(NA_character_, nrow(data_raw_main) - nrow(data_raw_cr)))
+  )
+}
+
+data_raw <- bind_cols(data_raw_main, data_raw_cr) %>%
   filter(!is.na(RM) & trimws(RM) != "")
 
 # ==============================================================================
@@ -167,7 +184,7 @@ data_clean <- data_raw %>%
     Total_Dosis_12m   = to_num(TOTAL_DOSIS_TERIMA_12MG),
     Jumlah_Nodul      = to_num(JUMLAH_NODUL),
     Ukuran_Maks_cm    = to_num(UKURAN_NODUL_TERBESAR_CM),
-
+    Creatinin_Num     = to_num(Creatinin_pretreatment),
     ALBI_Sheet        = to_num(SKOR_ALBI),
     PNI_Sheet         = to_num(SKOR_PNI),
     RDI_Sheet         = to_num(RDI_PERSEN),
@@ -739,7 +756,7 @@ cat("\n# AUDIT DATA & REFERENSI (NONAKTIFKAN `SHOW_AUDIT` SAAT FINAL) {.unnumber
 cek_var <- c(
   "Usia_Num", "Jenis_Kelamin", "BCLC_Kat", "Etiologi_Kat", "CTP_Kat", "ECOG_Kat",
   "Albumin_gdL", "Bilirubin_mgdL", "Skor_ALBI", "AFP_ng_Num", "PIVKA_Num",
-  "Skor_PNI", "UpToSeven_Kat", "mCCI_Num", "RDI_12m", "Respon_Kat"
+  "Skor_PNI", "UpToSeven_Kat", "mCCI_Num", "RDI_12m", "Respon_Kat", "Creatinin_Num"
 )
 
 audit_tbl <- tibble(
@@ -803,6 +820,7 @@ rm_anomali <- df %>%
     Masalah = paste(
       ifelse(is.na(BCLC_Kat), paste0("BCLC kosong/tidak baku (", coalesce(BCLC_STADIUM, "NA"), ")"), ""),
       ifelse(is.na(RDI_12m), "RDI kosong", ""),
+      ifelse(is.na(Creatinin_Num), "Kreatinin kosong", ""),
       ifelse(!is.na(Skor_ALBI_Calc) & !is.na(ALBI_Sheet) & abs(Skor_ALBI_Calc - ALBI_Sheet) > 0.05,
              paste0("Selisih ALBI (R=", fmt_num(Skor_ALBI_Calc), " vs Sheet=", fmt_num(ALBI_Sheet), ")"), ""),
       ifelse(!is.na(Skor_PNI_Calc) & !is.na(PNI_Sheet) & abs(Skor_PNI_Calc - PNI_Sheet) > 0.2,
@@ -1015,6 +1033,7 @@ tabel_5_1 <- bind_rows(
   baris_kat_strat(df, "Etiologi_Kat",   "Etiologi KSH"),
   baris_kat_strat(df, "CTP_Kat",        "Skor Child-Pugh (CTP)"),
   baris_kat_strat(df, "ECOG_Kat",       "Status performa ECOG"),
+  baris_num_strat(df, "Creatinin_Num", "Kreatinin serum (mg/dL)"),
   baris_num_strat(df, "Albumin_gdL",    "Albumin serum (g/dL)"),
   baris_num_strat(df, "Bilirubin_mgdL", "Bilirubin total (mg/dL)"),
   baris_num_strat(df, "Skor_ALBI",      "Skor ALBI pra-terapi"),
@@ -1026,9 +1045,10 @@ tabel_5_1 <- bind_rows(
   baris_num_strat(df, "Skor_PNI",       "Prognostic Nutritional Index (PNI)"),
   baris_kat_strat(df, "PNI_Kat",        "Kategori PNI"),
   baris_kat_strat(df, "UpToSeven_Kat",  "Kriteria Up-to-Seven"),
-  baris_num_strat(df, "mCCI_Num",       "Skor komorbiditas (mCCI)"),
+  #baris_num_strat(df, "mCCI_Num",       "Skor komorbiditas (mCCI)"),
   baris_num_strat(df, "RDI_12m",        "Relative Dose Intensity 12 minggu (%)"),
-  baris_kat_strat(df, "RDI_Kat",        "Kategori RDI 12 minggu")
+  baris_kat_strat(df, "RDI_Kat",        "Kategori RDI 12 minggu"),
+  baris_kat_strat(df, "mCCI_Kat",       "Kategori mCCI")
 )
 
 names(tabel_5_1) <- c(
