@@ -332,17 +332,6 @@ Respon\_Kat & 75 & 0 & 0,0\% \\
 Creatinin\_Num & 73 & 2 & 2,7\% \\
 \end{longtable}
 
-Status Keputusan Riwayat Terapi Sebelumnya: jumlah sampel tanpa riwayat
-terapi sebelumnya (n = 75) memenuhi target minimal (n ≥ 68), sehingga 4
-pasien dengan riwayat TACE/reseksi/ablasi dieksklusi
-
-Validasi Formula (R vs Sheet): Jumlah baris dengan selisih bermakna pada
-Skor ALBI (\(>0{,}05\)) = 0, PNI (\(>0{,}2\)) = 0, dan RDI (\(>1\%\)) =
-0.
-
-Validasi Skor mCCI: Rentang terukur 0--3 (jumlah pasien dengan skor
-\(> 5\) = 0).
-
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
@@ -472,10 +461,10 @@ Uji normalitas Shapiro--Wilk menunjukkan bahwa variabel usia
 (\(p = 0,057\)) dan PNI (\(p = 0,108\)) berdistribusi normal sehingga
 disajikan dalam bentuk rerata \(\pm\) simpang baku (SB), sedangkan
 albumin, bilirubin total, skor ALBI (\(p = 0,003\)), AFP, PIVKA-II,
-mCCI, dan RDI tidak berdistribusi normal sehingga disajikan dalam bentuk
-median (rentang interkuartil/IQR). Karakteristik dasar subjek penelitian
-secara keseluruhan maupun berdasarkan kelompok luaran disajikan pada
-Tabel~\ref{tbl-karakteristik}.
+kreatinin, dan RDI tidak berdistribusi normal sehingga disajikan dalam
+bentuk median (rentang interkuartil/IQR). Karakteristik dasar subjek
+penelitian secara keseluruhan maupun berdasarkan kelompok luaran
+disajikan pada Tabel~\ref{tbl-karakteristik}.
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.3714}}
@@ -757,8 +746,7 @@ vs RDI ≤ 66,7\% & 22/59 (37,3\%) & 5/15 (33,3\%) & 1,12 (0,51--2,46) &
 
 Keterangan: RR = relative risk untuk mencapai penyakit terkontrol
 (CR/PR/SD); PIVKA-II tidak dimasukkan ke uji inferensial karena
-kelengkapan data \textless{} 10\%; mCCI tidak menghasilkan tabel 2×2
-apabila seluruh subjek berada pada satu kategori.
+kelengkapan data \textless{} 10\%.
 
 \begin{figure}
 
@@ -1000,7 +988,7 @@ vertikal dan struktur demografi populasi Indonesia (Fuchigami dkk.,
 
 Karakteristik klinis awal kohort ini menunjukkan derajat keparahan
 penyakit yang sangat berat saat inisiasi terapi sistemik. Sebagian besar
-subjek datang pada stadium BCLC C (75,7\%), memiliki beban tumor
+subjek datang pada stadium BCLC C (74,6\%; 53/71), memiliki beban tumor
 melampaui kriteria \emph{Up-to-Seven} (86,7\%), serta mengalami gangguan
 cadangan fungsi hati yang signifikan dengan proporsi ALBI Derajat 2--3
 mencapai 76,0\% (54,7\% Derajat 2 dan 21,3\% Derajat 3) dan
@@ -1229,16 +1217,16 @@ dini. Khusus untuk usia, nilai AUC kurva ROC sebesar 0,568 dengan IK
 95\% mencakup 0,5 (0,432--0,704) menunjukkan daya diskriminasi yang
 lemah, sehingga titik potong 43 tahun bersifat eksploratif dengan jumlah
 subjek sangat kecil (\(n = 10\)), sedangkan pengujian pada ambang klinis
-60 tahun juga tidak bermakna (\(p = 0,301\)). Untuk variabel
-komorbiditas, seluruh subjek pada dataset memiliki skor indeks
-komorbiditas dalam rentang 5--10 (median 6,00), yang mencerminkan
-fenomena klasik skor \emph{Charlson Comorbidity Index} (CCI) standar
-pada pasien KSH dengan sirosis---di mana bobot keganasan hati dan
-penyakit hati kronis secara otomatis menempatkan hampir seluruh pasien
-(\textgreater{} 94\%) ke kategori risiko tinggi sebagaimana dilaporkan
-Alimenti dkk. (2024)---sehingga analisis bivariat terkomparasi
-memerlukan rekalibrasi murni mCCI 0--5 tanpa komponen hati dan tumor
-(Alimenti dkk., 2024; Volk dkk., 2007).
+60 tahun juga tidak bermakna (\(p = 0,301\)). Pada evaluasi komorbiditas
+menggunakan modified Charlson Comorbidity Index (mCCI) skala 0--5 tanpa
+komponen penyakit hati dan keganasan hati (Alimenti dkk., 2024; Volk
+dkk., 2007), mayoritas subjek (94,7\%; 71/75) memiliki beban
+komorbiditas ekstrahepatik rendah (mCCI 0--1) dan hanya 4 subjek (5,3\%)
+berada pada kategori tinggi (mCCI ≥ 2). Proporsi penyakit terkontrol
+tidak berbeda bermakna antara kelompok mCCI rendah dan tinggi (36,6\% vs
+25,0\%; RR 1,46; IK 95\% 0,26--8,22; \(p = 1,000\)), yang turut sejalan
+dengan rendahnya variasi fungsi ginjal pra-terapi (median kreatinin
+serum 0,89 mg/dL; \(p = 0,364\)).
 
 \subsection{Keterbatasan penelitian}\label{keterbatasan-penelitian}
 
@@ -1252,9 +1240,10 @@ dalam menafsirkan hasil:
   Desain kohort retrospektif berbasis rekam medis elektronik bergantung
   pada kelengkapan dan akurasi pencatatan klinis, laboratorium, evaluasi
   mRECIST radiologi rutin, serta catatan peresepan obat, sehingga
-  kepatuhan konsumsi lenvatinib harian secara aktual dan sebagian data
-  klinis (termasuk 5 pasien tanpa klasifikasi BCLC B/C baku dan 1 pasien
-  tanpa data RDI) tidak seluruhnya terdokumentasi sempurna.
+  kepatuhan konsumsi lenvatinib harian secara aktual dan sebagian kecil
+  data klinis (4 pasien tanpa klasifikasi BCLC B/C baku, 2 pasien tanpa
+  data kreatinin pra-terapi, dan 1 pasien tanpa data RDI) tidak
+  seluruhnya terdokumentasi sempurna.
 \item
   Ketimpangan jumlah subjek antara kelompok ALBI Derajat 1 (\(n = 18\))
   dan ALBI Derajat 2--3 (\(n = 57\)) menyebabkan daya uji statistik
@@ -1269,10 +1258,9 @@ dalam menafsirkan hasil:
 \item
   Pemeriksaan penanda tumor PIVKA-II hanya tersedia pada sebagian sangat
   kecil subjek (6,7\%) sehingga tidak dapat dianalisis secara
-  inferensial, dan indeks komorbiditas pada data sekunder masih
-  terkonsentrasi pada skor tinggi (5--10) sehingga tidak dapat
-  mendiskriminasi beban komorbiditas ekstrahepatik pada analisis
-  bivariat.
+  inferensial, sedangkan distribusi skor mCCI sangat terpusat pada
+  kategori rendah (94,7\% pada mCCI 0--1) sehingga estimasi efek
+  komorbiditas ekstrahepatik memiliki interval kepercayaan yang lebar.
 \item
   Penelitian ini berfokus pada titik akhir pengganti berupa respon
   radiologis dini dalam 12--16 minggu pertama dan belum mengevaluasi
