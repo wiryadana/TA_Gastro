@@ -1,0 +1,9 @@
+1. Analisas statistic terlalu complicated, cutoff usia kita bagi menjadi usia 60, ALBI kita cutoff dengan standar ynag telah ada, sehingga analisis kurva ROC sepertinya bisa tidak dilakukan. 
+2. Ketika Analisa bivariat tidak ada signifikan (p> 0,05) maka tidak perlu dilanjutkan ke multivariat.
+3. Pada analisis bivariat, susun table 2x2 hingga perhitungan RR menjadi konteksnya sesuai hipotesis, yakni ALBI derajat 1 menjadi factor protektif/pendukung Disease control rate (harapannya RR > 1); atau ALBI derajat 2-3 menjadi factor risiko progressive disease (harapannya RR > 1) agar tidak membingungkan menginterpretasikan hasilnya RR dan OR nya. 
+
+
+
+Yang perlu dipertahankan (sudah bagus) hanya perlu edit hasil hasil menyesuaikan angka Analisa terbaru adalah bagian pembahasan. 
+1. Saya suka komparasi dengan studi REFLECT baik dari usia pasien, status CTP serta Analisa DCR berdasarkan per protocol analisis maupun ITT. 
+2. bagian pembahasan lainnya juga sudah bagus, tidak perlu dilakukan perubahan mayor, hanya penyesuaian angka angka dari perhitungan statistic jika berubah. 
